@@ -9,8 +9,11 @@
  * Main module of the application.
  */
 angular
-  .module('cloudcatcherDesktopApp', [
-    'ngAnimate',
-    'ngCookies',
-    'ngSanitize'
-  ]);
+    .module('cloudcatcherDesktopApp', [
+        'ngAnimate',
+        'ngCookies',
+        'ngSanitize',
+        'cloudcatcherSharedServices',
+        'ui.router'
+    ])
+;
