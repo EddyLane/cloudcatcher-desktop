@@ -24,14 +24,30 @@ angular.module('cloudcatcherSharedServices')
             return defer.promise;
         }
 
-        function getPodcasts(firebase) {
+        function getChild(firebase, child) {
             var defer, podcasts;
             defer = $q.defer();
-            podcasts = $firebase(firebase.child('podcasts'));
+            podcasts = $firebase(firebase.child(child));
             podcasts.$on('loaded', function () {
                 defer.resolve(podcasts);
             });
             return defer.promise;
+        }
+
+        function getPodcasts(firebase) {
+            return getChild(firebase, 'podcasts');
+        }
+
+        function getCurrentlyPlaying(firebase) {
+            return getChild(firebase, 'playing');
+        }
+
+        function getAllUserServices(firebase) {
+            return $q.all([getPodcasts(firebase), getCurrentlyPlaying(firebase)]);
+        }
+
+        function setAllUserServices(services) {
+            return $q.all($q.when(user.setPodcasts(services[0])), $q.when(setCurrentlyPlaying(services[1])));
         }
 
         function getUserData(promise){
@@ -39,10 +55,8 @@ angular.module('cloudcatcherSharedServices')
             promise.then(function (userData) {
                 var user = CloudcatcherUser(userData);
                 connect(user)
-                    .then(getPodcasts)
-                    .then(function (podcasts) {
-                        return $q.when(user.setPodcasts(podcasts));
-                    })
+                    .then(getAllUserServices)
+                    .then(setAllUserServices)
                     .then(defer.resolve)
                     .catch(defer.reject)
                 ;

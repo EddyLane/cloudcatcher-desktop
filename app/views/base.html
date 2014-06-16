@@ -1,0 +1,7 @@
+<table>
+    <tbody>
+        <tr ng-repeat="podcast in user.getPodcasts()">
+            <td><a ui-sref="base.podcast({ slug: podcast.slug })">{{ podcast.name }}</a></td>
+        </tr>
+    </tbody>
+</table>

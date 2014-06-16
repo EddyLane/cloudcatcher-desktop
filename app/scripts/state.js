@@ -27,15 +27,28 @@ angular
         });
 
         $stateProvider.state('base', {
-            url: '/',
+            url: '',
             resolve: {
                 user: ['CloudcatcherAuth', function (CloudcatcherAuth) {
                     return CloudcatcherAuth.check();
                 }]
             },
+            templateUrl: 'views/base.html',
             controller: 'BaseCtrl'
         });
 
-        $urlRouterProvider.otherwise('/');
+        $stateProvider.state('base.podcast', {
+            url: '/:slug',
+            resolve:{
+                podcast: ['$scope', '$stateParams', function ($scope, $stateParams) {
+                    console.log($stateParams);
+                    console.log($scope.user.podcasts);
+                    //return _.find($scope.user.podcasts, { slug: $stateParams.slug });
+                }]
+            },
+            controller: 'BasepodcastCtrl'
+        });
+
+        $urlRouterProvider.otherwise('');
 
     });
