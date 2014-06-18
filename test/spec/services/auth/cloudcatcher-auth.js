@@ -29,6 +29,11 @@ describe('Service: CloudcatcherAuth', function () {
         expect(CloudcatcherAuth.authenticate).to.be.a('function');
     });
 
+    it('should have a check method', function () {
+        expect(CloudcatcherAuth.check).to.be.a('function');
+    });
+
+
 //    it('should attempt to authenticate against the API and format the request as form url encoded and return a promise', function () {
 //        var resolved;
 //

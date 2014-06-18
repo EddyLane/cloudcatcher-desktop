@@ -10,8 +10,6 @@ describe('Factory: Cloudcatcheruser', function () {
         userData,
         user;
 
-
-
     beforeEach(inject(function (_CloudcatcherUser_) {
 
         userData = {
