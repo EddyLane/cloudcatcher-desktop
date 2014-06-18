@@ -10,23 +10,26 @@
 angular.module('cloudcatcherSharedServices')
     .service('CloudcatcherAuth', function CloudcatcherAuth($q, $firebase, FIREBASE_URL, CloudcatcherApi, CloudcatcherUser, FirebaseAuth) {
 
-
-        function getUserData(promise){
+        function getFirebaseData(user) {
             var defer = $q.defer();
-            promise.then(function (userData) {
-                var user = CloudcatcherUser(userData);
-                FirebaseAuth(user).then(function (userFirebase) {
-                    userFirebase.getPodcasts()
-                        .then(function (podcasts) {
-                            return $q.when(user.setPodcasts(podcasts));
-                        })
-                        .then(defer.resolve)
-                        .catch(defer.reject)
-                    ;
-                });
-            }, defer.reject);
+            FirebaseAuth(user).then(function (userFirebase) {
+                userFirebase.getPodcasts()
+                    .then(function (podcasts) {
+                        return $q.when(user.setPodcasts(podcasts));
+                    })
+                    .then(defer.resolve)
+                    .catch(defer.reject)
+                ;
+            });
             return defer.promise;
         }
+
+        function getUserData(promise){
+            return promise.then(function (userData) {
+                return getFirebaseData(CloudcatcherUser(userData));
+            });
+        }
+
 
         return {
 

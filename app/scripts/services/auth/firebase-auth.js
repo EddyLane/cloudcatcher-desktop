@@ -39,19 +39,13 @@ angular.module('cloudcatcherSharedServices')
                 return defer.promise;
             }
 
-            connect(user).then(function (userFirebase) {
-
-                defer.resolve({
-
+            return connect(user).then(function (userFirebase) {
+                return {
                     getPodcasts: function () {
                         return getChild(userFirebase, 'podcasts');
                     }
-
-                });
-
-            }, defer.reject);
-
-            return defer.promise;
+                };
+            });
 
         };
     });
