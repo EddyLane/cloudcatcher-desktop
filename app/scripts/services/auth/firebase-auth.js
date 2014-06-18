@@ -28,11 +28,9 @@ angular.module('cloudcatcherSharedServices')
             }
 
             function getChild(firebase, child) {
-                var defer, podcasts, child;
+                var defer, podcasts;
                 defer = $q.defer();
-
-                child = firebase.child(child);
-                podcasts = $firebase(child);
+                podcasts = $firebase(firebase.child(child));
                 podcasts.$on('loaded', function () {
                     defer.resolve(podcasts);
                 });
