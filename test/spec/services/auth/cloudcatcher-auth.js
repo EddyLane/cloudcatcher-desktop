@@ -8,20 +8,43 @@ describe('Service: CloudcatcherAuth', function () {
     // instantiate service
     var CloudcatcherAuth,
         CloudcatcherApi,
+        FirebaseAuth,
         $httpBackend,
-
-        serverResponse;
-
-    beforeEach(inject(function (_CloudcatcherAuth_, _$httpBackend_, _CloudcatcherApi_) {
-        CloudcatcherAuth = _CloudcatcherAuth_;
-        $httpBackend = _$httpBackend_;
-        CloudcatcherApi = _CloudcatcherApi_;
-
+        $rootScope,
+        $q,
         serverResponse = {
             username: 'Eddy',
             email: 'Eddy@eddy.com',
             firebase_token: 'abcde'
-        };
+        },
+        dummyPodcasts = [
+            { name: 'Test Podcast' }
+        ];
+
+    beforeEach(module(function ($provide) {
+        $provide.constant('FirebaseAuth', function (user) {
+
+            var defer = $q.defer();
+
+            defer.resolve({
+                getPodcasts: function () {
+                    var defer = $q.defer();
+                    defer.resolve(dummyPodcasts);
+                    return defer.promise;
+                }
+            });
+
+            return defer.promise;
+
+        });
+    }));
+
+    beforeEach(inject(function (_$q_, _CloudcatcherAuth_, _$httpBackend_, _CloudcatcherApi_, _$rootScope_) {
+        CloudcatcherAuth = _CloudcatcherAuth_;
+        $httpBackend = _$httpBackend_;
+        CloudcatcherApi = _CloudcatcherApi_;
+        $rootScope = _$rootScope_;
+        $q = _$q_;
 
     }));
 
@@ -33,25 +56,115 @@ describe('Service: CloudcatcherAuth', function () {
         expect(CloudcatcherAuth.check).to.be.a('function');
     });
 
+    describe('check if authenticated', function () {
 
-//    it('should attempt to authenticate against the API and format the request as form url encoded and return a promise', function () {
-//        var resolved;
-//
-//        $httpBackend.expectPOST(CloudcatcherApi.configuration.baseUrl + '/security/login', '_username=eddy&_password=lane', function (headers) {
-//            return headers['Content-Type'] === 'application/x-www-form-urlencoded';
-//        }).respond(serverResponse);
-//
-//        CloudcatcherAuth.authenticate('eddy', 'lane').then(function (data) {
-//            resolved = CloudcatcherApi.stripRestangular(data);
-//        });
-//
-//        $httpBackend.flush();
-//
-//        console.log(resolved);
-//        expect(resolved).to.deep.equal(serverResponse);
-//
-//        $httpBackend.verifyNoOutstandingExpectation();
-//    });
+        it('should return a CloudcatcherUser with podcasts attached if they are logged in', function () {
+            var res;
+
+            sinon.stub(CloudcatcherApi, 'one', function (what, which) {
+                expect(what).to.equal('users');
+                expect(which).to.equal('me');
+                return {
+                    get: function () {
+                        var defer = $q.defer();
+                        defer.resolve(serverResponse);
+                        return defer.promise;
+                    }
+                };
+            });
+
+            CloudcatcherAuth.check().then(function (_res_) {
+                res = _res_;
+            });
+
+            $rootScope.$apply();
+            expect(res.getPodcasts()).to.deep.equal(dummyPodcasts);
+            CloudcatcherApi.one.restore();
+        });
+
+        it('should reject it if something does wrong', function () {
+            var res,
+                error = new Error('rejected');
+
+            sinon.stub(CloudcatcherApi, 'one', function (what, which) {
+                expect(what).to.equal('users');
+                expect(which).to.equal('me');
+                return {
+                    get: function () {
+                        var defer = $q.defer();
+                        defer.reject(error);
+                        return defer.promise;
+                    }
+                };
+            });
+
+            CloudcatcherAuth.check().catch(function (_res_) {
+                res = _res_;
+            });
+
+            $rootScope.$apply();
+            expect(res).to.equal(error);
+            CloudcatcherApi.one.restore();
+        });
+
+    });
+
+    describe('attempt to authenticate', function () {
+
+        it('should return a CloudcatcherUser with podcasts attached if successful', function () {
+            var res;
+
+            sinon.stub(CloudcatcherApi, 'one', function (what) {
+                expect(what).to.equal('security');
+                return {
+                    post: function (thing, userData) {
+                        expect(thing).to.equal('login');
+                        expect(userData).to.deep.equal({ username: 'eddy', password: 'lane' });
+                        var defer = $q.defer();
+                        defer.resolve(serverResponse);
+                        return defer.promise;
+                    }
+                };
+            });
+
+            CloudcatcherAuth.authenticate('eddy', 'lane').then(function (_res_) {
+                res = _res_;
+            });
+
+            $rootScope.$apply();
+            expect(res.getPodcasts()).to.deep.equal(dummyPodcasts);
+            CloudcatcherApi.one.restore();
+        });
+
+        it('should reject it if something does wrong', function () {
+            var res,
+                error = new Error('rejected');
+
+            sinon.stub(CloudcatcherApi, 'one', function (what) {
+                expect(what).to.equal('security');
+                return {
+                    post: function (thing, userData) {
+                        expect(thing).to.equal('login');
+                        expect(userData).to.deep.equal({ username: 'eddy', password: 'lane' });
+                        var defer = $q.defer();
+                        defer.reject(error);
+                        return defer.promise;
+                    }
+                };
+            });
+
+            CloudcatcherAuth.authenticate('eddy', 'lane').catch(function (_res_) {
+                res = _res_;
+            });
+
+            $rootScope.$apply();
+            expect(res).to.equal(error);
+            CloudcatcherApi.one.restore();
+        });
+
+    });
+
+
 
 
 });

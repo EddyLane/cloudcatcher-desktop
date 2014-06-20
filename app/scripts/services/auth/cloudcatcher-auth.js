@@ -11,17 +11,13 @@ angular.module('cloudcatcherSharedServices')
     .service('CloudcatcherAuth', function CloudcatcherAuth($q, $firebase, FIREBASE_URL, CloudcatcherApi, CloudcatcherUser, FirebaseAuth) {
 
         function getFirebaseData(user) {
-            var defer = $q.defer();
-            FirebaseAuth(user).then(function (userFirebase) {
-                userFirebase.getPodcasts()
+            return FirebaseAuth(user).then(function (userFirebase) {
+                return userFirebase.getPodcasts()
                     .then(function (podcasts) {
                         return $q.when(user.setPodcasts(podcasts));
                     })
-                    .then(defer.resolve)
-                    .catch(defer.reject)
                 ;
             });
-            return defer.promise;
         }
 
         function getUserData(promise){
