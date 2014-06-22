@@ -33,6 +33,7 @@ module.exports = function (config) {
             'bower_components/restangular/dist/restangular.js',
             'bower_components/firebase/firebase.js',
             'bower_components/angularfire/angularFire.js',
+            'bower_components/angular-xml/angular-xml.js',
 
             'app/scripts/app.js',
             'app/scripts/**/!(state).js',
@@ -82,7 +83,7 @@ module.exports = function (config) {
 
         // level of logging
         // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-        logLevel: config.LOG_INFO
+        logLevel: config.LOG_ERROR
 
         // Uncomment the following lines if you are using grunt's server to run the tests
         // proxies: {

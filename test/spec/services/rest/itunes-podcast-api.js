@@ -101,6 +101,7 @@ describe('Service: ItunesPodcastApi', function () {
         it('should set add one response interceptor', inject(function (ItunesPodcastApi) {
             callback(configurer);
             expect(configurer.setResponseInterceptor).to.have.been.calledOnce;
+            expect(configurer.setResponseInterceptor).to.have.been.calledWithExactly(interceptorCallback);
         }));
 
         it('should set the name and slug from the collectionName', inject(function (ItunesPodcastApi) {
@@ -124,7 +125,7 @@ describe('Service: ItunesPodcastApi', function () {
             expect(interceptorCallback(response)).to.deep.equal([expected]);
         }));
 
-        it('should strip the genre "Podcasts" from the genres returned by the API',inject(function (ItunesPodcastApi) {
+        it('should strip the genre "Podcasts" from the genres returned by the API', inject(function (ItunesPodcastApi) {
             var response, expected;
 
             response = {
@@ -144,7 +145,7 @@ describe('Service: ItunesPodcastApi', function () {
             expect(interceptorCallback(response)).to.deep.equal([expected]);
         }));
 
-        it('should strip the genre "Podcasts" from the genres returned by the API',inject(function (ItunesPodcastApi) {
+        it('should strip the genre "Podcasts" from the genres returned by the API', inject(function (ItunesPodcastApi) {
             var response, expected;
 
             response = {

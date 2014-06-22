@@ -4,9 +4,8 @@ describe('Directive: loginForm', function () {
 
     // load the directive's module
     beforeEach(function () {
-        module('cloudcatcherDesktopApp')
-        module('cloudcatcherSharedServices')
-
+        module('cloudcatcherDesktopApp');
+        module('cloudcatcherSharedServices');
     });
 
     var element,

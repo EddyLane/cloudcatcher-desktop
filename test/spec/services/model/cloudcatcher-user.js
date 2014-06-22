@@ -38,10 +38,9 @@ describe('Factory: Cloudcatcheruser', function () {
             { id: 1, name: 'Eddys fab podcast' }
         ];
 
-        user.setPodcasts(podcasts);
+        expect(user.setPodcasts(podcasts)).to.equal(user);
         expect(user.getPodcasts()).to.deep.equal(podcasts);
     });
-
 
 
 });

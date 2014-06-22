@@ -11,7 +11,7 @@ angular.module('cloudcatcherDesktopApp')
         return {
             templateUrl: 'views/directives/login-form.html',
             restrict: 'AE',
-            link: function postLink(scope, element, attrs) {
+            link: function postLink(scope) {
 
                 function success() {
                     scope.$emit('loginForm_success');

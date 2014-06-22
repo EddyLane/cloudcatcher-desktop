@@ -11,8 +11,6 @@ angular.module('cloudcatcherSharedServices')
     .factory('FirebaseAuth', function (FirebaseProxy, FIREBASE_URL, $q, $firebase) {
         return function (user) {
 
-            var defer = $q.defer();
-
             function connect(user) {
                 var defer, firebase;
                 defer = $q.defer();
