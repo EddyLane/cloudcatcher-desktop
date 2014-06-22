@@ -35,10 +35,10 @@ module.exports = function (config) {
             'bower_components/angularfire/angularFire.js',
             'bower_components/angular-xml/angular-xml.js',
 
-            'app/scripts/app.js',
-            'app/scripts/**/!(state).js',
+            'app/scripts/**/*.js',
 
             'app/scripts/services/app.js',
+
             'app/scripts/services/**/!(app).js',
 
             'test/mock/**/*.js',

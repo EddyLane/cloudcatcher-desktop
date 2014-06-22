@@ -11,19 +11,28 @@ describe('Directive: loginForm', function () {
     var element,
         scope,
         CloudCatcherAuth,
-        $q,
-        expectedBehaviour;
+        $q;
 
     beforeEach(inject(function ($rootScope, $compile, _CloudcatcherAuth_, _$q_) {
 
         CloudCatcherAuth = _CloudcatcherAuth_;
         $q = _$q_;
 
+        sinon.stub(CloudCatcherAuth, 'check', function () {
+            var defer = $q.defer();
+            defer.resolve();
+            return defer.promise;
+        });
+
         scope = $rootScope.$new();
         element = angular.element('<login-form></login-form>');
         element = $compile(element)(scope);
         scope.$digest();
     }));
+
+    afterEach(function () {
+        CloudCatcherAuth.check.restore();
+    });
 
 
     it('should have a submit function', function () {

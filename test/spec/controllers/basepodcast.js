@@ -8,7 +8,9 @@ describe('Controller: BasepodcastCtrl', function () {
     var BaseCtrl,
         BasepodcastCtrl,
         user,
-        scope;
+        scope,
+        baseScope,
+        podcast;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope) {
@@ -17,20 +19,30 @@ describe('Controller: BasepodcastCtrl', function () {
             podcasts: [
                 { slug: 'eddys-awesome-podcast' }
             ]
-        })
+        });
 
-        scope = $rootScope.$new();
+        podcast = { slug: 'eddys-awesome-podcast' };
+
+        baseScope = $rootScope.$new();
 
         BaseCtrl = $controller('BaseCtrl', {
-            $scope: scope,
+            $scope: baseScope,
             user: user
         });
 
+        scope = baseScope.$new();
+
         BasepodcastCtrl = $controller('BasepodcastCtrl', {
-            $scope: scope.$new()
+            $scope: scope,
+            podcast: podcast
         });
 
     }));
+
+    it('should set the resolved podcast to scope', function () {
+        expect(scope.podcast).to.equal(podcast);
+        expect(scope.podcast).to.deep.equal(podcast);
+    });
 
 
 });

@@ -12,8 +12,10 @@
 angular
     .module('cloudcatcherDesktopApp')
 
-    .run(['$rootScope', '$state', function ($rootScope, $state) {
-        $rootScope.$on('$stateChangeError', function () {
+    .run(['$rootScope', '$state', '$log', function ($rootScope, $state, $log) {
+        $rootScope.$on('$stateChangeError', function (e) {
+            $log.warn(e);
+            console.log(e);
             $state.transitionTo('login');
         });
     }])
@@ -40,10 +42,8 @@ angular
         $stateProvider.state('base.podcast', {
             url: '/:slug',
             resolve:{
-                podcast: ['$scope', '$stateParams', function ($scope, $stateParams) {
-                    console.log($stateParams);
-                    console.log($scope.user.podcasts);
-                    //return _.find($scope.user.podcasts, { slug: $stateParams.slug });
+                podcast: ['user', '$stateParams', function (user, $stateParams) {
+                    return _.find(user.getPodcasts(), { slug: $stateParams.slug });
                 }]
             },
             controller: 'BasepodcastCtrl'

@@ -23,6 +23,7 @@ describe('Controller: BaseCtrl', function () {
 
     it('should assign the resolved user to the scope', function () {
         expect(scope.user).to.deep.equal(user);
+        expect(scope.user).to.equal(user);
     });
 
 });
