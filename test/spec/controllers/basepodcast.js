@@ -7,13 +7,27 @@ describe('Controller: BasepodcastCtrl', function () {
 
     var BaseCtrl,
         BasepodcastCtrl,
+        CloudcatcherAuth,
+        GoogleFeedApi,
         user,
         scope,
+        $rootScope,
         baseScope,
-        podcast;
+        $q,
+        podcast,
+
+        dummyEpisodes = [
+            { title: 'Test Episode', image: 'testimage.jpg' }
+        ];
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope) {
+    beforeEach(inject(function ($controller, _$rootScope_, _GoogleFeedApi_, _$q_, _CloudcatcherAuth_) {
+
+        GoogleFeedApi = _GoogleFeedApi_;
+        $rootScope = _$rootScope_;
+        CloudcatcherAuth = _CloudcatcherAuth_;
+        $q = _$q_;
+
         user = {"username":"bob","username_canonical":"bob","email":"bob@bob.com","id":1,"firebase_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0MDI5NTczNzIsImRlYnVnIjpmYWxzZSwidiI6MCwiZCI6eyJ1c2VybmFtZSI6ImJvYiJ9fQ.6zuHHzAn9zgVJOw_JVc34DJ4Zx9Xut1BLAfSqUFRmRQ"};
         _.merge(user, {
             podcasts: [
@@ -30,19 +44,34 @@ describe('Controller: BasepodcastCtrl', function () {
             user: user
         });
 
+        sinon.stub(CloudcatcherAuth, 'check', function () {
+            return true;
+        });
+
         scope = baseScope.$new();
 
         BasepodcastCtrl = $controller('BasepodcastCtrl', {
             $scope: scope,
-            podcast: podcast
+            podcast: podcast,
+            episodes: dummyEpisodes
         });
 
+
+
     }));
+
+    afterEach(function () {
+        CloudcatcherAuth.check.restore();
+    });
 
     it('should set the resolved podcast to scope', function () {
         expect(scope.podcast).to.equal(podcast);
         expect(scope.podcast).to.deep.equal(podcast);
     });
 
+    it('should set the resolved episodes to scope', function () {
+        expect(scope.episodes).to.equal(dummyEpisodes);
+        expect(scope.episodes).to.deep.equal(dummyEpisodes);
+    })
 
 });

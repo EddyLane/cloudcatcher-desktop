@@ -8,6 +8,9 @@
  * Controller of the cloudcatcherDesktopApp
  */
 angular.module('cloudcatcherDesktopApp')
-    .controller('BasepodcastCtrl', function ($scope, podcast) {
+    .controller('BasepodcastCtrl', function ($scope, podcast, episodes) {
+
         $scope.podcast = podcast;
+        $scope.episodes = episodes;
+
     });

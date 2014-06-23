@@ -44,6 +44,9 @@ angular
             resolve:{
                 podcast: ['user', '$stateParams', function (user, $stateParams) {
                     return _.find(user.getPodcasts(), { slug: $stateParams.slug });
+                }],
+                episodes: ['podcast', 'GoogleFeedApi', function (podcast, GoogleFeedApi) {
+                    return GoogleFeedApi.one('load', podcast.feed).get();
                 }]
             },
             controller: 'BasepodcastCtrl'
