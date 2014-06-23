@@ -52,12 +52,12 @@ angular.module('cloudcatcherSharedServices')
             RestangularConfigurer.addResponseInterceptor(function (data) {
 
                 var parsed,
-                    result;
+                    result,
+                    episodes;
 
                 if (!data.responseData.xmlString) {
                     var errorString = 'feed.responseData has no "xmlString" property';
                     $log.error(errorString);
-                    deferred.reject(new Error(errorString));
                 }
 
                 parsed = utils.xmlToJson(xmlParser.parse(data.responseData.xmlString)).rss.channel;
@@ -102,7 +102,7 @@ angular.module('cloudcatcherSharedServices')
                     parsed.item = [parsed.item];
                 }
 
-                result.episodes = parsed.item.map(function (episode) {
+                episodes = parsed.item.map(function (episode) {
 
                     var row = {
                         title: episode['title']['#text'],
@@ -138,7 +138,9 @@ angular.module('cloudcatcherSharedServices')
 
                 });
 
-                return result;
+                episodes.meta = result;
+
+                return episodes;
             });
         });
     });

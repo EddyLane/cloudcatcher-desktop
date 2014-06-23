@@ -39,12 +39,13 @@ angular
 
         $stateProvider.state('base.podcast', {
             url: '/:slug',
+            templateUrl: 'views/base/podcast.html',
             resolve:{
                 podcast: ['user', '$stateParams', function (user, $stateParams) {
                     return _.find(user.getPodcasts(), { slug: $stateParams.slug });
                 }],
                 episodes: ['podcast', 'GoogleFeedApi', function (podcast, GoogleFeedApi) {
-                    return GoogleFeedApi.one('load', podcast.feed).get();
+                    return GoogleFeedApi.one('load').getList(null, { q: podcast.feed });
                 }]
             },
             controller: 'BasepodcastCtrl'

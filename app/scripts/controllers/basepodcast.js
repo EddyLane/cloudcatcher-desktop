@@ -12,5 +12,5 @@ angular.module('cloudcatcherDesktopApp')
 
         $scope.podcast = podcast;
         $scope.episodes = episodes;
-
+        console.log(episodes);
     });

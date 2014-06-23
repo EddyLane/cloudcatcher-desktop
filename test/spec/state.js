@@ -37,13 +37,14 @@ describe('Router', function () {
             return checkResponse;
         });
 
-        sinon.stub(GoogleFeedApi, 'one', function (type, thing) {
+        sinon.stub(GoogleFeedApi, 'one', function (type) {
 
             expect(type).to.equal('load');
-            expect(thing).to.equal('feedy');
 
             return {
-                get: function () {
+                getList: function (specify, params) {
+                    expect(specify).to.be.null;
+                    expect(params).to.deep.equal({ q: 'feedy' });
                     var defer = $q.defer();
                     defer.resolve(podcastEpisodes);
                     return defer.promise;

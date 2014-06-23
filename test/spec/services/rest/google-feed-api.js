@@ -85,35 +85,35 @@ describe('Service: GoogleFeedApi', function () {
             var result;
             callback(configurer);
             result = interceptorCallback(response);
-            expect(result.title).to.equal('Clare Balding\'s Sunday Best');
+            expect(result.meta.title).to.equal('Clare Balding\'s Sunday Best');
         }));
 
         it('should set the author of the podcast in the response', inject(function (GoogleFeedApi) {
             var result;
             callback(configurer);
             result = interceptorCallback(response);
-            expect(result.author).to.equal('BBC Radio 2');
+            expect(result.meta.author).to.equal('BBC Radio 2');
         }));
 
         it('should set the image of the podcast', inject(function (GoogleFeedApi) {
             var result;
             callback(configurer);
             result = interceptorCallback(response);
-            expect(result.image).to.equal('http://www.bbc.co.uk/podcasts/assets/artwork/gms.jpg');
+            expect(result.meta.image).to.equal('http://www.bbc.co.uk/podcasts/assets/artwork/gms.jpg');
         }));
 
         it('should set the summary of the podcast', inject(function (GoogleFeedApi) {
             var result;
             callback(configurer);
             result = interceptorCallback(response);
-            expect(result.summary).to.equal('Clare Balding talks to guests about their life and beliefs exploring, through conversation, matters of faith and spirituality . First broadcast each Sunday morning on Good Morning Sunday with Clare Balding, she interviews a wide variety of guests from the worlds of entertainment, music, the arts, business, sport and politics. Conversations will be around 20 minutes duration and will range from life stories, to inspirational and motivational anecdotes.');
+            expect(result.meta.summary).to.equal('Clare Balding talks to guests about their life and beliefs exploring, through conversation, matters of faith and spirituality . First broadcast each Sunday morning on Good Morning Sunday with Clare Balding, she interviews a wide variety of guests from the worlds of entertainment, music, the arts, business, sport and politics. Conversations will be around 20 minutes duration and will range from life stories, to inspirational and motivational anecdotes.');
         }));
 
         it('should set the keywords of the podcast', inject(function (GoogleFeedApi) {
             var result;
             callback(configurer);
             result = interceptorCallback(response);
-            expect(result.keywords).to.deep.equal(['Good Morning Sunday', 'Claire', 'Blading', 'GMS', 'sports', 'presenter', 'religion', 'faith', 'belief', 'spirituality', 'BBC', 'Clair', 'Baldwin']);
+            expect(result.meta.keywords).to.deep.equal(['Good Morning Sunday', 'Claire', 'Blading', 'GMS', 'sports', 'presenter', 'religion', 'faith', 'belief', 'spirituality', 'BBC', 'Clair', 'Baldwin']);
         }));
 
 
@@ -123,63 +123,63 @@ describe('Service: GoogleFeedApi', function () {
                 var result;
                 callback(configurer);
                 result = interceptorCallback(response);
-                expect(result.episodes).to.have.length(5);
+                expect(result).to.have.length(5);
             }));
 
             it('should set the title of the episode', inject(function (GoogleFeedApi) {
                 var result;
                 callback(configurer);
                 result = interceptorCallback(response);
-                expect(result.episodes[0].title).to.equal('gms: Baroness Trumpington 22 JUN 14');
+                expect(result[0].title).to.equal('gms: Baroness Trumpington 22 JUN 14');
             }));
 
             it('should set the image of the episode', inject(function (GoogleFeedApi) {
                 var result;
                 callback(configurer);
                 result = interceptorCallback(response);
-                expect(result.episodes[0].image).to.equal('http://www.bbc.co.uk/podcasts/assets/artwork/gms.jpg');
+                expect(result[0].image).to.equal('http://www.bbc.co.uk/podcasts/assets/artwork/gms.jpg');
             }));
 
             it('should set the author of the episode', inject(function (GoogleFeedApi) {
                 var result;
                 callback(configurer);
                 result = interceptorCallback(response);
-                expect(result.episodes[0].author).to.equal('BBC Radio 2');
+                expect(result[0].author).to.equal('BBC Radio 2');
             }));
 
             it('should set the unplayed property of the episode to true', inject(function (GoogleFeedApi) {
                 var result;
                 callback(configurer);
                 result = interceptorCallback(response);
-                expect(result.episodes[0].unplayed).to.be.true;
+                expect(result[0].unplayed).to.be.true;
             }));
 
             it('should set the content of the episode', inject(function (GoogleFeedApi) {
                 var result;
                 callback(configurer);
                 result = interceptorCallback(response);
-                expect(result.episodes[0].content).to.equal("Baroness Trumpington is one of this country's longest serving peers in the House of Lords. She was born Jean Campbell-Harris in 1922, and during the Second World War served with naval intelligence at Bletchley Park. In the 1970s she was involved in local politics, eventually becoming Mayor of Cambridge before being elevated to the House of Lords by the then Prime Minister, Margaret Thatcher. Her Memoir 'Coming Up Trumps' (Macmillan) was published in April");
+                expect(result[0].content).to.equal("Baroness Trumpington is one of this country's longest serving peers in the House of Lords. She was born Jean Campbell-Harris in 1922, and during the Second World War served with naval intelligence at Bletchley Park. In the 1970s she was involved in local politics, eventually becoming Mayor of Cambridge before being elevated to the House of Lords by the then Prime Minister, Margaret Thatcher. Her Memoir 'Coming Up Trumps' (Macmillan) was published in April");
             }));
 
             it('should set the length of the episode', inject(function (GoogleFeedApi) {
                 var result;
                 callback(configurer);
                 result = interceptorCallback(response);
-                expect(result.episodes[0].length).to.equal('14:37');
+                expect(result[0].length).to.equal('14:37');
             }));
 
             it('should set the date of the episode', inject(function (GoogleFeedApi) {
                 var result;
                 callback(configurer);
                 result = interceptorCallback(response);
-                expect(result.episodes[0].date).to.equal('Sun, 22 Jun 2014 09:02:00 +0100');
+                expect(result[0].date).to.equal('Sun, 22 Jun 2014 09:02:00 +0100');
             }));
 
             it('should set the media property of the episode', inject(function (GoogleFeedApi) {
                 var result;
                 callback(configurer);
                 result = interceptorCallback(response);
-                expect(result.episodes[0].media).to.deep.equal({
+                expect(result[0].media).to.deep.equal({
                     size: '7092662',
                     url: 'http://downloads.bbc.co.uk/podcasts/radio2/gms/gms_20140622-0902a.mp3'
                 });
