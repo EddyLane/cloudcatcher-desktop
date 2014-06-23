@@ -12,10 +12,8 @@
 angular
     .module('cloudcatcherDesktopApp')
 
-    .run(['$rootScope', '$state', '$log', function ($rootScope, $state, $log) {
-        $rootScope.$on('$stateChangeError', function (e) {
-            $log.warn(e);
-            console.log(e);
+    .run(['$rootScope', '$state', function ($rootScope, $state) {
+        $rootScope.$on('authenticationError', function () {
             $state.transitionTo('login');
         });
     }])

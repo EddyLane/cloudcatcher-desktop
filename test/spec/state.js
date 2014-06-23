@@ -60,6 +60,16 @@ describe('Router', function () {
         CloudcatcherAuth.check.restore();
     });
 
+    describe('Listen for auth error', function () {
+        it('should listen for authenticationErrors and transition to login state if there is one', function () {
+            sinon.spy($state, 'transitionTo');
+            $rootScope.$emit('authenticationError');
+            expect($state.transitionTo).to.have.been.calledOnce;
+            expect($state.transitionTo).to.have.been.calledWithExactly('login');
+            $state.transitionTo.restore();
+        });
+    });
+
     describe('State: "base"', function () {
 
         it('should respond to URL', function () {
