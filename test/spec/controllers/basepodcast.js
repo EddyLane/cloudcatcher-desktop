@@ -68,10 +68,10 @@ describe('Controller: BasepodcastCtrl', function () {
         expect(scope.podcast).to.equal(podcast);
         expect(scope.podcast).to.deep.equal(podcast);
     });
-
-    it('should set the resolved episodes to scope', function () {
-        expect(scope.episodes).to.equal(dummyEpisodes);
-        expect(scope.episodes).to.deep.equal(dummyEpisodes);
-    })
+//
+//    it('should set the resolved episodes to scope', function () {
+//        expect(scope.episodes).to.equal(dummyEpisodes);
+//        expect(scope.episodes).to.deep.equal(dummyEpisodes);
+//    })
 
 });

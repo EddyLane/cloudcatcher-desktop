@@ -99,11 +99,20 @@ describe('Router', function () {
             expect($injector.invoke($state.current.resolve.podcast, null, { user: user })).to.deep.equal(userPodcasts[1]);
         });
 
+    });
+
+    describe('State: "base.podcast.episodes"', function () {
+
+
+        it('should respond to URL', function () {
+            expect($state.href('base.podcast.episodes', { slug: 'test' })).to.equal('#/test/episodes');
+        });
+
         it('should resolve the episodes for the podcast', function () {
             var res;
-            $state.go('base.podcast', { slug: 'test' });
+            $state.go('base.podcast.episodes', { slug: 'test' });
             $rootScope.$digest();
-            expect($state.current.name).to.equal('base.podcast');
+            expect($state.current.name).to.equal('base.podcast.episodes');
             $injector.invoke($state.current.resolve.episodes, null, { podcast: userPodcasts[1] }).then(function (_res_) {
                 res = _res_;
             });
