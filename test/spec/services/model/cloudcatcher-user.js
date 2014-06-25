@@ -57,7 +57,48 @@ describe('Factory: Cloudcatcheruser', function () {
         expect(user.addPodcast(podcast)).to.equal(user);
         expect(user.getPodcasts()[0]).to.equal(podcast);
         expect(user.getPodcasts()[0]).to.deep.equal(podcast);
+    });
 
+    it('should allow you to remove a podcast from the users firebase by slug', function () {
+
+        var podcast = { slug: 'podcast1' },
+            podcast2 = { slug: 'podcas2' },
+            mockFirebase = [];
+
+        mockFirebase.$add = function (podcast) {
+            this.push(podcast);
+        };
+
+        expect(user.removePodcast).to.be.a('function');
+        user.setPodcasts(mockFirebase);
+        user.addPodcast(podcast);
+        user.addPodcast(podcast2);
+        expect(user.getPodcasts()).to.have.length(2);
+        expect(user.removePodcast({ slug: 'nope' })).to.be.false;;
+        expect(user.getPodcasts()).to.have.length(2);
+        expect(user.removePodcast(_.cloneDeep(podcast2))).to.be.true;
+        expect(user.getPodcasts()).to.have.length(1);
+        expect(user.getPodcasts()[0]).to.equal(podcast);
+
+    });
+
+    it('should allow you to find a podcast in the firebase by the slug ', function () {
+
+        var podcast = { slug: 'podcast1' },
+            podcast2 = { slug: 'podcas2' },
+            mockFirebase = [];
+
+        mockFirebase.$add = function (podcast) {
+            this.push(podcast);
+        };
+
+        expect(user.findPodcast).to.be.a('function');
+
+        user.setPodcasts(mockFirebase);
+        user.addPodcast(podcast);
+
+        expect(user.findPodcast(_.cloneDeep(podcast))).to.equal(podcast);
+        expect(user.findPodcast(_.cloneDeep(podcast2))).to.be.undefined;
     });
 
 });

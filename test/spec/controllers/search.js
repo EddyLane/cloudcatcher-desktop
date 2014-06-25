@@ -11,13 +11,13 @@ describe('Controller: SearchCtrl', function () {
         user;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope) {
+    beforeEach(inject(function ($controller, $rootScope, CloudcatcherUser) {
 
         results = [
             { title: 'Banter', thing: true }
         ];
 
-        user = sinon.spy();
+        user = CloudcatcherUser({});
 
         scope = $rootScope.$new();
         SearchCtrl = $controller('SearchCtrl', {
@@ -32,11 +32,43 @@ describe('Controller: SearchCtrl', function () {
         expect(scope.results).to.deep.equal(results);
     });
 
-    it('should have a subscribe function on scope', function () {
-        expect(scope.subscribe).to.be.a('function');
+    it('should have a toggle subscription function on scope', function () {
+        expect(scope.toggleSubscription).to.be.a('function');
     });
 
-    it('should allow the user to subscribe to a podcast', function () {
+    it('should subscribe to the podcast if user doesnt have it', function () {
+        sinon.stub(user, 'addPodcast', function () {
+            return true;
+        });
+        sinon.stub(user, 'findPodcast', function () {
+            return undefined;
+        });
+
+        scope.toggleSubscription(results[0]);
+
+        expect(user.addPodcast).to.have.been.calledOnce;
+        expect(user.addPodcast).to.have.been.calledWithExactly(results[0]);
+
+        user.findPodcast.restore();
+        user.addPodcast.restore();
+    });
+
+    it('should unsubscribe to the podcast if the user does have it', function () {
+
+        sinon.stub(user, 'removePodcast', function () {
+            return true;
+        });
+        sinon.stub(user, 'findPodcast', function () {
+            return results[0];
+        });
+
+        scope.toggleSubscription(results[0]);
+
+        expect(user.removePodcast).to.have.been.calledOnce;
+        expect(user.removePodcast).to.have.been.calledWithExactly(results[0]);
+
+        user.removePodcast.restore();
+        user.findPodcast.restore();
 
     });
 

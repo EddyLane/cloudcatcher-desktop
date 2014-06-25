@@ -4,12 +4,13 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Title</th>
+            <th>Title</th><th></th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="results in results">
-            <td>{{ results.name }}</td>
+        <tr ng-repeat="result in results">
+            <td>{{ result.name }}</td>
+            <td><button type="button" ng-click="subscribe(result)" class="btn btn-sm">Subscribe</button></td>
         </tr>
         </tbody>
     </table>

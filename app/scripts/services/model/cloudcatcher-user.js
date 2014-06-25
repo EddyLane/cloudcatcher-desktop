@@ -38,6 +38,19 @@ angular.module('cloudcatcherSharedServices')
                 addPodcast: function (podcast) {
                     podcasts.$add(podcast);
                     return this;
+                },
+
+                removePodcast: function (podcast) {
+                    var found = _.findIndex(podcasts, { slug: podcast.slug });
+                    if (found > -1) {
+                        podcasts.splice(found, 1);
+                        return true;
+                    }
+                    return false;
+                },
+
+                findPodcast: function (podcast) {
+                    return _.find(podcasts, { slug: podcast.slug });
                 }
 
             }

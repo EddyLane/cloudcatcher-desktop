@@ -12,8 +12,8 @@ angular.module('cloudcatcherDesktopApp')
 
         _.assign($scope, {
 
-            subscribe: function (podcast) {
-
+            toggleSubscription: function (podcast) {
+                user.findPodcast(podcast) ? user.removePodcast(podcast) : user.addPodcast(podcast);
             },
 
             results: results
