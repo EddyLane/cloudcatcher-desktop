@@ -7,12 +7,21 @@ describe('Controller: BaseCtrl', function () {
 
     var BaseCtrl,
         scope,
-        user;
+        user,
+        podcasts;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope) {
 
-        user = {"username":"bob","username_canonical":"bob","email":"bob@bob.com","id":1,"firebase_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0MDI5NTczNzIsImRlYnVnIjpmYWxzZSwidiI6MCwiZCI6eyJ1c2VybmFtZSI6ImJvYiJ9fQ.6zuHHzAn9zgVJOw_JVc34DJ4Zx9Xut1BLAfSqUFRmRQ"};
+        podcasts = [
+            { name: 'Test Podcast' }
+        ];
+
+        user = {
+            getPodcasts: function () {
+                return podcasts;
+            }
+        };
 
         scope = $rootScope.$new();
         BaseCtrl = $controller('BaseCtrl', {
@@ -21,9 +30,9 @@ describe('Controller: BaseCtrl', function () {
         });
     }));
 
-    it('should assign the resolved user to the scope', function () {
-        expect(scope.user).to.deep.equal(user);
-        expect(scope.user).to.equal(user);
+    it('should assign the resolved users podcasts to the scope', function () {
+        expect(scope.podcasts).to.deep.equal(podcasts);
+        expect(scope.podcasts).to.equal(podcasts);
     });
 
 });

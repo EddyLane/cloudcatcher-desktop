@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: CCSearchForm', function () {
+describe('Directive: CcSearchForm', function () {
 
     // load the directive's module
     beforeEach(module('cloudcatcherDesktopApp'));

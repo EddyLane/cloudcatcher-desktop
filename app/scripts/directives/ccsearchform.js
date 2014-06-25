@@ -4,10 +4,10 @@
  * @ngdoc directive
  * @name cloudcatcherDesktopApp.directive:CCSearchForm
  * @description
- * # CCSearchForm
+ * # CcSearchForm
  */
 angular.module('cloudcatcherDesktopApp')
-    .directive('CCSearchForm', function () {
+    .directive('ccSearchForm', function () {
         return {
             templateUrl: 'views/directives/search-form.html',
             restrict: 'E'

@@ -9,5 +9,5 @@
  */
 angular.module('cloudcatcherDesktopApp')
     .controller('BaseCtrl', function ($scope, user) {
-        $scope.user = user;
+        $scope.podcasts = user.getPodcasts();
     });

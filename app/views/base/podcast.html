@@ -1,5 +1,7 @@
 <h1>{{ podcast.name }}</h1>
 
-<a ui-sref="base.podcast.episodes({ slug: podcast.slug })">Episodes</a>
+<ul class="nav nav-tabs">
+    <li ui-sref-active="active"><a ui-sref="base.podcast.episodes({ slug: podcast.slug })">Episodes</a></li>
+</ul>
 
 <div ui-view></div>

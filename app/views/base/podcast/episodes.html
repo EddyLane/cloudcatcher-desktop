@@ -1,7 +1,16 @@
-<table>
-    <tbody>
-    <tr ng-repeat="episode in episodes">
-        <td>{{ episode.title }}</td>
-    </tr>
-    </tbody>
-</table>
+<h2 class="sub-header">Episodes</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Title</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="episode in episodes">
+            <td>{{ episode.title }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
