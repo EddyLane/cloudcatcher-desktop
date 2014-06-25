@@ -79,6 +79,7 @@ describe('Service: ItunesPodcastApi', function () {
         beforeEach(function () {
             formattedSkeleton = {
                 episodes: {},
+                heard: {},
                 name: undefined,
                 slug: undefined,
                 artist: undefined,
@@ -124,6 +125,7 @@ describe('Service: ItunesPodcastApi', function () {
 
             expect(interceptorCallback(response)).to.deep.equal([expected]);
         }));
+
 
         it('should strip the genre "Podcasts" from the genres returned by the API', inject(function (ItunesPodcastApi) {
             var response, expected;

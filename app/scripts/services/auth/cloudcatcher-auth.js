@@ -8,12 +8,13 @@
  * Service in the cloudcatcherSharedServices.
  */
 angular.module('cloudcatcherSharedServices')
-    .service('CloudcatcherAuth', function CloudcatcherAuth($q, $firebase, FIREBASE_URL, CloudcatcherApi, CloudcatcherUser, FirebaseAuth) {
+    .service('CloudcatcherAuth', function CloudcatcherAuth($q, $firebase, FIREBASE_URL, CloudcatcherApi, CloudcatcherUser, FirebaseAuth, EpisodeCounter) {
 
         function getFirebaseData(user) {
             return FirebaseAuth(user).then(function (userFirebase) {
                 return userFirebase.getPodcasts()
                     .then(function (podcasts) {
+                        EpisodeCounter(podcasts);
                         return $q.when(user.setPodcasts(podcasts));
                     })
                 ;
@@ -25,7 +26,6 @@ angular.module('cloudcatcherSharedServices')
                 return getFirebaseData(CloudcatcherUser(userData));
             });
         }
-
 
         return {
 

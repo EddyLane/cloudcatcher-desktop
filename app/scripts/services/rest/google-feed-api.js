@@ -55,9 +55,9 @@ angular.module('cloudcatcherSharedServices')
                     result,
                     episodes;
 
-                if (!data.responseData.xmlString) {
-                    var errorString = 'feed.responseData has no "xmlString" property';
-                    $log.error(errorString);
+                if (!data.responseData || !data.responseData.xmlString) {
+                    $log.warn('feed.responseData has no "xmlString" property');
+                    return [];
                 }
 
                 parsed = utils.xmlToJson(xmlParser.parse(data.responseData.xmlString)).rss.channel;

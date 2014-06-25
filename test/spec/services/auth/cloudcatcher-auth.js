@@ -11,6 +11,7 @@ describe('Service: CloudcatcherAuth', function () {
         FirebaseAuth,
         $httpBackend,
         $rootScope,
+        EpisodeCounter,
         $q,
         serverResponse = {
             username: 'Eddy',
@@ -22,6 +23,9 @@ describe('Service: CloudcatcherAuth', function () {
         ];
 
     beforeEach(module(function ($provide) {
+
+        EpisodeCounter = sinon.spy();
+
         $provide.constant('FirebaseAuth', function (user) {
 
             var defer = $q.defer();
@@ -37,6 +41,9 @@ describe('Service: CloudcatcherAuth', function () {
             return defer.promise;
 
         });
+
+        $provide.constant('EpisodeCounter', EpisodeCounter);
+
     }));
 
     beforeEach(inject(function (_$q_, _CloudcatcherAuth_, _$httpBackend_, _CloudcatcherApi_, _$rootScope_) {
@@ -45,7 +52,6 @@ describe('Service: CloudcatcherAuth', function () {
         CloudcatcherApi = _CloudcatcherApi_;
         $rootScope = _$rootScope_;
         $q = _$q_;
-
     }));
 
     it('should have an authenticate method', function () {
@@ -104,6 +110,33 @@ describe('Service: CloudcatcherAuth', function () {
 
             $rootScope.$apply();
             expect(res).to.equal(error);
+            CloudcatcherApi.one.restore();
+        });
+
+        it('should call the EpisodeCounter service to count new episodes', function () {
+            var res;
+
+            sinon.stub(CloudcatcherApi, 'one', function (what, which) {
+                expect(what).to.equal('users');
+                expect(which).to.equal('me');
+                return {
+                    get: function () {
+                        var defer = $q.defer();
+                        defer.resolve(serverResponse);
+                        return defer.promise;
+                    }
+                };
+            });
+
+            CloudcatcherAuth.check().then(function (_res_) {
+                res = _res_;
+            });
+
+            $rootScope.$apply();
+
+            expect(EpisodeCounter).to.have.been.calledOnce;
+            expect(EpisodeCounter).to.have.been.calledWithExactly(dummyPodcasts);
+
             CloudcatcherApi.one.restore();
         });
 

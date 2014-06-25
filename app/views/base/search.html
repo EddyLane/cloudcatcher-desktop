@@ -4,11 +4,12 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Title</th><th></th>
+            <th></th><th>Title</th><th></th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="result in results">
+            <td><img ng-src="{{ result.artwork.100 }}"></td>
             <td>{{ result.name }}</td>
             <td><button type="button" ng-click="toggleSubscription(result)" class="btn btn-sm btn-primary" ng-class="{ 'active': isSubscribed(result) }">Subscribe</button></td>
         </tr>
