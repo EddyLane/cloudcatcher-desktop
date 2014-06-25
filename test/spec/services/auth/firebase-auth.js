@@ -6,7 +6,7 @@ describe('Service: FirebaseAuth', function () {
     beforeEach(module('cloudcatcherSharedServices'));
 
     // instantiate service
-    var FirebaseAuth, firebase, user, authCallback, $rootScope, loadedCallback, $firebase;
+    var FirebaseAuth, firebase, user, authCallback, $rootScope, loadedCallback, $firebase, $log;
 
     beforeEach(function () {
 
@@ -25,9 +25,16 @@ describe('Service: FirebaseAuth', function () {
             }
         };
 
+        $log = {
+            error: function (error) {
+            }
+        };
+
         sinon.spy(firebase, 'auth');
         sinon.spy(firebase, 'child');
         sinon.spy($firebase, '$on');
+        sinon.spy($log, 'error');
+
 
         module(function ($provide) {
 
@@ -40,6 +47,8 @@ describe('Service: FirebaseAuth', function () {
                     return $firebase;
                 };
             });
+
+            $provide.constant('$log', $log);
 
         })
     });
@@ -62,6 +71,7 @@ describe('Service: FirebaseAuth', function () {
         firebase.auth.restore();
         firebase.child.restore();
         $firebase.$on.restore();
+        $log.error.restore();
     });
 
     it('should be a single function', function () {
@@ -84,6 +94,15 @@ describe('Service: FirebaseAuth', function () {
             authCallback(error);
             $rootScope.$apply();
             expect(res).to.equal(error);
+        });
+
+        it('should log out the error message', function () {
+            var error = new Error('not authed');
+            FirebaseAuth(user);
+            authCallback(error);
+            $rootScope.$apply();
+            expect($log.error).to.have.been.calledOnce;
+            expect($log.error).to.have.been.calledWithExactly(error);
         });
 
     });

@@ -61,6 +61,22 @@ describe('Router', function () {
         CloudcatcherAuth.check.restore();
     });
 
+    describe('Set loading variables', function () {
+
+        it('should listen for $stateChangeStart and set loading to true', function () {
+            expect($rootScope.loading).to.be.undefined;
+            $rootScope.$emit('$stateChangeStart');
+            expect($rootScope.loading).to.be.true;
+        });
+
+        if('should listen for $stateChangeSuccess and set loading to false', function () {
+            expect($rootScope.loading).to.be.undefined;
+            $rootScope.$emit('$stateChangeSuccess');
+            expect($rootScope.loading).to.be.false;
+        });
+
+    });
+
     describe('Listen for auth error', function () {
         it('should listen for authenticationErrors and transition to login state if there is one', function () {
             sinon.spy($state, 'transitionTo');
@@ -129,5 +145,11 @@ describe('Router', function () {
         });
 
     });
+
+    describe('State: "search"', function () {
+        it('should response to URL', function () {
+            expect($state.href('base.search')).to.equal('#/search');
+        });
+    })
 
 });

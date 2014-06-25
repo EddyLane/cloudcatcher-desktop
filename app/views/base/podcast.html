@@ -1,1 +1,5 @@
 <h1>{{ podcast.name }}</h1>
+
+<a ui-sref="base.podcast.episodes({ slug: podcast.slug })">Episodes</a>
+
+<div ui-view></div>

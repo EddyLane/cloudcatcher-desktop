@@ -40,10 +40,10 @@ describe('Configuration', function () {
         expect(Restangular.setErrorInterceptor).to.have.been.calledOnce;
     });
 
-    it('should add a response interceptor that emits if the status code is 401 and returns true', function () {
+    it('should add a response interceptor that emits if the status code is 403 and returns true', function () {
 
         var response = {
-            status: 401
+            status: 403
         };
 
         sinon.spy($rootScope, '$emit');
@@ -57,7 +57,7 @@ describe('Configuration', function () {
         $rootScope.$emit.restore();
     });
 
-    it('should return false and not $emit anything if the status code is not 401', function () {
+    it('should return false and not $emit anything if the status code is not 403', function () {
 
 
         var response = {

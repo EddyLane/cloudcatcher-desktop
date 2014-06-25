@@ -15,11 +15,12 @@ angular
     })
     .run(function (Restangular, $rootScope) {
         Restangular.setErrorInterceptor(function (response) {
-            if (response.status === 401) {
+            if (response.status === 403) {
                 $rootScope.$emit('authenticationError', response);
                 return true;
             }
             return false;
+
         });
     })
 ;

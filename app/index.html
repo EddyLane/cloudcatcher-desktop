@@ -20,10 +20,16 @@
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
+
+
 <!-- Add your site or application content here -->
 <div class="container">
     <div class="header">
         <h3 class="text-muted">cloudcatcherDesktop</h3>
+    </div>
+
+    <div ng-show="loading">
+        Loading
     </div>
 
     <div ui-view></div>
@@ -95,10 +101,10 @@
 <script src="scripts/directives/login-form.js"></script>
 
 <script src="scripts/services/app.js"></script>
+<script src="scripts/services/config.js"></script>
 <script src="scripts/services/rest/itunes-podcast-api.js"></script>
 <script src="scripts/services/rest/cloudcatcher-api.js"></script>
 <script src="scripts/services/rest/google-feed-api.js"></script>
-
 <script src="scripts/services/filters/slugify.js"></script>
 <script src="scripts/services/model/cloudcatcher-user.js"></script>
 <script src="scripts/services/auth/cloudcatcher-auth.js"></script>
@@ -108,8 +114,8 @@
 <script src="scripts/controllers/base.js"></script>
 <script src="scripts/controllers/login.js"></script>
 <script src="scripts/controllers/basepodcast.js"></script>
-
 <script src="scripts/controllers/basepodcastepisodes.js"></script>
+<script src="scripts/directives/ccsearchform.js"></script>
 <!-- endbuild -->
 </body>
 </html>

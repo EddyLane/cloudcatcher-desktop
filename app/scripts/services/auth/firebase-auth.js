@@ -8,7 +8,7 @@
  * Factory in the cloudcatcherSharedServices.
  */
 angular.module('cloudcatcherSharedServices')
-    .factory('FirebaseAuth', function (FirebaseProxy, FIREBASE_URL, $q, $firebase) {
+    .factory('FirebaseAuth', function (FirebaseProxy, FIREBASE_URL, $q, $firebase, $log) {
         return function (user) {
 
             function connect(user) {
@@ -17,6 +17,7 @@ angular.module('cloudcatcherSharedServices')
                 firebase = new FirebaseProxy(FIREBASE_URL);
                 firebase.auth(user.getFirebaseToken(), function (e) {
                     if (e) {
+                        $log.error(e);
                         defer.reject(e);
                     } else {
                         defer.resolve(firebase.child('users/' + user.getUsername()));
