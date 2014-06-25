@@ -1,5 +1,7 @@
 <h1>{{ podcast.name }}</h1>
 
+<button class="btn btn-lg" ng-click="unsubscribe()">Unsubscribe</button>
+
 <ul class="nav nav-tabs">
     <li ui-sref-active="active"><a ui-sref="base.podcast.episodes({ slug: podcast.slug })">Episodes</a></li>
 </ul>

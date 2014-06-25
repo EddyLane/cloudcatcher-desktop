@@ -72,4 +72,10 @@ describe('Controller: SearchCtrl', function () {
 
     });
 
+    it('should have an isSubscribed function on scope', function () {
+        expect(scope.isSubscribed).to.be.a('function');
+        expect(scope.isSubscribed).to.equal(user.findPodcast);
+    });
+
+
 });

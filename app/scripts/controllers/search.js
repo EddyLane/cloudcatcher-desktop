@@ -16,6 +16,7 @@ angular.module('cloudcatcherDesktopApp')
                 user.findPodcast(podcast) ? user.removePodcast(podcast) : user.addPodcast(podcast);
             },
 
+            isSubscribed: user.findPodcast,
             results: results
 
         });

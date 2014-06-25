@@ -21,14 +21,14 @@ describe('Controller: BasepodcastCtrl', function () {
         ];
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, _$rootScope_, _GoogleFeedApi_, _$q_, _CloudcatcherAuth_) {
+    beforeEach(inject(function ($controller, _$rootScope_, _GoogleFeedApi_, _$q_, _CloudcatcherAuth_, CloudcatcherUser) {
 
         GoogleFeedApi = _GoogleFeedApi_;
         $rootScope = _$rootScope_;
         CloudcatcherAuth = _CloudcatcherAuth_;
         $q = _$q_;
 
-        user = {"username":"bob","username_canonical":"bob","email":"bob@bob.com","id":1,"firebase_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0MDI5NTczNzIsImRlYnVnIjpmYWxzZSwidiI6MCwiZCI6eyJ1c2VybmFtZSI6ImJvYiJ9fQ.6zuHHzAn9zgVJOw_JVc34DJ4Zx9Xut1BLAfSqUFRmRQ"};
+        user = CloudcatcherUser({"username":"bob","username_canonical":"bob","email":"bob@bob.com","id":1,"firebase_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0MDI5NTczNzIsImRlYnVnIjpmYWxzZSwidiI6MCwiZCI6eyJ1c2VybmFtZSI6ImJvYiJ9fQ.6zuHHzAn9zgVJOw_JVc34DJ4Zx9Xut1BLAfSqUFRmRQ"});
         _.merge(user, {
             getPodcasts: function () {
                 return [
@@ -55,7 +55,8 @@ describe('Controller: BasepodcastCtrl', function () {
         BasepodcastCtrl = $controller('BasepodcastCtrl', {
             $scope: scope,
             podcast: podcast,
-            episodes: dummyEpisodes
+            episodes: dummyEpisodes,
+            user: user
         });
 
     }));
@@ -68,10 +69,15 @@ describe('Controller: BasepodcastCtrl', function () {
         expect(scope.podcast).to.equal(podcast);
         expect(scope.podcast).to.deep.equal(podcast);
     });
-//
-//    it('should set the resolved episodes to scope', function () {
-//        expect(scope.episodes).to.equal(dummyEpisodes);
-//        expect(scope.episodes).to.deep.equal(dummyEpisodes);
-//    })
+
+    it('should have an unsubscribe function on scope which removes the podcast and changes state', function () {
+        sinon.spy(user, 'removePodcast');
+        expect(scope.unsubscribe).to.be.a('function');
+        scope.unsubscribe();
+        expect(user.removePodcast).to.have.been.calledOnce;
+        expect(user.removePodcast).to.have.been.calledWithExactly(podcast);
+        user.removePodcast.restore();
+    });
+
 
 });
