@@ -59,43 +59,49 @@ describe('Factory: Cloudcatcheruser', function () {
         expect(user.getPodcasts()[0]).to.deep.equal(podcast);
     });
 
-    it('should allow you to remove a podcast from the users firebase by slug', function () {
+    it('should allow you to remove a podcast from the users firebase by itunesId', function () {
 
-        var podcast = { slug: 'podcast1' },
-            podcast2 = { slug: 'podcas2' },
-            mockFirebase = [];
+        var podcast = { itunesId: 'podcast1' },
+            podcast2 = { itunesId: 'podcas2' },
 
-        mockFirebase.$add = function (podcast) {
-            this.push(podcast);
-        };
+            mockFirebase = {
+                1: podcast,
+                2: podcast2,
+
+                $remove: function (key) {
+                    delete this[key];
+                }
+
+            };
+
+        user.setPodcasts(mockFirebase);
 
         expect(user.removePodcast).to.be.a('function');
-        user.setPodcasts(mockFirebase);
-        user.addPodcast(podcast);
-        user.addPodcast(podcast2);
-        expect(user.getPodcasts()).to.have.length(2);
-        expect(user.removePodcast({ slug: 'nope' })).to.be.false;;
-        expect(user.getPodcasts()).to.have.length(2);
+
+
+        expect(_.size(user.getPodcasts())).to.equal(3);
+
+        expect(user.removePodcast({ itunesId: 'nope' })).to.be.false;;
+        expect(_.size(user.getPodcasts())).to.equal(3)
+
         expect(user.removePodcast(_.cloneDeep(podcast2))).to.be.true;
-        expect(user.getPodcasts()).to.have.length(1);
-        expect(user.getPodcasts()[0]).to.equal(podcast);
+        expect(_.size(user.getPodcasts())).to.equal(2);
+        expect(user.getPodcasts()[1]).to.equal(podcast);
 
     });
 
-    it('should allow you to find a podcast in the firebase by the slug ', function () {
+    it('should allow you to find a podcast in the firebase by the itunesId ', function () {
 
-        var podcast = { slug: 'podcast1' },
-            podcast2 = { slug: 'podcas2' },
-            mockFirebase = [];
+        var podcast = { itunesId: 'podcast1' },
+            podcast2 = { itunesId: 'podcas2' },
 
-        mockFirebase.$add = function (podcast) {
-            this.push(podcast);
-        };
+            mockFirebase = {
+                12345: podcast
+            };
 
         expect(user.findPodcast).to.be.a('function');
 
         user.setPodcasts(mockFirebase);
-        user.addPodcast(podcast);
 
         expect(user.findPodcast(_.cloneDeep(podcast))).to.equal(podcast);
         expect(user.findPodcast(_.cloneDeep(podcast2))).to.be.undefined;

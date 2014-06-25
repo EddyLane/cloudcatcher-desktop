@@ -41,16 +41,16 @@ angular.module('cloudcatcherSharedServices')
                 },
 
                 removePodcast: function (podcast) {
-                    var found = _.findIndex(podcasts, { slug: podcast.slug });
-                    if (found > -1) {
-                        podcasts.splice(found, 1);
+                    var found = _.findKey(podcasts, { itunesId: podcast.itunesId });
+                    if (found) {
+                        podcasts.$remove(found);
                         return true;
                     }
                     return false;
                 },
 
                 findPodcast: function (podcast) {
-                    return _.find(podcasts, { slug: podcast.slug });
+                    return _.find(podcasts, { itunesId: podcast.itunesId });
                 }
 
             }
