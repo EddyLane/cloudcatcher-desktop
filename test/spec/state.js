@@ -2,7 +2,7 @@
 
 describe('Router', function () {
 
-    var $state, $rootScope, CloudcatcherAuth, $q, $injector, CloudcatcherUser, GoogleFeedApi,
+    var $state, $rootScope, CloudcatcherAuth, $q, $injector, CloudcatcherUser, ItunesPodcastApi, GoogleFeedApi,
         podcastEpisodes = [
             { name: 'testEp1' },
             { name: 'testEp2' }
@@ -23,11 +23,12 @@ describe('Router', function () {
 
         module('cloudcatcherDesktopApp');
 
-        inject(function (_$rootScope_, _$state_, _CloudcatcherAuth_, _$q_, _$injector_, _CloudcatcherUser_, _GoogleFeedApi_) {
+        inject(function (_$rootScope_, _$state_, _ItunesPodcastApi_, _CloudcatcherAuth_, _$q_, _$injector_, _CloudcatcherUser_, _GoogleFeedApi_) {
             CloudcatcherAuth = _CloudcatcherAuth_;
             CloudcatcherUser = _CloudcatcherUser_;
             $rootScope = _$rootScope_;
             GoogleFeedApi = _GoogleFeedApi_;
+            ItunesPodcastApi = _ItunesPodcastApi_;
             $state = _$state_;
             $q = _$q_;
             $injector = _$injector_;
@@ -138,6 +139,21 @@ describe('Router', function () {
 
     });
 
+    describe('State: "base.podcasts"', function () {
+
+        it('should respond to URL', function () {
+            expect($state.href('base.podcasts')).to.equal('#/podcasts');
+        });
+
+        it('should resolve the podcasts', function () {
+            $state.go('base.podcasts');
+            $rootScope.$digest();
+            expect($state.current.name).to.equal('base.podcasts');
+            expect($injector.invoke($state.current.resolve.podcasts, null, { user: user })).to.deep.equal(userPodcasts);
+        });
+
+    });
+
     describe('State: "login"', function () {
 
         it('should respond to URL', function () {
@@ -147,9 +163,33 @@ describe('Router', function () {
     });
 
     describe('State: "search"', function () {
+
         it('should response to URL', function () {
             expect($state.href('base.search')).to.equal('#/search');
         });
+
+        it('should resolve the search results', function () {
+
+            var searchResults = [
+                { title: 'Test Term Win'}
+            ];
+
+            sinon.stub(ItunesPodcastApi, 'all', function (thing) {
+                expect(thing).to.equal('search');
+                return {
+                    getList: function (params) {
+                        expect(params).to.deep.equal({ term: 'Test Term' });
+                        return searchResults;
+                    }
+                };
+            });
+
+            $state.go('base.search', { term: 'Test Term'});
+            $rootScope.$digest();
+            expect($injector.invoke($state.current.resolve.results)).to.deep.equal(searchResults);
+            ItunesPodcastApi.all.restore();
+        });
+
     })
 
 });

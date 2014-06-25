@@ -1,5 +1,3 @@
-<form role="search" ng-submit="submit(values)">
-    <div class="control-group">
-        <input type="text" class="form-control" placeholder="Search..." ng-model="values.term">
-    </div>
+<form class="navbar-form navbar-right" name="searchForm" ng-submit="submit()">
+    <input type="text" name="term" ng-model="values.term" class="form-control" placeholder="Search..." required>
 </form>

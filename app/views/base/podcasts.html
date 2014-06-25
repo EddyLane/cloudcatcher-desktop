@@ -1,4 +1,4 @@
-<h2 class="sub-header">Search Results</h2>
+<h2 class="sub-header">Podcasts</h2>
 
 <div class="table-responsive">
     <table class="table table-striped">
@@ -8,8 +8,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="results in results">
-            <td>{{ results.name }}</td>
+        <tr ng-repeat="podcast in podcasts">
+            <td><a ui-sref="base.podcast.episodes({ slug: podcast.slug })">{{ podcast.name }}</a></td>
         </tr>
         </tbody>
     </table>

@@ -42,5 +42,22 @@ describe('Factory: Cloudcatcheruser', function () {
         expect(user.getPodcasts()).to.deep.equal(podcasts);
     });
 
+    it('should allow you to add a podcast to the users firebase and return itself', function () {
+        var podcast = { title: 'test title' },
+            mockFirebase = [];
+
+        mockFirebase.$add = function (podcast) {
+            this.push(podcast);
+        };
+
+        expect(user.addPodcast).to.be.a('function');
+
+        user.setPodcasts(mockFirebase);
+
+        expect(user.addPodcast(podcast)).to.equal(user);
+        expect(user.getPodcasts()[0]).to.equal(podcast);
+        expect(user.getPodcasts()[0]).to.deep.equal(podcast);
+
+    });
 
 });

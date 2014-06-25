@@ -11,11 +11,9 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a ui-sref="search">Search</a></li>
+                <li ui-sref-active="active"><a ui-sref="base.podcasts">Podcasts</a></li>
             </ul>
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search...">
-            </form>
+            <cc-search-form></cc-search-form>
         </div>
     </div>
 </div>

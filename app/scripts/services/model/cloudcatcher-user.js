@@ -33,6 +33,11 @@ angular.module('cloudcatcherSharedServices')
 
                 getPodcasts: function () {
                     return podcasts;
+                },
+
+                addPodcast: function (podcast) {
+                    podcasts.$add(podcast);
+                    return this;
                 }
 
             }

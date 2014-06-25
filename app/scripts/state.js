@@ -35,7 +35,6 @@ angular
             templateUrl: 'views/login.html',
             controller: 'LoginCtrl'
         });
-        
 
         $stateProvider.state('base', {
             url: '',
@@ -48,15 +47,32 @@ angular
             controller: 'BaseCtrl'
         });
 
+        $stateProvider.state('base.podcasts', {
+            url: '/podcasts',
+            templateUrl: 'views/base/podcasts.html',
+            resolve: {
+                podcasts: ['user', function (user) {
+                    return user.getPodcasts();
+                }]
+            },
+            controller: 'BasepodcastsCtrl'
+        });
+
         $stateProvider.state('base.search', {
-            url: '/search',
-            templateUrl: 'views/base/search.html'
+            url: '/search?term',
+            templateUrl: 'views/base/search.html',
+            resolve: {
+                results: ['ItunesPodcastApi', '$stateParams', function (ItunesPodcastApi, $stateParams) {
+                    return ItunesPodcastApi.all('search').getList({ term: $stateParams.term });
+                }]
+            },
+            controller: 'SearchCtrl'
         });
 
         $stateProvider.state('base.podcast', {
             url: '/:slug',
             templateUrl: 'views/base/podcast.html',
-            resolve:{
+            resolve: {
                 podcast: ['user', '$stateParams', function (user, $stateParams) {
                     return _.find(user.getPodcasts(), { slug: $stateParams.slug });
                 }]
@@ -73,7 +89,7 @@ angular
                 }]
             },
             controller: 'BasepodcastepisodesCtrl'
-        })
+        });
 
         $urlRouterProvider.otherwise('');
 
