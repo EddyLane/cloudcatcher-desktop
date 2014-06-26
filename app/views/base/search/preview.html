@@ -1,0 +1,11 @@
+<div class="panel panel-primary">
+    <div class="panel-body">
+        <table class="table table-condensed">
+            <tbody>
+            <tr ng-repeat="episode in episodes | limitTo: 5">
+                <td>{{ episode.title }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

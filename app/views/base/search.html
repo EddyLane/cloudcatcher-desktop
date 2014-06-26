@@ -1,17 +1,30 @@
 <h2 class="sub-header">Search Results</h2>
 
 <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-striped table-hover">
         <thead>
         <tr>
-            <th></th><th>Title</th><th></th>
+            <th></th>
+            <th>Title</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="result in results">
+        <tr ng-repeat-start="result in results" ng-click="select(result)" style="cursor: pointer">
             <td><img ng-src="{{ result.artwork.100 }}"></td>
             <td>{{ result.name }}</td>
-            <td><button type="button" ng-click="toggleSubscription(result)" class="btn btn-sm btn-primary" ng-class="{ 'active': isSubscribed(result) }">Subscribe</button></td>
+            <td>
+                <button type="button" ng-click="toggleSubscription(result)" class="btn btn-sm btn-primary"
+                        ng-class="{ 'active': isSubscribed(result) }">Subscribe
+                </button>
+            </td>
+        </tr>
+        <tr ng-repeat-end ng-if="selected === result">
+            <td colspan="3" ng-if="!loading" ui-view>
+            </td>
+            <td colspan="3" ng-if="loading" class="text-center">
+                <span class="glyphicon glyphicon-refresh" ng-show="loading"></span>
+            </td>
         </tr>
         </tbody>
     </table>

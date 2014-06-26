@@ -55,14 +55,14 @@ angular.module('cloudcatcherSharedServices')
                 },
 
                 addHeard: function (podcast, episode) {
-//                    podcast.heard[episode.media.url] = true;
-                    var update = {};
-                    if (_.isUndefined(podcast.heard)) {
-                        podcast.heard = {};
-                    }
-                    podcast.heard[$filter('slugify')(episode.media.url)] = true;
-                    update[_.findKey($podcasts, { itunesId: podcast.itunesId })] = _.omit(podcast, 'episodes');
-                    $podcasts.$update(update);
+                    podcast.heard[episode.media.url] = true;
+//                    var update = {};
+//                    if (_.isUndefined(podcast.heard)) {
+//                        podcast.heard = {};
+//                    }
+//                    podcast.heard[$filter('slugify')(episode.media.url)] = true;
+//                    update[_.findKey($podcasts, { itunesId: podcast.itunesId })] = _.omit(podcast, 'episodes');
+//                    $podcasts.$update(update);
                 }
 
             }

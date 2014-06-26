@@ -25,9 +25,7 @@
                 <li ng-repeat="podcast in podcasts" ui-sref-active="active"><a ui-sref="base.podcast.episodes({ slug: podcast.slug })"><img ng-src="{{ podcast.artwork.30 }}">({{ podcast.newEpisodes }}) {{ podcast.name }}</a></li>
             </ul>
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <span class="glyphicon glyphicon-refresh" ng-show="loading"></span>
-            <div ng-show="!loading" ui-view></div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ui-view>
         </div>
     </div>
 </div>

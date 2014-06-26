@@ -69,6 +69,17 @@ angular
             controller: 'SearchCtrl'
         });
 
+        $stateProvider.state('base.search.preview', {
+            url: '/?preview',
+            templateUrl: 'views/base/search/preview.html',
+            resolve: {
+                episodes: ['$stateParams', 'GoogleFeedApi', function ($stateParams, GoogleFeedApi) {
+                    return GoogleFeedApi.one('load').getList(null, { q: $stateParams.preview });
+                }]
+            },
+            controller: 'SearchpreviewctrlCtrl'
+        });
+
         $stateProvider.state('base.podcast', {
             url: '/:slug',
             templateUrl: 'views/base/podcast.html',

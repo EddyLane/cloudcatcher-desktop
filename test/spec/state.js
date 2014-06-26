@@ -38,20 +38,7 @@ describe('Router', function () {
             return checkResponse;
         });
 
-        sinon.stub(GoogleFeedApi, 'one', function (type) {
 
-            expect(type).to.equal('load');
-
-            return {
-                getList: function (specify, params) {
-                    expect(specify).to.be.null;
-                    expect(params).to.deep.equal({ q: 'feedy' });
-                    var defer = $q.defer();
-                    defer.resolve(podcastEpisodes);
-                    return defer.promise;
-                }
-            }
-        });
 
         user = CloudcatcherUser(checkResponse);
         user.setPodcasts(userPodcasts);
@@ -127,6 +114,17 @@ describe('Router', function () {
 
         it('should resolve the episodes for the podcast', function () {
             var res;
+
+            sinon.stub(GoogleFeedApi, 'one', function (thing) {
+                return {
+                    getList: function (thing, params) {
+                        var defer = $q.defer();
+                        defer.resolve(podcastEpisodes);
+                        return defer.promise;
+                    }
+                };
+            });
+
             $state.go('base.podcast.episodes', { slug: 'test' });
             $rootScope.$digest();
             expect($state.current.name).to.equal('base.podcast.episodes');
@@ -162,7 +160,7 @@ describe('Router', function () {
 
     });
 
-    describe('State: "search"', function () {
+    describe('State: "base.search"', function () {
 
         it('should response to URL', function () {
             expect($state.href('base.search')).to.equal('#/search');
@@ -188,6 +186,51 @@ describe('Router', function () {
             $rootScope.$digest();
             expect($injector.invoke($state.current.resolve.results)).to.deep.equal(searchResults);
             ItunesPodcastApi.all.restore();
+        });
+
+        describe('State: "base.search.preview"', function () {
+
+            it('should respond to URL', function () {
+                expect($state.href('base.search.preview')).to.equal('#/search/');
+            });
+
+            it('should resolve the preview episodes', function () {
+
+                var searchResults = [
+                    { title: 'Test Term Win'}
+                ],
+                episodes = [
+                    { url: 'testep.mp3' }
+                ];
+
+                sinon.stub(ItunesPodcastApi, 'all', function (thing) {
+                    expect(thing).to.equal('search');
+                    return {
+                        getList: function (params) {
+                            expect(params).to.deep.equal({ term: 'Test Term' });
+                            return searchResults;
+                        }
+                    };
+                });
+
+                sinon.stub(GoogleFeedApi, 'one', function (thing) {
+                    expect(thing).to.equal('load');
+                    return {
+                        getList: function (thing, params) {
+                            expect(thing).to.be.null;
+                            expect(params).to.deep.equal({ q: 'testurl.com' });
+                            return episodes;
+                        }
+                    };
+                });
+
+                $state.go('base.search.preview', { term: 'Test Term', preview: 'testurl.com' });
+                $rootScope.$digest();
+                expect($injector.invoke($state.current.resolve.episodes)).to.deep.equal(episodes);
+                GoogleFeedApi.one.restore();
+                ItunesPodcastApi.all.restore();
+            });
+
         });
 
     })
