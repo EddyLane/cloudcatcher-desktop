@@ -7,7 +7,7 @@
         </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="episode in episodes">
+            <tr ng-repeat="episode in episodes" ng-click="listen(episode)">
                 <td>{{ episode.title }}</td>
                 <td>{{ episode.date }}</td>
             </tr>

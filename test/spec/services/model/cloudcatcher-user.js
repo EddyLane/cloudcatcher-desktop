@@ -78,15 +78,15 @@ describe('Factory: Cloudcatcheruser', function () {
 
         expect(user.removePodcast).to.be.a('function');
 
-
-        expect(_.size(user.getPodcasts())).to.equal(3);
+        expect(_.size(user.getPodcasts())).to.equal(2);
 
         expect(user.removePodcast({ itunesId: 'nope' })).to.be.false;;
-        expect(_.size(user.getPodcasts())).to.equal(3)
+        expect(_.size(user.getPodcasts())).to.equal(2)
 
         expect(user.removePodcast(_.cloneDeep(podcast2))).to.be.true;
-        expect(_.size(user.getPodcasts())).to.equal(2);
-        expect(user.getPodcasts()[1]).to.equal(podcast);
+        expect(_.size(user.getPodcasts())).to.equal(1);
+
+        expect(user.getPodcasts()[0]).to.equal(podcast);
 
     });
 
@@ -105,6 +105,16 @@ describe('Factory: Cloudcatcheruser', function () {
 
         expect(user.findPodcast(_.cloneDeep(podcast))).to.equal(podcast);
         expect(user.findPodcast(_.cloneDeep(podcast2))).to.be.undefined;
+    });
+
+    it('should have a function to add a new "heard" property to a podcast for an episode', function () {
+        var podcast = { title: 'Test', heard: {} },
+            episode = { media: { url: 'testurl' } };
+
+        expect(user.addHeard).to.be.a('function');
+
+        user.addHeard(podcast, episode);
+        expect(podcast.heard.testurl).to.be.true;
     });
 
 });

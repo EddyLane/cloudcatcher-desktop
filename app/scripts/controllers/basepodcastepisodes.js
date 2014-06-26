@@ -8,6 +8,14 @@
  * Controller of the cloudcatcherDesktopApp
  */
 angular.module('cloudcatcherDesktopApp')
-    .controller('BasepodcastepisodesCtrl', function ($scope, episodes) {
-        $scope.episodes = episodes;
+    .controller('BasepodcastepisodesCtrl', function ($scope, episodes, podcast, user) {
+        _.assign($scope, {
+
+            listen: function (episode) {
+                user.addHeard(podcast, episode);
+            },
+
+            episodes: episodes
+
+        });
     });
