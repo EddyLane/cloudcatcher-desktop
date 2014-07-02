@@ -25,13 +25,14 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
         podcast = {
             title: 'Test Podcast', heard: [ 'something' ]
         },
+        $location,
         user;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, CloudcatcherUser, CloudcatcherAuth) {
+    beforeEach(inject(function ($controller, $rootScope, _$location_, CloudcatcherUser, CloudcatcherAuth) {
         scope = $rootScope.$new();
 
-
+        $location = _$location_;
 
         user = CloudcatcherUser({});
 
@@ -81,6 +82,30 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
             { title: 'Episode 12' }
         ]);
     });
+
+    it('should change the location query param of search when the page changes', function () {
+        scope.page = 2;
+        scope.$apply();
+        expect($location.search().page).to.equal(2);
+    });
+
+    it('should set the page to that in the $location.search if it is there', inject(function ($controller) {
+        sinon.stub($location, 'search', function () {
+            return {
+                page: 3
+            }
+        });
+        BasepodcastepisodesCtrl = $controller('BasepodcastepisodesCtrl', {
+            $scope: scope,
+            episodes: episodes,
+            podcast: podcast,
+            user: user,
+            $location: $location
+        });
+        expect(scope.page).to.equal(3);
+        $location.search.restore();
+
+    }));
 
     it('should assign a total length var to scope', function () {
         expect(scope.total).to.equal(12);
