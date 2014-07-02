@@ -2,15 +2,20 @@
     <table class="table table-striped table-hover">
         <thead>
         <tr>
+            <th></th>
             <th>Title</th>
             <th>Date</th>
         </tr>
         </thead>
         <tbody>
             <tr ng-repeat="episode in episodes" ng-click="listen(episode)">
+                <td><span class="label label-primary" ng-if="heard.indexOf(episode.media.url) === -1">New</span></td>
                 <td>{{ episode.title }}</td>
                 <td>{{ episode.date }}</td>
             </tr>
         </tbody>
     </table>
+
+    <pagination ng-model="page" total-items="total" items-per-page="limit"></pagination>
+
 </div>

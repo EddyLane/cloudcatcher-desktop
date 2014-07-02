@@ -8,7 +8,7 @@
  * Service in the cloudcatcherSharedServices.
  */
 angular.module('cloudcatcherSharedServices')
-    .factory('CloudcatcherUser', function CloudcatcherUser($filter) {
+    .factory('CloudcatcherUser', function CloudcatcherUser(EpisodeCounter) {
         return function (userData) {
            
             var $podcasts;
@@ -33,11 +33,14 @@ angular.module('cloudcatcherSharedServices')
                 },
 
                 getPodcasts: function () {
-                    return _.filter($podcasts, function (e) { return _.isPlainObject(e); });
+                    return $podcasts;
                 },
 
                 addPodcast: function (podcast) {
-                    $podcasts.$add(podcast);
+                    var self = this;
+                    $podcasts.$add(podcast).then(function () {
+                        EpisodeCounter([self.findPodcast(podcast)]);
+                    });
                     return this;
                 },
 
@@ -54,18 +57,22 @@ angular.module('cloudcatcherSharedServices')
                     return _.find($podcasts, { itunesId: podcast.itunesId });
                 },
 
+                savePodcast: function (podcast) {
+                    var update = {};
+                    update[_.findKey($podcasts, { itunesId: podcast.itunesId })] = _.omit(podcast, 'episodes');
+                    $podcasts.$update(update);
+                },
+
                 addHeard: function (podcast, episode) {
-                    podcast.heard[episode.media.url] = true;
-//                    var update = {};
-//                    if (_.isUndefined(podcast.heard)) {
-//                        podcast.heard = {};
-//                    }
-//                    podcast.heard[$filter('slugify')(episode.media.url)] = true;
-//                    update[_.findKey($podcasts, { itunesId: podcast.itunesId })] = _.omit(podcast, 'episodes');
-//                    $podcasts.$update(update);
+                    if (!podcast.heard) {
+                        podcast.heard = [];
+                    }
+                    if (podcast.newEpisodes && podcast.newEpisodes > 0) {
+                        podcast.newEpisodes--;
+                    }
+                    podcast.heard.push(episode.media.url);
+                    this.savePodcast(podcast);
                 }
-
             }
-
         }
     });

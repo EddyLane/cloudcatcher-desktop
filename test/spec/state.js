@@ -49,6 +49,12 @@ describe('Router', function () {
         CloudcatcherAuth.check.restore();
     });
 
+    it('should set $state on $rootScope', function () {
+
+        expect($rootScope.$state).to.equal($state);
+
+    });
+
     describe('Set loading variables', function () {
 
         it('should listen for $stateChangeStart and set loading to true', function () {

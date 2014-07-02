@@ -26,6 +26,8 @@ angular
             $rootScope.loading = false;
         });
 
+        $rootScope.$state = $state;
+
     }])
 
     .config(function ($stateProvider, $urlRouterProvider) {

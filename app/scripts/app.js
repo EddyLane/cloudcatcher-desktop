@@ -11,9 +11,11 @@
 angular
     .module('cloudcatcherDesktopApp', [
         'ngAnimate',
+        'angular-loading-bar',
         'ngCookies',
         'ngSanitize',
         'cloudcatcherSharedServices',
-        'ui.router'
+        'ui.router',
+        'ui.bootstrap'
     ])
 ;

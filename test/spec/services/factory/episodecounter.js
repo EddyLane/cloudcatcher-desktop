@@ -10,17 +10,20 @@ describe('Service: EpisodeCounter', function () {
         GoogleFeedApi,
         $rootScope,
         $q,
-        podcasts = [
-            { feed: 'feed1' },
-            { feed: 'feed2' },
-            { feed: 'feed3' }
-        ];
+        podcasts;
 
     beforeEach(inject(function (_EpisodeCounter_, _GoogleFeedApi_, _$q_, _$rootScope_) {
         EpisodeCounter = _EpisodeCounter_;
         GoogleFeedApi = _GoogleFeedApi_;
         $q = _$q_;
         $rootScope = _$rootScope_;
+
+        podcasts = [
+            { feed: 'feed1' },
+            { feed: 'feed2' },
+            { feed: 'feed3' }
+        ];
+
     }));
 
     it('should be a function', function () {
@@ -101,6 +104,61 @@ describe('Service: EpisodeCounter', function () {
 
         GoogleFeedApi.one.restore();
         feedSpy.getList.restore();
+
+    });
+
+    it('should set the episodes property to false if the user has heard the episode already', function () {
+
+
+        //extend the middle podcast
+        _.merge(podcasts[1], { heard: ['feed2-episode2', 'feed2-episode3'] });
+
+
+        var feedSpy = {
+            getList: function (thing, feed) {
+                var defer = $q.defer();
+                defer.resolve([
+                    { media: { url: feed.q + '-episode1' } },
+                    { media: { url: feed.q + '-episode2' } },
+                    { media: { url: feed.q + '-episode3' } }
+                ]);
+                return defer.promise;
+            }
+        };
+
+        sinon.spy(feedSpy, 'getList');
+
+        sinon.stub(GoogleFeedApi, 'one', function () {
+            return feedSpy;
+        });
+
+        EpisodeCounter(podcasts);
+
+        $rootScope.$apply();
+
+        expect(podcasts[0].episodes).to.deep.equal({
+            'feed1-episode1': false,
+            'feed1-episode2': false,
+            'feed1-episode3': false
+        });
+        expect(podcasts[1].episodes).to.deep.equal({
+            'feed2-episode1': false,
+            'feed2-episode2': true,
+            'feed2-episode3': true
+        });
+        expect(podcasts[2].episodes).to.deep.equal({
+            'feed3-episode1': false,
+            'feed3-episode2': false,
+            'feed3-episode3': false
+        });
+
+        expect(podcasts[0].newEpisodes).to.equal(3);
+        expect(podcasts[1].newEpisodes).to.equal(1);
+        expect(podcasts[2].newEpisodes).to.equal(3);
+
+        GoogleFeedApi.one.restore();
+        feedSpy.getList.restore();
+
 
     });
 

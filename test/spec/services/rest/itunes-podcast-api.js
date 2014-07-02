@@ -79,7 +79,7 @@ describe('Service: ItunesPodcastApi', function () {
         beforeEach(function () {
             formattedSkeleton = {
                 episodes: {},
-                heard: {},
+                heard: [],
                 name: undefined,
                 slug: undefined,
                 artist: undefined,

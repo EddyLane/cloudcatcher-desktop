@@ -18,7 +18,7 @@ angular.module('cloudcatcherSharedServices')
                 return data.results.map(function (result) {
                     var res = {
                         episodes: {},
-                        heard: {},
+                        heard: [],
                         name: result.collectionName,
                         slug: result.collectionName ? $filter('slugify')(result.collectionName) : undefined,
                         artist: result.artistName,

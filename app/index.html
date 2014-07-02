@@ -8,6 +8,8 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-loading-bar/src/loading-bar.css" />
+    <link rel="stylesheet" href="bower_components/animate.css/animate.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -20,7 +22,7 @@
     your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<span class="glyphicon glyphicon-refresh" ng-show="loading"></span>
+
 <div ui-view></div>
 
 <!-- Add your site or application content here -->
@@ -91,6 +93,7 @@
 <script src="bower_components/firebase-simple-login/firebase-simple-login.js"></script>
 <script src="bower_components/angularfire/angularfire.js"></script>
 <script src="bower_components/angular-xml/angular-xml.js"></script>
+<script src="bower_components/angular-loading-bar/src/loading-bar.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 

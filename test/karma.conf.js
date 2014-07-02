@@ -29,7 +29,9 @@ module.exports = function (config) {
 
             'bower_components/jquery/dist/jquery.js',
             'bower_components/lodash/dist/lodash.js',
+            'bower_components/angular-loading-bar/build/loading-bar.js',
             'bower_components/angular-ui-router/release/angular-ui-router.js',
+            'bower_components/angular-bootstrap/ui-bootstrap.js',
             'bower_components/restangular/dist/restangular.js',
             'bower_components/firebase/firebase.js',
             'bower_components/angularfire/angularFire.js',

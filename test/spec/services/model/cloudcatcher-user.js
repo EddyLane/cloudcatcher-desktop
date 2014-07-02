@@ -2,16 +2,29 @@
 
 describe('Factory: Cloudcatcheruser', function () {
 
-    // load the service's module
-    beforeEach(module('cloudcatcherSharedServices'));
 
     // instantiate service
     var CloudcatcherUser,
+        EpisodeCounter,
         userData,
-        user;
+        user,
+        $q,
+        $rootScope;
 
-    beforeEach(inject(function (_CloudcatcherUser_) {
+    // load the service's module
+    beforeEach(module('cloudcatcherSharedServices'));
 
+
+    beforeEach(function () {
+        EpisodeCounter = sinon.spy();
+        module(function ($provide) {
+            $provide.value('EpisodeCounter', EpisodeCounter);
+        });
+    });
+
+    beforeEach(inject(function (_CloudcatcherUser_, _$q_, _$rootScope_) {
+        $q = _$q_;
+        $rootScope = _$rootScope_;
         userData = {
             username: 'eddy',
             email: 'eddy@eddylane.co.uk',
@@ -42,12 +55,16 @@ describe('Factory: Cloudcatcheruser', function () {
         expect(user.getPodcasts()).to.deep.equal(podcasts);
     });
 
-    it('should allow you to add a podcast to the users firebase and return itself', function () {
-        var podcast = { title: 'test title' },
-            mockFirebase = [];
+    it('should allow you to add a podcast to the users firebase, call the EpisodeCounter and return itself', function () {
+        var podcast = { title: 'test title', itunesId: 2 },
+            mockFirebase = [],
+            mockAddedPodcast = _.cloneDeep(podcast); // When added to firebase the reference is lossed
 
         mockFirebase.$add = function (podcast) {
-            this.push(podcast);
+            var defer = $q.defer();
+            this.push(mockAddedPodcast);
+            defer.resolve();
+            return defer.promise;
         };
 
         expect(user.addPodcast).to.be.a('function');
@@ -55,8 +72,15 @@ describe('Factory: Cloudcatcheruser', function () {
         user.setPodcasts(mockFirebase);
 
         expect(user.addPodcast(podcast)).to.equal(user);
-        expect(user.getPodcasts()[0]).to.equal(podcast);
+
+        expect(user.getPodcasts()[0]).to.equal(mockAddedPodcast);
         expect(user.getPodcasts()[0]).to.deep.equal(podcast);
+
+        $rootScope.$apply();
+
+        expect(EpisodeCounter).to.have.been.calledOnce;
+        expect(EpisodeCounter).to.have.been.calledWithExactly([mockAddedPodcast]);
+
     });
 
     it('should allow you to remove a podcast from the users firebase by itunesId', function () {
@@ -78,15 +102,16 @@ describe('Factory: Cloudcatcheruser', function () {
 
         expect(user.removePodcast).to.be.a('function');
 
-        expect(_.size(user.getPodcasts())).to.equal(2);
+        expect(_.size(user.getPodcasts())).to.equal(3);
 
-        expect(user.removePodcast({ itunesId: 'nope' })).to.be.false;;
-        expect(_.size(user.getPodcasts())).to.equal(2)
+        expect(user.removePodcast({ itunesId: 'nope' })).to.be.false;
+        ;
+        expect(_.size(user.getPodcasts())).to.equal(3)
 
         expect(user.removePodcast(_.cloneDeep(podcast2))).to.be.true;
-        expect(_.size(user.getPodcasts())).to.equal(1);
+        expect(_.size(user.getPodcasts())).to.equal(2);
 
-        expect(user.getPodcasts()[0]).to.equal(podcast);
+        expect(user.getPodcasts()[1]).to.equal(podcast);
 
     });
 
@@ -108,13 +133,55 @@ describe('Factory: Cloudcatcheruser', function () {
     });
 
     it('should have a function to add a new "heard" property to a podcast for an episode', function () {
-        var podcast = { title: 'Test', heard: {} },
+        var mockFirebase = {
+
+                123: { title: 'Test', itunesId: 1 },
+                456: { title: 'Test2', itunesId: 2 },
+                789: { title: 'Test3', itunesId: 3 },
+
+                $update: function () {
+                }
+            },
+            podcast = { title: 'Test', newEpisodes: 3 },
             episode = { media: { url: 'testurl' } };
+
+        user.setPodcasts(mockFirebase);
 
         expect(user.addHeard).to.be.a('function');
 
         user.addHeard(podcast, episode);
-        expect(podcast.heard.testurl).to.be.true;
+        expect(podcast.newEpisodes).to.equal(2);
+        expect(podcast.heard).to.be.a('array');
+        expect(podcast.heard.indexOf(episode.media.url)).to.equal(0);
+    });
+
+    it('should allow you to save a podcast to the $firebase, omitting its episodes', function () {
+
+        var mockFirebase = {
+
+                123: { title: 'Test', itunesId: 1 },
+                456: { title: 'Test2', itunesId: 2 },
+                789: { title: 'Test3', itunesId: 3 },
+
+                $update: function () {
+                }
+            },
+
+            payload = { title: 'Test2', itunesId: 2 };
+
+        sinon.spy(mockFirebase, '$update');
+
+        expect(user.savePodcast).to.be.a('function');
+
+        user.setPodcasts(mockFirebase);
+        user.savePodcast(payload);
+
+        expect(mockFirebase.$update).to.have.been.calledOnce;
+
+        expect(mockFirebase.$update).to.have.been.calledWithExactly({
+            456: payload
+        });
+
     });
 
 });
