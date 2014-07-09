@@ -17,7 +17,12 @@ angular.module('cloudcatcherDesktopApp')
             page: $location.search().page || 1,
             limit: 10,
             total: episodes.length,
-            heard: podcast.heard
+            heard: podcast.heard,
+
+            markAllAsPlayed: function () {
+                user.hearAll(podcast, episodes);
+            }
+
         });
 
         $scope.$watch('page', function (page) {

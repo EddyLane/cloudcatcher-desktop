@@ -125,4 +125,14 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
         expect(user.addHeard).to.have.been.calledWithExactly(podcast, episodes[0]);
     });
 
+
+    it('should have a function that allows you to mark all episodes as played', function () {
+        expect(scope.markAllAsPlayed).to.be.a('function');
+        sinon.stub(user, 'hearAll', function () {});
+        scope.markAllAsPlayed();
+        expect(user.hearAll).to.have.been.calledOnce.and.calledWithExactly(podcast, episodes);
+        user.hearAll.restore();
+    });
+
+
 });

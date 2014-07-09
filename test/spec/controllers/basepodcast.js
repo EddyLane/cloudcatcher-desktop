@@ -79,5 +79,4 @@ describe('Controller: BasepodcastCtrl', function () {
         user.removePodcast.restore();
     });
 
-
 });

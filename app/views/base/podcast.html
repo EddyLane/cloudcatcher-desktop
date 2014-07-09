@@ -6,11 +6,21 @@
     </div>
 </div>
 
-<!--<button class="btn btn-lg" ng-click="unsubscribe()">Unsubscribe</button>-->
+<div class="row">
+    <div class="col-md-6 col-lg-6 col-sm-6">
+        <button class="btn btn-block" ng-click="unsubscribe()">Unsubscribe</button>
+    </div>
+    <div class="col-md-6 col-lg-6 col-sm-6">
+        <button class="btn btn-block" ng-click="markAllAsPlayed()">Mark all as played</button>
+    </div>
+</div>
 
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <ul class="nav nav-tabs">
+            <li ui-sref-active="active"><a ui-sref="base.podcast.episodes({ slug: podcast.slug })">Episodes</a></li>
+        </ul>
 
-<ul class="nav nav-tabs">
-    <li ui-sref-active="active"><a ui-sref="base.podcast.episodes({ slug: podcast.slug })">Episodes</a></li>
-</ul>
-
-<div ui-view></div>
+        <div ui-view></div>
+    </div>
+</div>

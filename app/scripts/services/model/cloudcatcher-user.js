@@ -10,7 +10,7 @@
 angular.module('cloudcatcherSharedServices')
     .factory('CloudcatcherUser', function CloudcatcherUser(EpisodeCounter) {
         return function (userData) {
-           
+
             var $podcasts;
 
             return {
@@ -71,6 +71,21 @@ angular.module('cloudcatcherSharedServices')
                         podcast.newEpisodes--;
                     }
                     podcast.heard.push(episode.media.url);
+                    this.savePodcast(podcast);
+                },
+
+                hearAll: function (podcast, episodes) {
+
+                    if (!podcast.heard) {
+                        podcast.heard = [];
+                    }
+
+                    _.each(episodes, function (episode) {
+                        if (podcast.heard.indexOf(episode.media.url) === -1) {
+                            podcast.heard.push(episode.media.url);
+                        }
+                    });
+
                     this.savePodcast(podcast);
                 }
             }

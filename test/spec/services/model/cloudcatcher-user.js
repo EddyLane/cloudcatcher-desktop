@@ -176,12 +176,49 @@ describe('Factory: Cloudcatcheruser', function () {
         user.setPodcasts(mockFirebase);
         user.savePodcast(payload);
 
-        expect(mockFirebase.$update).to.have.been.calledOnce;
-
-        expect(mockFirebase.$update).to.have.been.calledWithExactly({
+        expect(mockFirebase.$update).to.have.been.calledOnce.and.calledWithExactly({
             456: payload
         });
 
     });
+
+    it('should allow you to mark all episodes of a podcast as played which should persist to firebase, but not add episodes that are already heard', function () {
+
+        var mockFirebase = {
+
+                123: { title: 'Test', itunesId: 1 },
+                456: { title: 'Test2', itunesId: 2 },
+                789: { title: 'Test3', itunesId: 3, heard: ['3'] },
+
+                $update: function () {
+                }
+            },
+
+            episodes = [
+                { id: 1, media: { url: '1' } },
+                { id: 2, media: { url: '2' } },
+                { id: 3, media: { url: '3' } }
+            ],
+
+            payload = _.cloneDeep(mockFirebase[789]);
+
+        payload = _.omit(payload, 'episodes');
+        payload.heard = ['3', '1', '2'];
+
+        sinon.spy(mockFirebase, '$update');
+        user.setPodcasts(mockFirebase);
+
+        expect(user.hearAll).to.be.a('function');
+
+        user.hearAll(mockFirebase[789], episodes);
+
+        expect(mockFirebase[789].heard).to.deep.equal(payload.heard);
+
+        expect(mockFirebase.$update).to.have.been.calledOnce.and.calledWithExactly({
+            789: payload
+        });
+
+    });
+
 
 });
