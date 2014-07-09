@@ -204,6 +204,7 @@ describe('Factory: Cloudcatcheruser', function () {
 
         payload = _.omit(payload, 'episodes');
         payload.heard = ['3', '1', '2'];
+        payload.newEpisodes = 0;
 
         sinon.spy(mockFirebase, '$update');
         user.setPodcasts(mockFirebase);
@@ -217,6 +218,8 @@ describe('Factory: Cloudcatcheruser', function () {
         expect(mockFirebase.$update).to.have.been.calledOnce.and.calledWithExactly({
             789: payload
         });
+
+        expect(mockFirebase[789].newEpisodes).to.equal(0);
 
     });
 

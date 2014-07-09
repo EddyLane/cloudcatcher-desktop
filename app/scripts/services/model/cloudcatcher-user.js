@@ -86,6 +86,8 @@ angular.module('cloudcatcherSharedServices')
                         }
                     });
 
+                    podcast.newEpisodes = 0;
+
                     this.savePodcast(podcast);
                 }
             }
