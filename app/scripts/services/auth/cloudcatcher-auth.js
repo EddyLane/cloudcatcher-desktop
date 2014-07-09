@@ -24,13 +24,24 @@ angular.module('cloudcatcherSharedServices')
                 return $q.when(user.setPodcasts(podcasts));
             }
 
+            function handleCurrentPlaying(playing) {
+                return $q.when(user.setCurrentPlaying(playing));
+            }
+
             return FirebaseAuth(user).then(function (userFirebase) {
 
-                return $q.all([userFirebase.getPodcasts()])
+                return $q.all([userFirebase.getPodcasts(), userFirebase.getCurrentPlaying()])
                     .then(function (resolutions) {
-                        return handlePodcasts(resolutions[0]);
-                    });
 
+                        var userResolutions = [
+                            handlePodcasts(resolutions[0]),
+                            handleCurrentPlaying(resolutions[1])
+                        ];
+
+                        return $q.all(userResolutions).then(function (res) {
+                            return user;
+                        });
+                    });
             });
 
         }

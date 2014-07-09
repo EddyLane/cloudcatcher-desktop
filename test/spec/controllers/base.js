@@ -8,7 +8,8 @@ describe('Controller: BaseCtrl', function () {
     var BaseCtrl,
         scope,
         user,
-        podcasts;
+        podcasts,
+        currentlyPlaying;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope) {
@@ -17,9 +18,16 @@ describe('Controller: BaseCtrl', function () {
             { name: 'Test Podcast' }
         ];
 
+        currentlyPlaying = {
+            id: 1
+        };
+
         user = {
             getPodcasts: function () {
                 return podcasts;
+            },
+            getCurrentPlaying: function () {
+                return currentlyPlaying;
             }
         };
 
@@ -31,8 +39,11 @@ describe('Controller: BaseCtrl', function () {
     }));
 
     it('should assign the resolved users podcasts to the scope', function () {
-        expect(scope.podcasts).to.deep.equal(podcasts);
-        expect(scope.podcasts).to.equal(podcasts);
+        expect(scope.podcasts).to.deep.equal(podcasts).and.equal(podcasts);
+    });
+
+    it('should assign the resolved users currently playing to the scope', function () {
+        expect(scope.currentPlaying).to.deep.equal(currentlyPlaying).and.equal(currentlyPlaying);
     });
 
 });

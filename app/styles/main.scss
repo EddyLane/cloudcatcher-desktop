@@ -17,6 +17,15 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/vendor/assets/font
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
     padding-top: 50px;
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
 }
 
 

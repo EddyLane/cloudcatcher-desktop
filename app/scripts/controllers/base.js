@@ -10,4 +10,5 @@
 angular.module('cloudcatcherDesktopApp')
     .controller('BaseCtrl', function ($scope, user) {
         $scope.podcasts = user.getPodcasts();
+        $scope.currentPlaying = user.getCurrentPlaying();
     });

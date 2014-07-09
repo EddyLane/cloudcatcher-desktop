@@ -14,7 +14,8 @@ describe('Service: CloudcatcherAuth', function () {
         EpisodeCounter,
         $q,
         serverResponse,
-        dummyPodcasts;
+        dummyPodcasts,
+        dummyCurrentPlaying;
 
     beforeEach(module(function ($provide) {
 
@@ -32,6 +33,10 @@ describe('Service: CloudcatcherAuth', function () {
             }
         };
 
+        dummyCurrentPlaying = {
+            title: 'Thingy'
+        };
+
         $provide.constant('FirebaseAuth', function (user) {
 
             var defer = $q.defer();
@@ -40,6 +45,11 @@ describe('Service: CloudcatcherAuth', function () {
                 getPodcasts: function () {
                     var defer = $q.defer();
                     defer.resolve(dummyPodcasts);
+                    return defer.promise;
+                },
+                getCurrentPlaying: function () {
+                    var defer = $q.defer();
+                    defer.resolve(dummyCurrentPlaying);
                     return defer.promise;
                 }
             });
@@ -100,6 +110,13 @@ describe('Service: CloudcatcherAuth', function () {
         it('should return a CloudcatcherUser with podcasts attached if they are logged in', function () {
             var res = setUp('resolve', serverResponse);
             expect(res.getPodcasts()).to.deep.equal(dummyPodcasts);
+            CloudcatcherApi.one.restore();
+        });
+
+        it('should return a CloudcatcherUser with currentlyPlaying attached if they are logged in', function () {
+            var res = setUp('resolve', serverResponse);
+            $rootScope.$apply();
+            expect(res.getCurrentPlaying()).to.deep.equal(dummyCurrentPlaying);
             CloudcatcherApi.one.restore();
         });
 

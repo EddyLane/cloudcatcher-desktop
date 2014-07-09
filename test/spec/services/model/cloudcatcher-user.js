@@ -91,6 +91,7 @@ describe('Factory: Cloudcatcheruser', function () {
             mockFirebase = [],
             mockAddedPodcast = _.cloneDeep(podcast); // When added to firebase the reference is lossed
 
+
         mockFirebase.$add = function (podcast) {
             var defer = $q.defer();
             this.push(mockAddedPodcast);
