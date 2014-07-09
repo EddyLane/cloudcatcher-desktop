@@ -71,6 +71,21 @@ describe('Factory: Cloudcatcheruser', function () {
         expect(user.getPodcasts()).to.deep.equal(podcasts);
     });
 
+    it('should allow you to set currently playing', function () {
+        var currentPlaying = {
+            author: 'Banter',
+            image: 'image',
+            media: {
+                size: 1234,
+                url: 'banterurl'
+            }
+        };
+
+        expect(user.setCurrentPlaying(currentPlaying)).to.equal(user);
+        expect(user.getCurrentPlaying()).to.deep.equal(currentPlaying).and.equal(currentPlaying);
+
+    })
+
     it('should allow you to add a podcast to the users firebase, call the EpisodeCounter and return itself', function () {
         var podcast = { title: 'test title', itunesId: 2 },
             mockFirebase = [],
@@ -225,7 +240,7 @@ describe('Factory: Cloudcatcheruser', function () {
 
                 123: { title: 'Test', itunesId: 1 },
                 456: { title: 'Test2', itunesId: 2 },
-                789: { title: 'Test3', itunesId: 3, heard: ['3'] },
+                789: { title: 'Test3', itunesId: 3 },
 
                 $update: function () {
                 }
@@ -240,7 +255,7 @@ describe('Factory: Cloudcatcheruser', function () {
             payload = _.cloneDeep(mockFirebase[789]);
 
         payload = _.omit(payload, 'episodes');
-        payload.heard = ['3', '1' ];
+        payload.heard = [ '1' ];
         payload.newEpisodes = 0;
 
         sinon.spy(mockFirebase, '$update');

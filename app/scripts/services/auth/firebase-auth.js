@@ -38,9 +38,15 @@ angular.module('cloudcatcherSharedServices')
 
             return connect(user).then(function (userFirebase) {
                 return {
+
                     getPodcasts: function () {
                         return getChild(userFirebase, 'podcasts');
+                    },
+
+                    getCurrentPlaying: function () {
+                        return getChild(userFirebase, 'playing');
                     }
+
                 };
             });
 

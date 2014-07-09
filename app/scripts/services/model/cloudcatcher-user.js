@@ -11,7 +11,8 @@ angular.module('cloudcatcherSharedServices')
     .factory('CloudcatcherUser', function CloudcatcherUser(EpisodeCounter) {
         return function (userData) {
 
-            var $podcasts;
+            var $podcasts,
+                $currentPlaying;
 
             return {
 
@@ -25,6 +26,15 @@ angular.module('cloudcatcherSharedServices')
 
                 getFirebaseToken: function () {
                     return userData.firebase_token;
+                },
+
+                setCurrentPlaying: function (_currentPlaying_) {
+                    $currentPlaying = _currentPlaying_;
+                    return this;
+                },
+
+                getCurrentPlaying: function () {
+                    return $currentPlaying;
                 },
 
                 setPodcasts: function (_podcasts_) {

@@ -14,8 +14,15 @@ describe('Service: FirebaseAuth', function () {
             auth: function (token, cb) {
                 authCallback = cb;
             },
-            child: function () {
-                return this;
+            child: function (child) {
+                switch(child) {
+                    case 'users/Eddy':
+                    case 'podcasts':
+                    case 'playing':
+                        return this;
+                    default:
+                        throw Error('Unexpected child ' + child);
+                }
             }
         };
 
@@ -80,8 +87,7 @@ describe('Service: FirebaseAuth', function () {
 
     it('should attempt to connect to the specific users firebase', function () {
         FirebaseAuth(user);
-        expect(firebase.auth).to.have.been.calledOnce;
-        expect(firebase.auth).to.have.been.calledWith('abcde');
+        expect(firebase.auth).to.have.been.calledOnce.and.calledWith('abcde');
     });
 
     describe('if connection not successful', function () {
@@ -101,60 +107,88 @@ describe('Service: FirebaseAuth', function () {
             FirebaseAuth(user);
             authCallback(error);
             $rootScope.$apply();
-            expect($log.error).to.have.been.calledOnce;
-            expect($log.error).to.have.been.calledWithExactly(error);
+            expect($log.error).to.have.been.calledOnce.and.calledWithExactly(error);
         });
 
     });
 
     describe('if connection successful', function () {
 
+        function setUp() {
+            var res;
+            FirebaseAuth(user).then(function (_res_) {
+                res = _res_;
+            });
+            authCallback();
+            $rootScope.$apply();
+            return res;
+        }
+
         if('should connect to that users firebase', function () {
             var res;
             FirebaseAuth(user);
             authCallback();
             $rootScope.$apply();
-            expect(firebase.child).to.have.been.calledOnce;
-            expect(firebase.auth).to.have.been.calledWith('users/Eddy');
+            expect(firebase.child).to.have.been.calledOnce.and.calledWith('users/Eddy');
         });
 
-        it('should resolve with a getPodcasts function', function () {
-            var res;
-            FirebaseAuth(user).then(function (_res_) {
-                res = _res_;
+        describe('getPodcasts', function () {
+
+            it('should resolve with a getPodcasts function', function () {
+                var res = setUp();
+                expect(res.getPodcasts).to.be.a('function');
             });
-            authCallback();
-            $rootScope.$apply();
-            expect(res.getPodcasts).to.be.a('function');
+
+            it('should listen for the loaded event on the podcasts firebase when calling getPodcasts', function () {
+                var res = setUp();
+                res.getPodcasts();
+                expect($firebase.$on).to.have.been.calledOnce.and.calledWith('loaded');
+            });
+
+            it('should resolve a call to getPodcasts with the firebase for the podcasts', function () {
+                var res = setUp(),
+                    loadedRes,
+                    call = res.getPodcasts();
+                call.then(function (_loadedRes_) {
+                    loadedRes = _loadedRes_;
+                });
+                loadedCallback();
+                $rootScope.$apply();
+                expect(loadedRes).to.deep.equal($firebase);
+            });
+
         });
 
-        it('should listen for the loaded event on the podcasts firebase when calling getPodcasts', function () {
-            var res, loadedRes;
-            FirebaseAuth(user).then(function (_res_) {
-                res = _res_;
+        describe('getCurrentPlaying', function () {
+
+            it('should resolve with a getCurrentPlaying function', function () {
+                var res = setUp();
+                expect(res.getCurrentPlaying).to.be.a('function');
             });
-            authCallback();
-            $rootScope.$apply();
-            res.getPodcasts();
-            expect($firebase.$on).to.have.been.calledOnce;
-            expect($firebase.$on).to.have.been.calledWith('loaded');
+
+            it('should listen for the loaded event on the podcasts firebase when calling getCurrentPlaying', function () {
+                var res = setUp();
+                res.getPodcasts();
+                expect($firebase.$on).to.have.been.calledOnce.and.calledWith('loaded');
+            });
+
+            it('should resolve a call to getCurrentPlaying with the firebase for the currentPlaying', function () {
+
+                var res = setUp(),
+                    loadedRes,
+                    call = res.getCurrentPlaying();
+
+                call.then(function (_loadedRes_) {
+                    loadedRes = _loadedRes_;
+                });
+                loadedCallback();
+                $rootScope.$apply();
+                expect(loadedRes).to.deep.equal($firebase);
+
+            });
+
         });
 
-        it('should resolve a call to getPodcasts with the firebase for the podcasts', function () {
-            var res, call, loadedRes;
-            FirebaseAuth(user).then(function (_res_) {
-                res = _res_;
-            });
-            authCallback();
-            $rootScope.$apply();
-            call = res.getPodcasts();
-            call.then(function (_loadedRes_) {
-                loadedRes = _loadedRes_;
-            });
-            loadedCallback();
-            $rootScope.$apply();
-            expect(loadedRes).to.deep.equal($firebase);
-        });
 
 
     });
