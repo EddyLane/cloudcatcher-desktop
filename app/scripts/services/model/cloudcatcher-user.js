@@ -81,7 +81,7 @@ angular.module('cloudcatcherSharedServices')
                     }
 
                     _.each(episodes, function (episode) {
-                        if (podcast.heard.indexOf(episode.media.url) === -1) {
+                        if (episode.media && episode.media.url && podcast.heard.indexOf(episode.media.url) === -1) {
                             podcast.heard.push(episode.media.url);
                         }
                     });

@@ -220,5 +220,44 @@ describe('Factory: Cloudcatcheruser', function () {
 
     });
 
+    it('should check that episodes to be marked actually have a media.url proprety on them before trying to mark when marking all', function () {
+        var mockFirebase = {
+
+                123: { title: 'Test', itunesId: 1 },
+                456: { title: 'Test2', itunesId: 2 },
+                789: { title: 'Test3', itunesId: 3, heard: ['3'] },
+
+                $update: function () {
+                }
+            },
+
+            episodes = [
+                { id: 1, media: { url: '1' } },
+                { id: 2, media: {} },
+                { id: 3 }
+            ],
+
+            payload = _.cloneDeep(mockFirebase[789]);
+
+        payload = _.omit(payload, 'episodes');
+        payload.heard = ['3', '1' ];
+        payload.newEpisodes = 0;
+
+        sinon.spy(mockFirebase, '$update');
+        user.setPodcasts(mockFirebase);
+
+        expect(user.hearAll).to.be.a('function');
+
+        user.hearAll(mockFirebase[789], episodes);
+
+        expect(mockFirebase[789].heard).to.deep.equal(payload.heard);
+
+        expect(mockFirebase.$update).to.have.been.calledOnce.and.calledWithExactly({
+            789: payload
+        });
+
+        expect(mockFirebase[789].newEpisodes).to.equal(0);
+    });
+
 
 });
