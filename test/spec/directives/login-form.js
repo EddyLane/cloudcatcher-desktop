@@ -74,6 +74,22 @@ describe('Directive: loginForm', function () {
         CloudCatcherAuth.authenticate.restore();
     });
 
+    it('should set a submitting propert on and off regardless of response', function () {
+        sinon.stub(CloudCatcherAuth, 'authenticate', function () {
+            var defer = $q.defer();
+            defer.resolve();
+            return defer.promise;
+        });
+        expect(scope.submitting).to.not.exist;
+        scope.values.username = 'Eddy';
+        scope.values.password = 'Lane';
+        scope.$apply();
+        scope.submit();
+        expect(scope.submitting).to.be.true;
+        scope.$apply();
+        expect(scope.submitting).to.be.false;
+    });
+
     describe('success', function () {
 
         it('should $emit its cheerful success message', function () {

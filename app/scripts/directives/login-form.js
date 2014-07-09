@@ -36,6 +36,7 @@ angular.module('cloudcatcherDesktopApp')
                     },
 
                     submit: function () {
+                        var self = this;
 
                         this.submitted = true;
                         this.error = null;
@@ -44,7 +45,13 @@ angular.module('cloudcatcherDesktopApp')
                             return false;
                         }
 
-                        CloudcatcherAuth.authenticate(this.values.username, this.values.password).then(success, failure);
+                        this.submitting = true;
+
+                        CloudcatcherAuth.authenticate(this.values.username, this.values.password)
+                            .then(success, failure)
+                            .finally(function () {
+                                self.submitting = false;
+                            });
                     }
 
                 });
