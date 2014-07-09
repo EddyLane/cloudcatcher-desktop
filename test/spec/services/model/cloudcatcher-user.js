@@ -9,7 +9,8 @@ describe('Factory: Cloudcatcheruser', function () {
         userData,
         user,
         $q,
-        $rootScope;
+        $rootScope,
+        mockFirebase;
 
     // load the service's module
     beforeEach(module('cloudcatcherSharedServices'));
@@ -33,6 +34,21 @@ describe('Factory: Cloudcatcheruser', function () {
         CloudcatcherUser = _CloudcatcherUser_;
         user = CloudcatcherUser(userData);
     }));
+
+    function setUpMockFirebase() {
+        mockFirebase = {
+
+            123: { title: 'Test', itunesId: 1 },
+            456: { title: 'Test2', itunesId: 2 },
+            789: { title: 'Test3', itunesId: 3 },
+
+            $update: function () {
+            }
+        };
+
+        user.setPodcasts(mockFirebase);
+
+    }
 
     it('should have a username', function () {
         expect(user.getUsername()).to.equal('eddy');
@@ -117,33 +133,22 @@ describe('Factory: Cloudcatcheruser', function () {
 
     it('should allow you to find a podcast in the firebase by the itunesId ', function () {
 
-        var podcast = { itunesId: 'podcast1' },
-            podcast2 = { itunesId: 'podcas2' },
+        setUpMockFirebase();
 
-            mockFirebase = {
-                12345: podcast
-            };
+        var podcast = mockFirebase[123],
+            podcast2 = { itunesId: 'podcas2' };
 
         expect(user.findPodcast).to.be.a('function');
-
-        user.setPodcasts(mockFirebase);
-
-        expect(user.findPodcast(_.cloneDeep(podcast))).to.equal(podcast);
+        expect(user.findPodcast(_.cloneDeep(podcast))).to.equal(mockFirebase[123]);
         expect(user.findPodcast(_.cloneDeep(podcast2))).to.be.undefined;
     });
 
     it('should have a function to add a new "heard" property to a podcast for an episode', function () {
-        var mockFirebase = {
 
-                123: { title: 'Test', itunesId: 1 },
-                456: { title: 'Test2', itunesId: 2 },
-                789: { title: 'Test3', itunesId: 3 },
-
-                $update: function () {
-                }
-            },
-            podcast = { title: 'Test', newEpisodes: 3 },
+        var podcast = { title: 'Test', newEpisodes: 3 },
             episode = { media: { url: 'testurl' } };
+
+        setUpMockFirebase();
 
         user.setPodcasts(mockFirebase);
 
@@ -157,17 +162,9 @@ describe('Factory: Cloudcatcheruser', function () {
 
     it('should allow you to save a podcast to the $firebase, omitting its episodes', function () {
 
-        var mockFirebase = {
+        var payload = { title: 'Test2', itunesId: 2 };
 
-                123: { title: 'Test', itunesId: 1 },
-                456: { title: 'Test2', itunesId: 2 },
-                789: { title: 'Test3', itunesId: 3 },
-
-                $update: function () {
-                }
-            },
-
-            payload = { title: 'Test2', itunesId: 2 };
+        setUpMockFirebase();
 
         sinon.spy(mockFirebase, '$update');
 
