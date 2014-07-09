@@ -20,7 +20,7 @@ describe('Service: CloudcatcherAuth', function () {
 
         EpisodeCounter = sinon.spy();
 
-        serverResponse  = {
+        serverResponse = {
             username: 'Eddy',
             email: 'Eddy@eddy.com',
             firebase_token: 'abcde'
@@ -28,7 +28,8 @@ describe('Service: CloudcatcherAuth', function () {
 
         dummyPodcasts = {
             abcdefg: {},
-            $on: function () {}
+            $on: function () {
+            }
         };
 
         $provide.constant('FirebaseAuth', function (user) {
@@ -69,7 +70,7 @@ describe('Service: CloudcatcherAuth', function () {
 
     describe('check if authenticated', function () {
 
-        it('should return a CloudcatcherUser with podcasts attached if they are logged in', function () {
+        function setUp(response, respondWith) {
             var res;
 
             sinon.stub(CloudcatcherApi, 'one', function (what, which) {
@@ -78,72 +79,42 @@ describe('Service: CloudcatcherAuth', function () {
                 return {
                     get: function () {
                         var defer = $q.defer();
-                        defer.resolve(serverResponse);
+                        defer[response](respondWith);
                         return defer.promise;
                     }
                 };
             });
 
-            CloudcatcherAuth.check().then(function (_res_) {
-                res = _res_;
-            });
+            CloudcatcherAuth.check()
+                .then(function (_res_) {
+                    res = _res_;
+                }).catch(function (_res_) {
+                    res = _res_;
+                });
 
             $rootScope.$apply();
+
+            return res;
+        }
+
+        it('should return a CloudcatcherUser with podcasts attached if they are logged in', function () {
+            var res = setUp('resolve', serverResponse);
             expect(res.getPodcasts()).to.deep.equal(dummyPodcasts);
             CloudcatcherApi.one.restore();
         });
 
         it('should reject it if something does wrong', function () {
-            var res,
-                error = new Error('rejected');
-
-            sinon.stub(CloudcatcherApi, 'one', function (what, which) {
-                expect(what).to.equal('users');
-                expect(which).to.equal('me');
-                return {
-                    get: function () {
-                        var defer = $q.defer();
-                        defer.reject(error);
-                        return defer.promise;
-                    }
-                };
-            });
-
-            CloudcatcherAuth.check().catch(function (_res_) {
-                res = _res_;
-            });
-
-            $rootScope.$apply();
+            var error = new Error('rejected');
+            var res = setUp('reject', error);
             expect(res).to.equal(error);
             CloudcatcherApi.one.restore();
         });
 
         it('should call the EpisodeCounter service to count new episodes but only for the actual podcasts in the firebase (plain objects)', function () {
-            var res,
+            var res = setUp('resolve', serverResponse),
                 expected = _.cloneDeep(dummyPodcasts);
-
             delete expected.$on;
-
-            sinon.stub(CloudcatcherApi, 'one', function (what, which) {
-                expect(what).to.equal('users');
-                expect(which).to.equal('me');
-                return {
-                    get: function () {
-                        var defer = $q.defer();
-                        defer.resolve(serverResponse);
-                        return defer.promise;
-                    }
-                };
-            });
-
-            CloudcatcherAuth.check().then(function (_res_) {
-                res = _res_;
-            });
-
-            $rootScope.$apply();
-
             expect(EpisodeCounter).to.have.been.calledOnce.and.calledWithExactly(expected);
-
             CloudcatcherApi.one.restore();
         });
 
@@ -203,8 +174,6 @@ describe('Service: CloudcatcherAuth', function () {
         });
 
     });
-
-
 
 
 });
