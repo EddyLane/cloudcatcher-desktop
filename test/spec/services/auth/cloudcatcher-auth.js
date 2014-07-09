@@ -13,18 +13,23 @@ describe('Service: CloudcatcherAuth', function () {
         $rootScope,
         EpisodeCounter,
         $q,
-        serverResponse = {
-            username: 'Eddy',
-            email: 'Eddy@eddy.com',
-            firebase_token: 'abcde'
-        },
-        dummyPodcasts = [
-            { name: 'Test Podcast' }
-        ];
+        serverResponse,
+        dummyPodcasts;
 
     beforeEach(module(function ($provide) {
 
         EpisodeCounter = sinon.spy();
+
+        serverResponse  = {
+            username: 'Eddy',
+            email: 'Eddy@eddy.com',
+            firebase_token: 'abcde'
+        };
+
+        dummyPodcasts = {
+            abcdefg: {},
+            $on: function () {}
+        };
 
         $provide.constant('FirebaseAuth', function (user) {
 
@@ -113,8 +118,11 @@ describe('Service: CloudcatcherAuth', function () {
             CloudcatcherApi.one.restore();
         });
 
-        it('should call the EpisodeCounter service to count new episodes', function () {
-            var res;
+        it('should call the EpisodeCounter service to count new episodes but only for the actual podcasts in the firebase (plain objects)', function () {
+            var res,
+                expected = _.cloneDeep(dummyPodcasts);
+
+            delete expected.$on;
 
             sinon.stub(CloudcatcherApi, 'one', function (what, which) {
                 expect(what).to.equal('users');
@@ -134,8 +142,7 @@ describe('Service: CloudcatcherAuth', function () {
 
             $rootScope.$apply();
 
-            expect(EpisodeCounter).to.have.been.calledOnce;
-            expect(EpisodeCounter).to.have.been.calledWithExactly(dummyPodcasts);
+            expect(EpisodeCounter).to.have.been.calledOnce.and.calledWithExactly(expected);
 
             CloudcatcherApi.one.restore();
         });

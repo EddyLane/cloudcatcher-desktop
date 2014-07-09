@@ -10,6 +10,9 @@
 angular.module('cloudcatcherSharedServices')
     .factory('EpisodeCounter', function EpisodeCounter($q, GoogleFeedApi) {
         return function (podcasts) {
+
+            console.log(podcasts);
+
             return $q.all(_.map(podcasts, function (podcast) {
                 var promise = GoogleFeedApi.one('load').getList(null, { q: podcast.feed });
 

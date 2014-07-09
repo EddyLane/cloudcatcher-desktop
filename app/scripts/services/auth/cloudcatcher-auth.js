@@ -14,7 +14,13 @@ angular.module('cloudcatcherSharedServices')
             return FirebaseAuth(user).then(function (userFirebase) {
                 return userFirebase.getPodcasts()
                     .then(function (podcasts) {
-                        EpisodeCounter(podcasts);
+                        var count = {};
+                        _.each(podcasts, function (podcast, key) {
+                            if (_.isPlainObject(podcast)) {
+                                count[key] = podcast;
+                            }
+                        });
+                        EpisodeCounter(count);
                         return $q.when(user.setPodcasts(podcasts));
                     })
                 ;
