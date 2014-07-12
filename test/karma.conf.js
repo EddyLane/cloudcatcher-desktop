@@ -36,11 +36,13 @@ module.exports = function (config) {
             'bower_components/firebase/firebase.js',
             'bower_components/angularfire/angularFire.js',
             'bower_components/angular-xml/angular-xml.js',
+            'bower_components/soundmanager2/script/soundmanager2-nodebug.js',
+            'bower_components/moment/moment.js',
+            'bower_components/angular-moment/angular-moment.js',
 
             'app/scripts/**/*.js',
 
             'app/scripts/services/app.js',
-
             'app/scripts/services/**/!(app).js',
 
             'test/mock/**/*.js',

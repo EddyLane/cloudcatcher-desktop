@@ -16,6 +16,7 @@ angular
         'ngSanitize',
         'cloudcatcherSharedServices',
         'ui.router',
-        'ui.bootstrap'
+        'ui.bootstrap',
+        'angularMoment'
     ])
 ;

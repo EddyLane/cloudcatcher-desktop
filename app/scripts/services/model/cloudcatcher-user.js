@@ -8,13 +8,13 @@
  * Service in the cloudcatcherSharedServices.
  */
 angular.module('cloudcatcherSharedServices')
-    .factory('CloudcatcherUser', function CloudcatcherUser(EpisodeCounter) {
+    .factory('CloudcatcherUser', function CloudcatcherUser(EpisodeCounter, $rootScope) {
         return function (userData) {
 
             var $podcasts,
                 $currentPlaying;
 
-            return {
+            var user = {
 
                 getUsername: function () {
                     return userData.username;
@@ -35,6 +35,10 @@ angular.module('cloudcatcherSharedServices')
 
                 getCurrentPlaying: function () {
                     return $currentPlaying;
+                },
+
+                updateCurrentPlaying: function (episode) {
+                    $currentPlaying.$set(episode.data);
                 },
 
                 setPodcasts: function (_podcasts_) {
@@ -100,6 +104,12 @@ angular.module('cloudcatcherSharedServices')
 
                     this.savePodcast(podcast);
                 }
-            }
+            };
+
+            $rootScope.$on('onPlay', function (event, episode) {
+                user.updateCurrentPlaying(episode);
+            });
+
+            return user;
         }
     });

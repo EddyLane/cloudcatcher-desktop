@@ -26,7 +26,8 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
             title: 'Test Podcast', heard: [ 'something' ]
         },
         $location,
-        user;
+        user,
+        audioPlayer;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope, _$location_, CloudcatcherUser, CloudcatcherAuth) {
@@ -36,11 +37,18 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
 
         user = CloudcatcherUser({});
 
+        audioPlayer = {
+            play: function () {}
+        };
+
+        sinon.spy(audioPlayer, 'play');
+
         BasepodcastepisodesCtrl = $controller('BasepodcastepisodesCtrl', {
             $scope: scope,
             episodes: episodes,
             podcast: podcast,
-            user: user
+            user: user,
+            audioPlayer: audioPlayer
         });
 
         sinon.stub(CloudcatcherAuth, 'check', function () { return true; });
@@ -50,6 +58,7 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
 
     afterEach(function () {
         user.addHeard.restore();
+        audioPlayer.play.restore();
     });
 
 
@@ -100,7 +109,8 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
             episodes: episodes,
             podcast: podcast,
             user: user,
-            $location: $location
+            $location: $location,
+            audioPlayer: audioPlayer
         });
         expect(scope.page).to.equal(3);
         $location.search.restore();
@@ -120,9 +130,8 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
         expect(scope.listen).to.be.a('function');
 
         scope.listen(episodes[0]);
-
-        expect(user.addHeard).to.have.been.calledOnce;
-        expect(user.addHeard).to.have.been.calledWithExactly(podcast, episodes[0]);
+        expect(audioPlayer.play).to.have.been.calledOnce.and.calledWithExactly(episodes[0]);
+        expect(user.addHeard).to.have.been.calledOnce.and.calledWithExactly(podcast, episodes[0]);
     });
 
 

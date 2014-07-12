@@ -17,11 +17,17 @@ describe('Router', function () {
                 return userPodcasts;
             }
         },
+        audioPlayer,
         user;
 
     beforeEach(function () {
 
-        module('cloudcatcherDesktopApp');
+        audioPlayer = { play: function () {} };
+
+        module('cloudcatcherDesktopApp', function ($provide) {
+            $provide.value('AudioPlayer', audioPlayer);
+        });
+
 
         inject(function (_$rootScope_, _$state_, _ItunesPodcastApi_, _CloudcatcherAuth_, _$q_, _$injector_, _CloudcatcherUser_, _GoogleFeedApi_) {
             CloudcatcherAuth = _CloudcatcherAuth_;
@@ -92,6 +98,13 @@ describe('Router', function () {
             $rootScope.$digest();
             expect($state.current.name).to.equal('base');
             expect($injector.invoke($state.current.resolve.user)).to.deep.equal(checkResponse);
+        });
+
+        it('should resolve the audio player', function () {
+            $state.go('base');
+            $rootScope.$digest();
+            expect($state.current.name).to.equal('base');
+            expect($injector.invoke($state.current.resolve.audioPlayer)).to.equal(audioPlayer);
         });
 
     });

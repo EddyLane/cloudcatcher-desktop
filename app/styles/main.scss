@@ -203,3 +203,11 @@ body {
   }
 
 }
+
+.episode-table {
+  tbody {
+    tr {
+      cursor: pointer;
+    }
+  }
+}

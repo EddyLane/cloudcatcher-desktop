@@ -43,6 +43,9 @@ angular
             resolve: {
                 user: ['CloudcatcherAuth', function (CloudcatcherAuth) {
                     return CloudcatcherAuth.check();
+                }],
+                audioPlayer: ['AudioPlayer', function (AudioPlayer) {
+                    return AudioPlayer;
                 }]
             },
             templateUrl: 'views/base.html',

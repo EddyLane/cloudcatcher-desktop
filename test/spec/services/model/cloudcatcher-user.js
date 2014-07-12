@@ -275,5 +275,30 @@ describe('Factory: Cloudcatcheruser', function () {
         expect(mockFirebase[789].newEpisodes).to.equal(0);
     });
 
+    it('should listen to the onPlay event on $rootScope and update the currently playing to that episode', function () {
+        var currentPlaying = {
+            author: 'Banter',
+            image: 'image',
+            media: {
+                size: 1234,
+                url: 'banterurl'
+            },
+            $set: function () {}
+        };
+
+        var updateCurrentPlaying = {
+            id: 1,
+            data: { test: true }
+        };
+
+        sinon.spy(currentPlaying, '$set');
+        user.setCurrentPlaying(currentPlaying);
+
+        expect(user.updateCurrentPlaying).to.be.a('function');
+        $rootScope.$emit('onPlay', updateCurrentPlaying);
+        expect(currentPlaying.$set).to.have.been.calledOnce.and.calledWithExactly(updateCurrentPlaying.data);
+
+    });
+
 
 });
