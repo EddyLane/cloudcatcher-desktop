@@ -30,7 +30,7 @@ describe('Controller: LoginCtrl', function () {
 
     it('should redirect to base on the "loginForm_success" event', function () {
         scope.$emit('loginForm_success');
-        expect($state.go).to.have.been.calledWithExactly('base');
+        expect($state.go).to.have.been.calledWithExactly('base.podcasts');
     });
 
 });

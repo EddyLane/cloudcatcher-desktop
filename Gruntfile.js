@@ -196,7 +196,8 @@ module.exports = function (grunt) {
         wiredep: {
             app: {
                 src: ['<%= yeoman.app %>/index.html'],
-                ignorePath: new RegExp('^<%= yeoman.app %>/|../')
+                ignorePath: new RegExp('^<%= yeoman.app %>/|../'),
+                exclude: ['bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/']
             },
             sass: {
                 src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],

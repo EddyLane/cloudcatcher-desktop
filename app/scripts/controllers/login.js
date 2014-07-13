@@ -10,6 +10,6 @@
 angular.module('cloudcatcherDesktopApp')
     .controller('LoginCtrl', function ($scope, $state) {
         $scope.$on('loginForm_success', function () {
-            $state.go('base');
+            $state.go('base.podcasts');
         });
     });

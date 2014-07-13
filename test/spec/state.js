@@ -11,10 +11,16 @@ describe('Router', function () {
             { slug: 'testtwo' },
             { slug: 'test', feed: 'feedy' }
         ],
+        userCurrent = {
+            id: 1
+        },
         checkResponse = {
             username: 'Eddy',
             getPodcasts: function () {
                 return userPodcasts;
+            },
+            getCurrentPlaying: function () {
+                return userCurrent;r
             }
         },
         audioPlayer,
@@ -48,6 +54,7 @@ describe('Router', function () {
 
         user = CloudcatcherUser(checkResponse);
         user.setPodcasts(userPodcasts);
+        user.setCurrentPlaying(userCurrent);
 
     });
 
@@ -109,6 +116,7 @@ describe('Router', function () {
 
     });
 
+
     describe('State: "base.podcast"', function () {
 
         it('should respond to URL', function () {
@@ -152,7 +160,29 @@ describe('Router', function () {
             });
             $rootScope.$apply();
             expect(res).to.deep.equal(podcastEpisodes);
-        })
+        });
+
+
+        it('should resolve the current playing', function () {
+
+            sinon.stub(GoogleFeedApi, 'one', function (thing) {
+                return {
+                    getList: function (thing, params) {
+                        var defer = $q.defer();
+                        defer.resolve(podcastEpisodes);
+                        return defer.promise;
+                    }
+                };
+            });
+
+
+            $state.go('base.podcast.episodes', { slug: 'test' });
+            $rootScope.$digest();
+            expect($state.current.name).to.equal('base.podcast.episodes');
+            expect($injector.invoke($state.current.resolve.current, null, { user: user })).to.equal(userCurrent);
+
+        });
+
 
     });
 
@@ -168,6 +198,7 @@ describe('Router', function () {
             expect($state.current.name).to.equal('base.podcasts');
             expect($injector.invoke($state.current.resolve.podcasts, null, { user: user })).to.deep.equal(userPodcasts);
         });
+
 
     });
 

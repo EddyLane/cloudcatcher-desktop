@@ -81,10 +81,14 @@ angular.module('cloudcatcherSharedServices')
                     if (!podcast.heard) {
                         podcast.heard = [];
                     }
-                    if (podcast.newEpisodes && podcast.newEpisodes > 0) {
-                        podcast.newEpisodes--;
+
+                    if (episode.media && episode.media.url && podcast.heard.indexOf(episode.media.url) === -1) {
+                        if (podcast.newEpisodes && podcast.newEpisodes > 0) {
+                            podcast.newEpisodes--;
+                        }
+                        podcast.heard.push(episode.media.url);
                     }
-                    podcast.heard.push(episode.media.url);
+
                     this.savePodcast(podcast);
                 },
 

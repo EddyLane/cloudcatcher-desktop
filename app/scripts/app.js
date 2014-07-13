@@ -10,13 +10,13 @@
  */
 angular
     .module('cloudcatcherDesktopApp', [
-        'ngAnimate',
         'angular-loading-bar',
         'ngCookies',
         'ngSanitize',
         'cloudcatcherSharedServices',
         'ui.router',
         'ui.bootstrap',
-        'angularMoment'
+        'angularMoment',
+        'ngFx'
     ])
 ;

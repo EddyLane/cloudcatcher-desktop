@@ -102,6 +102,9 @@ angular
             resolve: {
                 episodes: ['podcast', 'GoogleFeedApi', function (podcast, GoogleFeedApi) {
                     return GoogleFeedApi.one('load').getList(null, { q: podcast.feed });
+                }],
+                current: ['user', function (user) {
+                    return user.getCurrentPlaying();
                 }]
             },
             controller: 'BasepodcastepisodesCtrl'

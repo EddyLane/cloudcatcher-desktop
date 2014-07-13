@@ -39,6 +39,7 @@ module.exports = function (config) {
             'bower_components/soundmanager2/script/soundmanager2-nodebug.js',
             'bower_components/moment/moment.js',
             'bower_components/angular-moment/angular-moment.js',
+            'bower_components/ngFx/dist/ngFx.js',
 
             'app/scripts/**/*.js',
 

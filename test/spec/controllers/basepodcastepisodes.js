@@ -22,6 +22,9 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
             { title: 'Episode 12' }
 
         ],
+        current = {
+            id: 2
+        },
         podcast = {
             title: 'Test Podcast', heard: [ 'something' ]
         },
@@ -48,7 +51,8 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
             episodes: episodes,
             podcast: podcast,
             user: user,
-            audioPlayer: audioPlayer
+            audioPlayer: audioPlayer,
+            current: current
         });
 
         sinon.stub(CloudcatcherAuth, 'check', function () { return true; });
@@ -110,7 +114,8 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
             podcast: podcast,
             user: user,
             $location: $location,
-            audioPlayer: audioPlayer
+            audioPlayer: audioPlayer,
+            current: current
         });
         expect(scope.page).to.equal(3);
         $location.search.restore();
@@ -143,5 +148,8 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
         user.hearAll.restore();
     });
 
+    it('should set currently playing episode to scope', function () {
+        expect(scope.current).to.equal(current).and.deep.equal(current);
+    });
 
 });

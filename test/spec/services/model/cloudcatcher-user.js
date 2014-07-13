@@ -176,6 +176,27 @@ describe('Factory: Cloudcatcheruser', function () {
         expect(podcast.heard.indexOf(episode.media.url)).to.equal(0);
     });
 
+    it('should not add an episode to heard or decrement the newEpisodes count if an episode is already heard', function () {
+
+        var podcast = { title: 'Test', newEpisodes: 3 },
+            episode = { media: { url: 'testurl' } };
+
+        setUpMockFirebase();
+
+        user.setPodcasts(mockFirebase);
+
+        expect(user.addHeard).to.be.a('function');
+
+        user.addHeard(podcast, episode);
+        expect(podcast.newEpisodes).to.equal(2);
+        expect(podcast.heard.length).to.equal(1);
+        user.addHeard(podcast, episode);
+        expect(podcast.newEpisodes).to.equal(2);
+        expect(podcast.heard.length).to.equal(1);
+
+
+    });
+
     it('should allow you to save a podcast to the $firebase, omitting its episodes', function () {
 
         var payload = { title: 'Test2', itunesId: 2 };

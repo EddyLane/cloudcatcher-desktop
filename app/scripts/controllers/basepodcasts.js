@@ -8,6 +8,8 @@
  * Controller of the cloudcatcherDesktopApp
  */
 angular.module('cloudcatcherDesktopApp')
-    .controller('BasepodcastsCtrl', function ($scope, podcasts) {
-        $scope.podcasts = podcasts;
+    .controller('BasepodcastsCtrl', function ($scope, $timeout, podcasts) {
+        $timeout(function () {
+            $scope.listPodcasts = podcasts;
+        }, 1000);
     });

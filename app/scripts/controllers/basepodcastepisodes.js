@@ -8,7 +8,7 @@
  * Controller of the cloudcatcherDesktopApp
  */
 angular.module('cloudcatcherDesktopApp')
-    .controller('BasepodcastepisodesCtrl', function ($scope, $location, episodes, podcast, user, audioPlayer) {
+    .controller('BasepodcastepisodesCtrl', function ($scope, $location, episodes, podcast, user, audioPlayer, current) {
 
         _.assign($scope, {
             listen: function (episode) {
@@ -19,6 +19,7 @@ angular.module('cloudcatcherDesktopApp')
             limit: 10,
             total: episodes.length,
             heard: podcast.heard,
+            current: current,
 
             markAllAsPlayed: function () {
                 user.hearAll(podcast, episodes);
