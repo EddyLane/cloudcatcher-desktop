@@ -9,6 +9,9 @@
  */
 angular.module('cloudcatcherDesktopApp')
     .controller('BasepodcastCtrl', function ($scope, podcast, user) {
+
+        console.log('oh yeah podcasty', podcast);
+
         _.assign($scope, {
 
             podcast: podcast,

@@ -40,6 +40,7 @@ angular
 
         $stateProvider.state('base', {
             url: '',
+            abstract: true,
             resolve: {
                 user: ['CloudcatcherAuth', function (CloudcatcherAuth) {
                     return CloudcatcherAuth.check();
@@ -53,7 +54,7 @@ angular
         });
 
         $stateProvider.state('base.podcasts', {
-            url: '/podcasts',
+            url: '/list',
             templateUrl: 'views/base/podcasts.html',
             resolve: {
                 podcasts: ['user', function (user) {
@@ -86,10 +87,11 @@ angular
         });
 
         $stateProvider.state('base.podcast', {
-            url: '/:slug',
+            url: '/podcasts/:slug',
             templateUrl: 'views/base/podcast.html',
             resolve: {
                 podcast: ['user', '$stateParams', function (user, $stateParams) {
+                    console.log('hmm yo',  _.find(user.getPodcasts(), { slug: $stateParams.slug }));
                     return _.find(user.getPodcasts(), { slug: $stateParams.slug });
                 }]
             },
@@ -101,15 +103,17 @@ angular
             templateUrl: 'views/base/podcast/episodes.html',
             resolve: {
                 episodes: ['podcast', 'GoogleFeedApi', function (podcast, GoogleFeedApi) {
+                    console.log('yo dawg');
                     return GoogleFeedApi.one('load').getList(null, { q: podcast.feed });
                 }],
                 current: ['user', function (user) {
+                    console.log('fo dawbg');
                     return user.getCurrentPlaying();
                 }]
             },
             controller: 'BasepodcastepisodesCtrl'
         });
 
-        $urlRouterProvider.otherwise('');
+        $urlRouterProvider.otherwise('/list');
 
     });
