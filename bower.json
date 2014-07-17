@@ -19,7 +19,8 @@
     "angular-loading-bar": "~0.4.3",
     "soundmanager2": "*",
     "angular-moment": "~0.7.1",
-    "ngFx": "~1.0.1"
+    "ngFx": "~1.0.1",
+    "bootswatch-scss": "~3.1.1"
   },
   "devDependencies": {
     "angular-mocks": "1.2.16",

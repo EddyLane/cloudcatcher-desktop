@@ -159,10 +159,11 @@ describe('Factory: Cloudcatcheruser', function () {
         expect(user.findPodcast(_.cloneDeep(podcast2))).to.be.undefined;
     });
 
-    it('should have a function to add a new "heard" property to a podcast for an episode', function () {
+    it('should have a function to add a new "heard" property to a podcast for an episode, which uses currying', function () {
 
         var podcast = { title: 'Test', newEpisodes: 3 },
-            episode = { media: { url: 'testurl' } };
+            episode = { media: { url: 'testurl' } },
+            addFn;
 
         setUpMockFirebase();
 
@@ -170,27 +171,31 @@ describe('Factory: Cloudcatcheruser', function () {
 
         expect(user.addHeard).to.be.a('function');
 
-        user.addHeard(podcast, episode);
+        addFn = user.addHeard(podcast);
+
+        addFn(episode);
+
         expect(podcast.newEpisodes).to.equal(2);
         expect(podcast.heard).to.be.a('array');
         expect(podcast.heard.indexOf(episode.media.url)).to.equal(0);
     });
 
-    it('should not add an episode to heard or decrement the newEpisodes count if an episode is already heard', function () {
+    it('should not add an episode to heard or decrement the newEpisodes count if an episode is already heard, using curring', function () {
 
         var podcast = { title: 'Test', newEpisodes: 3 },
-            episode = { media: { url: 'testurl' } };
+            episode = { media: { url: 'testurl' } },
+            addFn;
 
         setUpMockFirebase();
 
         user.setPodcasts(mockFirebase);
 
-        expect(user.addHeard).to.be.a('function');
+        addFn = user.addHeard(podcast);
 
-        user.addHeard(podcast, episode);
+        addFn(episode);
         expect(podcast.newEpisodes).to.equal(2);
         expect(podcast.heard.length).to.equal(1);
-        user.addHeard(podcast, episode);
+        addFn(episode);
         expect(podcast.newEpisodes).to.equal(2);
         expect(podcast.heard.length).to.equal(1);
 
@@ -216,7 +221,7 @@ describe('Factory: Cloudcatcheruser', function () {
 
     });
 
-    it('should allow you to mark all episodes of a podcast as played which should persist to firebase, but not add episodes that are already heard', function () {
+    it('should allow you to mark all episodes of a podcast as played which should persist to firebase, but not add episodes that are already heard, using currying', function () {
 
         var mockFirebase = {
 
@@ -234,7 +239,8 @@ describe('Factory: Cloudcatcheruser', function () {
                 { id: 3, media: { url: '3' } }
             ],
 
-            payload = _.cloneDeep(mockFirebase[789]);
+            payload = _.cloneDeep(mockFirebase[789]),
+            hearAllFn;
 
         payload = _.omit(payload, 'episodes');
         payload.heard = ['3', '1', '2'];
@@ -245,7 +251,9 @@ describe('Factory: Cloudcatcheruser', function () {
 
         expect(user.hearAll).to.be.a('function');
 
-        user.hearAll(mockFirebase[789], episodes);
+        hearAllFn = user.hearAll(mockFirebase[789]);
+
+        hearAllFn(episodes);
 
         expect(mockFirebase[789].heard).to.deep.equal(payload.heard);
 
@@ -274,7 +282,8 @@ describe('Factory: Cloudcatcheruser', function () {
                 { id: 3 }
             ],
 
-            payload = _.cloneDeep(mockFirebase[789]);
+            payload = _.cloneDeep(mockFirebase[789]),
+            hearAllFn;
 
         payload = _.omit(payload, 'episodes');
         payload.heard = [ '1' ];
@@ -285,7 +294,9 @@ describe('Factory: Cloudcatcheruser', function () {
 
         expect(user.hearAll).to.be.a('function');
 
-        user.hearAll(mockFirebase[789], episodes);
+        hearAllFn = user.hearAll(mockFirebase[789]);
+
+        hearAllFn(episodes);
 
         expect(mockFirebase[789].heard).to.deep.equal(payload.heard);
 

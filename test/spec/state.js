@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Router', function () {
+describe.skip('Router', function () {
 
     var $state, $rootScope, CloudcatcherAuth, $q, $injector, CloudcatcherUser, ItunesPodcastApi, GoogleFeedApi,
         podcastEpisodes = [

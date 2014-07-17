@@ -30,7 +30,9 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
         },
         $location,
         user,
-        audioPlayer;
+        audioPlayer,
+        hearAll,
+        addHeard;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope, _$location_, CloudcatcherUser, CloudcatcherAuth) {
@@ -40,28 +42,45 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
 
         user = CloudcatcherUser({});
 
+        sinon.stub(user, 'getCurrentPlaying', function () {
+            return current;
+        });
+
         audioPlayer = {
             play: function () {}
         };
 
+        hearAll = sinon.spy();
+        addHeard = sinon.spy();
+
+        sinon.stub(user, 'hearAll', function () {
+            return hearAll;
+        });
+
         sinon.spy(audioPlayer, 'play');
+
+
+        sinon.stub(CloudcatcherAuth, 'check', function () { return true; });
+        sinon.stub(user, 'addHeard', function () {
+            return addHeard;
+        });
 
         BasepodcastepisodesCtrl = $controller('BasepodcastepisodesCtrl', {
             $scope: scope,
             episodes: episodes,
+            $location: $location,
             podcast: podcast,
             user: user,
-            audioPlayer: audioPlayer,
-            current: current
+            audioPlayer: audioPlayer
         });
 
-        sinon.stub(CloudcatcherAuth, 'check', function () { return true; });
-        sinon.stub(user, 'addHeard', function () {});
 
     }));
 
     afterEach(function () {
         user.addHeard.restore();
+        user.hearAll.restore();
+        user.getCurrentPlaying.restore();
         audioPlayer.play.restore();
     });
 
@@ -98,7 +117,7 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
 
     it('should change the location query param of search when the page changes', function () {
         scope.page = 2;
-        scope.$apply();
+        scope.$digest();
         expect($location.search().page).to.equal(2);
     });
 
@@ -114,8 +133,7 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
             podcast: podcast,
             user: user,
             $location: $location,
-            audioPlayer: audioPlayer,
-            current: current
+            audioPlayer: audioPlayer
         });
         expect(scope.page).to.equal(3);
         $location.search.restore();
@@ -131,21 +149,19 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
     });
 
     it('should have a function to trigger listening to an episode, this should call addHeard on the user', function () {
-
         expect(scope.listen).to.be.a('function');
-
+        expect(user.addHeard).to.have.been.calledOnce.and.calledWithExactly(podcast);
         scope.listen(episodes[0]);
         expect(audioPlayer.play).to.have.been.calledOnce.and.calledWithExactly(episodes[0]);
-        expect(user.addHeard).to.have.been.calledOnce.and.calledWithExactly(podcast, episodes[0]);
+        expect(addHeard).to.have.been.calledOnce.and.calledWithExactly(episodes[0]);
     });
 
 
     it('should have a function that allows you to mark all episodes as played', function () {
         expect(scope.markAllAsPlayed).to.be.a('function');
-        sinon.stub(user, 'hearAll', function () {});
         scope.markAllAsPlayed();
-        expect(user.hearAll).to.have.been.calledOnce.and.calledWithExactly(podcast, episodes);
-        user.hearAll.restore();
+        expect(user.hearAll).to.have.been.calledOnce.and.calledWithExactly(podcast);
+        expect(hearAll).to.have.been.calledOnce.and.calledWithExactly(episodes);
     });
 
     it('should set currently playing episode to scope', function () {

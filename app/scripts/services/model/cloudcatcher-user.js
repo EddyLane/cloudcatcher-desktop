@@ -77,36 +77,41 @@ angular.module('cloudcatcherSharedServices')
                     $podcasts.$update(update);
                 },
 
-                addHeard: function (podcast, episode) {
-                    if (!podcast.heard) {
-                        podcast.heard = [];
-                    }
-
-                    if (episode.media && episode.media.url && podcast.heard.indexOf(episode.media.url) === -1) {
-                        if (podcast.newEpisodes && podcast.newEpisodes > 0) {
-                            podcast.newEpisodes--;
+                addHeard: function (podcast) {
+                    var self = this;
+                    return function (episode) {
+                        if (!podcast.heard) {
+                            podcast.heard = [];
                         }
-                        podcast.heard.push(episode.media.url);
-                    }
 
-                    this.savePodcast(podcast);
-                },
-
-                hearAll: function (podcast, episodes) {
-
-                    if (!podcast.heard) {
-                        podcast.heard = [];
-                    }
-
-                    _.each(episodes, function (episode) {
                         if (episode.media && episode.media.url && podcast.heard.indexOf(episode.media.url) === -1) {
+                            if (podcast.newEpisodes && podcast.newEpisodes > 0) {
+                                podcast.newEpisodes--;
+                            }
                             podcast.heard.push(episode.media.url);
                         }
-                    });
 
-                    podcast.newEpisodes = 0;
+                        self.savePodcast(podcast);
+                    };
+                },
 
-                    this.savePodcast(podcast);
+                hearAll: function (podcast) {
+                    var self = this;
+                    return function (episodes) {
+                        if (!podcast.heard) {
+                            podcast.heard = [];
+                        }
+
+                        _.each(episodes, function (episode) {
+                            if (episode.media && episode.media.url && podcast.heard.indexOf(episode.media.url) === -1) {
+                                podcast.heard.push(episode.media.url);
+                            }
+                        });
+
+                        podcast.newEpisodes = 0;
+
+                        self.savePodcast(podcast);
+                    };
                 }
             };
 

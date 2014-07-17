@@ -1,7 +1,7 @@
 <h2 class="sub-header">Podcasts</h2>
 <div class="row">
-    <div class="col-xs-4 col-sm-5 col-md-3 col-lg-2 fx-zoom-left fx-easing-cubic fx-speed-500" ng-repeat="podcast in listPodcasts">
-        <a href="#" class="thumbnail" style="border: 0px;">
+    <div class="col-xs-4 col-sm-5 col-md-3 col-lg-2 fx-fade-left-big fx-easing-back fx-speed-800" ng-repeat="podcast in listPodcasts">
+        <a ui-sref="base.podcast.episodes({ slug: podcast.slug })" class="thumbnail" style="border: 0px; cursor: pointer;">
             <img ng-src="{{ podcast.artwork.100 }}" class="img-thumbnail">
         </a>
         <!--<div class="card-content">-->
