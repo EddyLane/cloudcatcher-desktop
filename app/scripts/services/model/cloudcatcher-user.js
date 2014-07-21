@@ -38,7 +38,9 @@ angular.module('cloudcatcherSharedServices')
                 },
 
                 updateCurrentPlaying: function (episode) {
-                    $currentPlaying.$set(episode.data);
+                    $currentPlaying.$set(_.assign(episode.data, {
+                        position: episode.position
+                    }));
                 },
 
                 setPodcasts: function (_podcasts_) {
@@ -116,6 +118,10 @@ angular.module('cloudcatcherSharedServices')
             };
 
             $rootScope.$on('onPlay', function (event, episode) {
+                user.updateCurrentPlaying(episode);
+            });
+
+            $rootScope.$on('whilePlaying', function (event, episode) {
                 user.updateCurrentPlaying(episode);
             });
 

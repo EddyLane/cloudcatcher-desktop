@@ -12,19 +12,16 @@ angular.module('cloudcatcherSharedServices')
         var defer = $q.defer();
 
         soundManager.defaultOptions = {
-
+//            volume: 100,
             autoLoad: true,
 
             onplay: function () {
                 $rootScope.$emit('onPlay', this);
             },
 
-            onload: function () {
-                this.play();
-            },
-
             whileplaying: function () {
-
+                this.data.progress = (this.position / this.duration) * 100;
+                $rootScope.$emit('whilePlaying', this);
             }
         };
 
@@ -38,14 +35,26 @@ angular.module('cloudcatcherSharedServices')
 
                     var sound = soundManager.createSound({
                         id: episode.media.url,
-                        url: episode.media.url
+                        url: episode.media.url,
+                        onload: function () {
+
+                            this.play({
+                                position: episode.position || 0
+                            });
+
+                        }
                     });
 
                     sound.data = episode;
 
+                    return sound;
                 }
             })
         }
+
+        $rootScope.$on('scrub', function (e, position) {
+            console.log(position);
+        });
 
         return defer.promise;
   });

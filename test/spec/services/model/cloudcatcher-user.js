@@ -71,7 +71,7 @@ describe('Factory: Cloudcatcheruser', function () {
         expect(user.getPodcasts()).to.deep.equal(podcasts);
     });
 
-    it('should allow you to set currently playing', function () {
+    it('should allow you to set currently playing, adding in the position of the sound', function () {
         var currentPlaying = {
             author: 'Banter',
             image: 'image',
@@ -307,7 +307,7 @@ describe('Factory: Cloudcatcheruser', function () {
         expect(mockFirebase[789].newEpisodes).to.equal(0);
     });
 
-    it('should listen to the onPlay event on $rootScope and update the currently playing to that episode', function () {
+    it('should listen to the onPlay event and the whilePlaying event on $rootScope and update the currently playing to that episode', function () {
         var currentPlaying = {
             author: 'Banter',
             image: 'image',
@@ -320,6 +320,7 @@ describe('Factory: Cloudcatcheruser', function () {
 
         var updateCurrentPlaying = {
             id: 1,
+            position: 1314,
             data: { test: true }
         };
 
@@ -328,7 +329,15 @@ describe('Factory: Cloudcatcheruser', function () {
 
         expect(user.updateCurrentPlaying).to.be.a('function');
         $rootScope.$emit('onPlay', updateCurrentPlaying);
-        expect(currentPlaying.$set).to.have.been.calledOnce.and.calledWithExactly(updateCurrentPlaying.data);
+        expect(currentPlaying.$set).to.have.been.calledOnce.and.calledWithExactly({
+            test: true,
+            position: 1314
+        });
+        $rootScope.$emit('whilePlaying', updateCurrentPlaying);
+        expect(currentPlaying.$set).to.have.been.calledTwice.and.calledWithExactly({
+            test: true,
+            position: 1314
+        });
 
     });
 

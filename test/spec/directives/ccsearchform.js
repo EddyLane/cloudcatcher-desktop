@@ -11,6 +11,7 @@ describe('Directive: CcSearchForm', function () {
 
     beforeEach(inject(function ($rootScope, $compile, _$state_) {
         scope = $rootScope.$new();
+        scope.values = {};
         $state = _$state_;
         element = angular.element('<cc-search-form></cc-search-form>');
         element = $compile(element)(scope);

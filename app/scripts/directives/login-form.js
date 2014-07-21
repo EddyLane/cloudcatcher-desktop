@@ -47,8 +47,10 @@ angular.module('cloudcatcherDesktopApp')
 
                         this.submitting = true;
 
-                        CloudcatcherAuth.authenticate(this.values.username, this.values.password)
-                            .then(success, failure)
+                        CloudcatcherAuth
+                            .authenticate(this.values.username, this.values.password)
+                            .then(success)
+                            .catch(failure)
                             .finally(function () {
                                 self.submitting = false;
                             });

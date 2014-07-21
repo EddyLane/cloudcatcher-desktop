@@ -9,7 +9,8 @@ describe('Controller: BaseCtrl', function () {
         scope,
         user,
         podcasts,
-        currentlyPlaying;
+        currentlyPlaying,
+        audioPlayer;
 
     // Initialize the controller and a mock scope
     beforeEach(inject(function ($controller, $rootScope) {
@@ -19,7 +20,7 @@ describe('Controller: BaseCtrl', function () {
         ];
 
         currentlyPlaying = {
-            id: 1
+            id: 1, progress: 50.414
         };
 
         user = {
@@ -31,11 +32,19 @@ describe('Controller: BaseCtrl', function () {
             }
         };
 
+        audioPlayer = {
+            play: function () {}
+        };
+
+        sinon.spy(audioPlayer, 'play');
+
         scope = $rootScope.$new();
         BaseCtrl = $controller('BaseCtrl', {
             $scope: scope,
-            user: user
+            user: user,
+            audioPlayer: audioPlayer
         });
+
     }));
 
     it('should assign the resolved users podcasts to the scope', function () {
@@ -44,6 +53,14 @@ describe('Controller: BaseCtrl', function () {
 
     it('should assign the resolved users currently playing to the scope', function () {
         expect(scope.currentPlaying).to.deep.equal(currentlyPlaying).and.equal(currentlyPlaying);
+    });
+
+    it('should set the header to be collapsed by default', function () {
+        expect(scope.isCollapsed).to.be.true;
+    });
+
+    it('should start the currently playing podcast to start playing on the audio player if there is one', function () {
+        expect(audioPlayer.play).to.have.been.calledOnce.and.calledWithExactly(currentlyPlaying);
     });
 
 });

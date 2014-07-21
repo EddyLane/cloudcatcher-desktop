@@ -41,9 +41,12 @@ describe('Controller: BasepodcastCtrl', function () {
 
         baseScope = $rootScope.$new();
 
+
+
         BaseCtrl = $controller('BaseCtrl', {
             $scope: baseScope,
-            user: user
+            user: user,
+            audioPlayer: {}
         });
 
         sinon.stub(CloudcatcherAuth, 'check', function () {

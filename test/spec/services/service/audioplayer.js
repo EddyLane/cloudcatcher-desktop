@@ -45,30 +45,19 @@ describe('Service: AudioPlayer', function () {
     describe('default options', function () {
 
         it('should $emit on $rootScope when a track starts playing', inject(function (AudioPlayer) {
-            var sound = { media: { url: 'testurl.mp3' } };
+            var sound = { data: { media: { url: 'testurl.mp3' } } };
             expect(soundManager.defaultOptions.onplay).to.be.a('function');
             soundManager.defaultOptions.onplay.call(sound);
             expect($rootScope.$emit).to.have.been.calledOnce.and.calledWithExactly('onPlay', sound);
 
         }));
 
-        it('should $emit on $rootScope while a track is playing', inject(function (AudioPlayer) {
+        it('should $emit on $rootScope while a track is playing with the current position', inject(function (AudioPlayer) {
+            var sound = { position: 130, duration: 1200, data: {} };
             expect(soundManager.defaultOptions.whileplaying).to.be.a('function');
-        }));
-
-        it('should automatically play a track when loaded', inject(function (AudioPlayer) {
-
-            var sound = { play: function () {} };
-            sinon.spy(sound, 'play');
-
-            expect(soundManager.defaultOptions.autoLoad).to.be.true;
-            expect(soundManager.defaultOptions.onload).to.be.a('function');
-
-            soundManager.defaultOptions.onload.call(sound);
-            expect(sound.play).to.have.been.calledOnce;
-
-            sound.play.restore();
-
+            soundManager.defaultOptions.whileplaying.call(sound);
+            expect(sound.data.progress).to.equal((sound.position / sound.duration) * 100)
+            expect($rootScope.$emit).to.have.been.calledOnce.and.calledWithExactly('whilePlaying', sound);
         }));
 
     });
@@ -96,6 +85,34 @@ describe('Service: AudioPlayer', function () {
         expect(call.data).to.equal(sound).and.deep.equal(sound);
 
     }));
+
+    it('should automatically play a track when loaded from position 0 if new sound', inject(function (AudioPlayer) {
+        var ep = { media: { url: 'testurl.mp3' } };
+        var resolved = resolveService(AudioPlayer);
+        var sound = resolved.play(ep);
+        sound.play = sinon.stub();
+        sound.onload();
+        expect(sound.play).to.have.been.calledOnce.and.calledWithExactly({ position: 0 });
+    }));
+
+    it('should automatically play a track when loaded from position specified if existing sound', inject(function (AudioPlayer) {
+        var ep = { media: { url: 'testurl.mp3' }, position: 54.414 };
+        var resolved = resolveService(AudioPlayer);
+        var sound = resolved.play(ep);
+        sound.play = sinon.stub();
+        sound.onload();
+        expect(sound.play).to.have.been.calledOnce.and.calledWithExactly({ position: 54.414 });
+    }));
+
+    describe('Events', function () {
+
+        it('set the position of the currently loaded file on scrub', function () {
+
+            $rootScope.$emit('scrub', 45.5124);
+
+        });
+
+    });
 
 
 });

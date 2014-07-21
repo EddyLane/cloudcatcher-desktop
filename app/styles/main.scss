@@ -6,8 +6,6 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/vendor/assets/font
 // endbower
 @import '../../bower_components/bootswatch-scss/flatly/_bootswatch';
 
-
-
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -33,6 +31,24 @@ body {
   /* Set the fixed height of the footer here */
   height: 60px;
   background-color: #f5f5f5;
+
+  .progress {
+    margin: 0px;
+    border: 1px solid #fff;
+    position: absolute;
+    cursor: pointer;
+    left: 0px;
+    right: 0px;
+    top: -5px;
+    .progress-bar {
+    }
+  }
+
+  img {
+    position: relative;
+    top: -10px;
+  }
+
 }
 
 .main-content {
@@ -53,13 +69,16 @@ body {
   padding: 15px;
   margin: 0 auto;
 }
+
 .form-signin .form-signin-heading,
 .form-signin .checkbox {
   margin-bottom: 10px;
 }
+
 .form-signin .checkbox {
   font-weight: normal;
 }
+
 .form-signin .form-control {
   position: relative;
   height: auto;
@@ -69,14 +88,17 @@ body {
   padding: 10px;
   font-size: 16px;
 }
+
 .form-signin .form-control:focus {
   z-index: 2;
 }
+
 .form-signin input[type="text"] {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
+
 .form-signin input[type="password"] {
   margin-bottom: 10px;
   border-top-left-radius: 0;
@@ -132,12 +154,12 @@ body {
  * Main content
  */
 
-.main {
+.main, .footer {
   padding: 20px;
 }
 
 @media (min-width: 768px) {
-  .main {
+  .main, .footer {
     padding-right: 40px;
     padding-left: 40px;
   }
@@ -193,8 +215,6 @@ body {
 
 .footer {
   div.now-playing-image {
-    padding-top: 10px;
-    float: left;
     img {
       width: 40px;
       height: 40px;
@@ -203,7 +223,7 @@ body {
 
   p {
     float: left;
-    padding-top: 21px;
+//    padding-top: 21px;
     padding-left: 10px;
   }
 
@@ -224,16 +244,28 @@ body {
   }
 }
 
-
 .card {
   background: white;
   width: 30%;
-  margin: 0 12px 12px 0 ;
-  box-shadow:-1px 1px 3px 1px lightgrey;
+  margin: 0 12px 12px 0;
+  box-shadow: -1px 1px 3px 1px lightgrey;
   padding: 2%;
   border-radius: 3px;
   cursor: pointer;
   -webkit-box-sizing: border-box;
   -mox-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+.navbar-toggle {
+  border: 1px solid #000;
+}
+
+p.now-playing-title {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  top:10px;
 }

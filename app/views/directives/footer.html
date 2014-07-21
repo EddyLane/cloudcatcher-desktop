@@ -1,8 +1,57 @@
-<div class="container">
-    <div class="now-playing-image float-left">
-        <img ng-src="{{ playing.image }}" class="img-circle">
+<div class="container-fluid main-content">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar text-center">
+            Sidebar
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-1 col-sm-2 col-xs-3 col-lg-1">
+                            <img ng-src="{{ playing.image }}" class="img-circle img-responsive" style="max-height: 40px">
+                    </div>
+                    <div class="col-md-11 col-sm-10 col-xs-9 col-lg-11" class="now-playing-title">
+                        <div class="progress" cc-progress-bar>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="{{ playing.progress }}" aria-valuemin="0" aria-valuemax="100" ng-style="{ 'width': playing.progress + '%' }">
+                            {{ playing.progress|number:0 }}%
+                            </div>
+                        </div>
+                        <p class="text-muted float-left now-playing-title" now-playing-title>
+                            {{ playing.title }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
-    <p class="text-muted float-left">
-        {{ playing.title }}
-    </p>
 </div>
+
+<!--<div class="container-fluid">-->
+    <!--<div class="row">-->
+        <!--<div class="col-sm-3 col-md-2 sidebar">-->
+
+        <!--</div>-->
+        <!--<div class="col-sm-1 col-md-2">-->
+
+        <!--</div>-->
+        <!--<div class="col-md-1" style="background: orange">-->
+
+        <!--</div>-->
+        <!--<div class="col-md-3" style="background: blue;">-->
+            <!--<p class="text-muted float-left hidden-xs" now-playing-title>-->
+                <!--{{ playing.title }}-->
+            <!--</p>-->
+        <!--</div>-->
+        <!--<div class="col-md-6">-->
+            <!--<div class="progress">-->
+                <!--<div class="progress-bar" role="progressbar" aria-valuenow="{{ playing.progress }}" aria-valuemin="0" aria-valuemax="100" ng-style="{ 'width': playing.progress + '%' }">-->
+                    <!--{{ playing.progress|number:0 }}%-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-md-2" style="background: black;">-->
+
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

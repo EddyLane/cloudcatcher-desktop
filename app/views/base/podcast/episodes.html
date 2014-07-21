@@ -1,4 +1,6 @@
-<button class="btn pull-right" ng-click="markAllAsPlayed()">Mark all as played</button>
+<div class="btn-toolbar" style="padding: 15px 0px;">
+    <button class="btn btn-sm pull-right" ng-click="markAllAsPlayed()">Mark all as played</button>
+</div>
 
 <div class="table-responsive">
     <table class="table table-striped table-hover episode-table">
@@ -7,7 +9,7 @@
             <th class="action"></th>
             <th class="action"></th>
             <th>Title</th>
-            <th>Date</th>
+            <th class="hidden-xs">Date</th>
         </tr>
         </thead>
         <tbody>
@@ -15,11 +17,11 @@
                 <td class="action"><span class="glyphicon glyphicon-play-circle" ng-show="current.media.url === episode.media.url"></span></td>
                 <td class="action"><span class="label label-primary" ng-if="heard.indexOf(episode.media.url) === -1">New</span></td>
                 <td>{{ episode.title }}</td>
-                <td>{{ episode.date | amDateFormat:'dddd, MMMM Do YYYY' }}</td>
+                <td class="hidden-xs">{{ episode.date | amDateFormat:'dddd, MMMM Do YYYY' }}</td>
             </tr>
         </tbody>
     </table>
 
-    <pagination ng-model="page" total-items="total" items-per-page="limit" ng-show="total > limit" boundary-links="true" max-size="5" rotate="false"></pagination>
-
+    <pagination ng-model="page" total-items="total" items-per-page="limit" ng-show="total > limit" boundary-links="true" max-size="5" rotate="false" class="hidden-xs"></pagination>
+    <pager total-items="total" ng-model="page" ng-show="total > limit" class="hidden-md hidden-lg hidden-sm"></pager>
 </div>

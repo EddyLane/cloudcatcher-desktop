@@ -1,7 +1,7 @@
-<div class="navbar navbar-fixed-top" role="navigation">
+<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" ng-click="isCollapsed = !isCollapsed">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -9,11 +9,19 @@
             </button>
             <a class="navbar-brand" href="#">cloudcatcher.io</a>
         </div>
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse" collapse="isCollapsed">
             <ul class="nav navbar-nav navbar-right">
                 <li ui-sref-active="active"><a ui-sref="base.podcasts">Podcasts</a></li>
             </ul>
             <cc-search-form></cc-search-form>
+            <form class="navbar-form navbar-right" role="form" cc-audio-controls>
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon" ng-class="{
+                        'glyphicon-pause': playing,
+                        'glyphicon-play': !playing
+                    }"></span>
+                </button>
+            </form>
         </div>
     </div>
 </div>
@@ -22,7 +30,7 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar podcast-list">
-                <li ng-repeat="podcast in podcasts | orderBy:podcast.newEpisodes:false" ui-sref-active="active"><a ui-sref="base.podcast.episodes({ slug: podcast.slug })"><img ng-src="{{ podcast.artwork.30 }}"> <span class="badge badge-primary"><span ng-if="podcast.newEpisodes > 0">{{ podcast.newEpisodes }}</span></span> {{ podcast.name }}</a></li>
+                <li ng-repeat="podcast in podcasts | orderBy:podcast.newEpisodes:false" ui-sref-active="active"><a ui-sref="base.podcast.episodes({ slug: podcast.slug })"><img ng-src="{{ podcast.artwork.30 }}" class="img-rounded"> <span class="badge badge-primary"><span ng-if="podcast.newEpisodes > 0">{{ podcast.newEpisodes }}</span></span> {{ podcast.name }}</a></li>
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ui-view></div>

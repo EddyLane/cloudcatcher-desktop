@@ -8,7 +8,15 @@
  * Controller of the cloudcatcherDesktopApp
  */
 angular.module('cloudcatcherDesktopApp')
-    .controller('BaseCtrl', function ($scope, user) {
-        $scope.podcasts = user.getPodcasts();
-        $scope.currentPlaying = user.getCurrentPlaying();
+    .controller('BaseCtrl', function ($scope, user, audioPlayer) {
+        _.assign($scope, {
+            podcasts: user.getPodcasts(),
+            currentPlaying: user.getCurrentPlaying(),
+            isCollapsed: true
+        });
+
+        if ($scope.currentPlaying) {
+            audioPlayer.play($scope.currentPlaying);
+        }
+
     });
