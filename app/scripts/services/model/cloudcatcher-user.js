@@ -125,6 +125,9 @@ angular.module('cloudcatcherSharedServices')
                 user.updateCurrentPlaying(episode);
             });
 
+            $rootScope.$on('whileLoading', function (event, episode) {
+                user.updateCurrentPlaying(episode);
+            });
             return user;
         }
     });

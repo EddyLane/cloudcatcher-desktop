@@ -191,7 +191,9 @@ body {
   border-radius: 50%;
 }
 
-.podcast-list li a {
+
+
+.podcast-list-group a {
 
   -webkit-transition: color 0.6s, background-color 0.3s;
   -moz-transition: color 0.6s, background-color 0.3s;
@@ -211,6 +213,16 @@ body {
     -ms-animation: bounceOut 1s;
     animation: bounceOut 1s;
   }
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  img {
+    max-width: 18px;
+    max-height: 18px;
+  }
+
 }
 
 .footer {

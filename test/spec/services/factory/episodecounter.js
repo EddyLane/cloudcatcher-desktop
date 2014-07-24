@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Service: EpisodeCounter', function () {
+describe.only('Service: EpisodeCounter', function () {
 
     // load the service's module
     beforeEach(module('cloudcatcherSharedServices'));
@@ -10,9 +10,19 @@ describe('Service: EpisodeCounter', function () {
         GoogleFeedApi,
         $rootScope,
         $q,
-        podcasts;
+        podcasts,
+        defaultEpisodes;
+
+    function resolveFeed (feed) {
+        return [
+            { media: { url: feed.q + '-episode1', date: "Wed, 17 Jul 2014 16:45:00 +0100" } },
+            { media: { url: feed.q + '-episode2', date: "Wed, 17 Jul 2014 13:45:00 +0100" } },
+            { media: { url: feed.q + '-episode3', date: "Wed, 16 Jul 2014 16:45:00 +0100" } }
+        ];
+    }
 
     beforeEach(inject(function (_EpisodeCounter_, _GoogleFeedApi_, _$q_, _$rootScope_) {
+
         EpisodeCounter = _EpisodeCounter_;
         GoogleFeedApi = _GoogleFeedApi_;
         $q = _$q_;
@@ -67,11 +77,7 @@ describe('Service: EpisodeCounter', function () {
         var feedSpy = {
             getList: function (thing, feed) {
                 var defer = $q.defer();
-                defer.resolve([
-                    { media: { url: feed.q + '-episode1' } },
-                    { media: { url: feed.q + '-episode2' } },
-                    { media: { url: feed.q + '-episode3' } }
-                ]);
+                defer.resolve(resolveFeed(feed));
                 return defer.promise;
             }
         };
@@ -205,15 +211,10 @@ describe('Service: EpisodeCounter', function () {
         var feedSpy = {
             getList: function (thing, feed) {
                 var defer = $q.defer();
-                defer.resolve([
-                    { media: { url: feed.q + '-episode1' } },
-                    { media: { url: feed.q + '-episode2' } },
-                    { media: { url: feed.q + '-episode3' } }
-                ]);
+                defer.resolve(resolveFeed(feed));
                 return defer.promise;
             }
         };
-        sinon.spy(feedSpy, 'getList');
 
         sinon.stub(GoogleFeedApi, 'one', function () {
             return feedSpy;
@@ -228,7 +229,32 @@ describe('Service: EpisodeCounter', function () {
         expect(podcasts[2].newEpisodes).to.equal(3);
 
         GoogleFeedApi.one.restore();
-        feedSpy.getList.restore();
+
+    });
+
+    it('should reset the last episode property on each podcast', function () {
+
+        var feedSpy = {
+            getList: function (thing, feed) {
+                var defer = $q.defer();
+                defer.resolve(resolveFeed(feed));
+                return defer.promise;
+            }
+        };
+
+        sinon.stub(GoogleFeedApi, 'one', function () {
+            return feedSpy;
+        });
+
+        EpisodeCounter(podcasts);
+
+        $rootScope.$apply();
+
+        expect(podcasts[0].newEpisodes).to.equal(3);
+
+        expect(podcasts[0].latest).to.equal('Wed, 17 Jul 2014 16:45:00 +0100');
+
+        GoogleFeedApi.one.restore();
 
     });
 

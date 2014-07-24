@@ -19,15 +19,12 @@ angular.module('cloudcatcherSharedServices')
 
                 promise.then(function (episodes) {
                     var all;
-
                     podcast.episodes = {};
 
                     _.each(episodes, function (episode) {
-
                         if (episode.media && episode.media.url) {
                             podcast.episodes[episode.media.url] = podcast.heard.indexOf(episode.media.url) !== -1;
                         }
-
                     });
 
                     all = _.values(podcast.episodes);

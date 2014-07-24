@@ -11,5 +11,5 @@ angular.module('cloudcatcherDesktopApp')
     .controller('BasepodcastsCtrl', function ($scope, $timeout, podcasts) {
         $timeout(function () {
             $scope.listPodcasts = podcasts;
-        }, 1500);
+        }, 200);
     });

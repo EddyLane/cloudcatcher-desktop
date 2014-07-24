@@ -18,6 +18,10 @@ describe('Service: AudioPlayer', function () {
             soundManagerSetup = args;
         });
 
+        sinon.stub(soundManager, 'stopAll', function () {
+
+        });
+
         sinon.stub(soundManager, 'createSound', function (sound) {
             return sound;
         });
@@ -29,6 +33,7 @@ describe('Service: AudioPlayer', function () {
     afterEach(function () {
         soundManager.setup.restore();
         soundManager.createSound.restore();
+        soundManager.stopAll.restore();
         $rootScope.$emit.restore();
     });
 
@@ -92,6 +97,7 @@ describe('Service: AudioPlayer', function () {
         var sound = resolved.play(ep);
         sound.play = sinon.stub();
         sound.onload();
+        expect(soundManager.stopAll).to.have.been.calledOnce;
         expect(sound.play).to.have.been.calledOnce.and.calledWithExactly({ position: 0 });
     }));
 
@@ -101,16 +107,21 @@ describe('Service: AudioPlayer', function () {
         var sound = resolved.play(ep);
         sound.play = sinon.stub();
         sound.onload();
+        expect(soundManager.stopAll).to.have.been.calledOnce;
         expect(sound.play).to.have.been.calledOnce.and.calledWithExactly({ position: 54.414 });
     }));
 
     describe('Events', function () {
 
-        it('set the position of the currently loaded file on scrub', function () {
-
+        it('set the position of the currently loaded file on scrub', inject(function (AudioPlayer) {
+            var ep = { media: { url: 'testurl.mp3' }, position: 54.414 };
+            var resolved = resolveService(AudioPlayer);
+            var sound = resolved.play(ep);
+            sound.duration = 2000;
+            sound.setPosition = sinon.stub();
             $rootScope.$emit('scrub', 45.5124);
-
-        });
+            expect(sound.setPosition).to.have.been.calledOnce.and.calledWith(910.248);
+        }));
 
     });
 

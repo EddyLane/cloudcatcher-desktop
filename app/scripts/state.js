@@ -93,6 +93,9 @@ angular
             resolve: {
                 podcast: ['user', '$stateParams', function (user, $stateParams) {
                     return _.find(user.getPodcasts(), { slug: $stateParams.slug });
+                }],
+                episodes: ['podcast', 'GoogleFeedApi', function (podcast, GoogleFeedApi) {
+                    return GoogleFeedApi.one('load').getList(null, { q: podcast.feed });
                 }]
             },
             controller: 'BasepodcastCtrl'
@@ -101,12 +104,13 @@ angular
         $stateProvider.state('base.podcast.episodes', {
             url: '/episodes',
             templateUrl: 'views/base/podcast/episodes.html',
-            resolve: {
-                episodes: ['podcast', 'GoogleFeedApi', function (podcast, GoogleFeedApi) {
-                    return GoogleFeedApi.one('load').getList(null, { q: podcast.feed });
-                }]
-            },
             controller: 'BasepodcastepisodesCtrl'
+        });
+
+        $stateProvider.state('base.podcast.info', {
+            url: '/info',
+            templateUrl: 'views/base/podcast/info.html',
+            controller: 'PodcastinfoCtrl'
         });
 
         $urlRouterProvider.otherwise('/list');

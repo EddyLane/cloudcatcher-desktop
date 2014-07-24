@@ -27,8 +27,7 @@ describe.skip('Directive: ccProgressBar', function () {
     }));
 
     it('should emit on click', function () {
-//        $(element).click();
-        $(element).trigger('click');
+        angular.element(compiled).triggerHandler('click');
     });
 
 });
