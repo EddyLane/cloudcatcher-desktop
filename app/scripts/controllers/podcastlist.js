@@ -14,7 +14,7 @@
  */
 function PodcastListCtrl ($scope, PodcastSorter) {
 
-    $scope.$watchCollection('original', function (original) {
+    function sort (original) {
 
         var sorter = PodcastSorter.getSorter(original);
 
@@ -25,7 +25,9 @@ function PodcastListCtrl ($scope, PodcastSorter) {
 
         $scope.sortBy($scope.type || 'name');
 
-    });
+    }
+
+    $scope.$watchCollection('original', sort);
 
 }
 
