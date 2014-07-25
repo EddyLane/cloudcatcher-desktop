@@ -35,7 +35,7 @@ angular.module('cloudcatcherSharedServices')
                         amount: result.trackCount,
                         country: result.country,
                         genres: _.without(result.genres, 'Podcasts')
-                    }
+                    };
 
                     return res;
                 });

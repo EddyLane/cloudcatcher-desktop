@@ -1,0 +1,18 @@
+<div class="btn-group btn-group-justified" style="margin-bottom: 12px;">
+    <div class="btn-group btn-group-xs" ng-click="sortBy('name')">
+        <button class="btn btn-primary" tooltip="Sort by name" tooltip-placement="bottom" ng-click="sortBy('name')" ng-class="{ 'active': type === 'name' }"><span class="glyphicon glyphicon-sort-by-alphabet"></span></button>
+    </div>
+    <div class="btn-group btn-group-xs">
+        <button class="btn btn-primary" tooltip="Sort by newest" tooltip-placement="bottom" ng-click="sortBy('latest')" ng-class="{ 'active': type === 'latest' }"><span class="glyphicon glyphicon-sort-by-order"></span></button>
+    </div>
+    <div class="btn-group btn-group-xs">
+        <button class="btn btn-primary" tooltip="Sort by unheard" tooltip-placement="bottom" ng-click="sortBy('newEpisodes')" ng-class="{ 'active': type === 'newEpisodes' }"><span class="glyphicon glyphicon-sort-by-attributes"></span></button>
+    </div>
+</div>
+
+<div class="list-group podcast-list-group">
+    <a ng-repeat="podcast in podcasts | orderBy:podcast.newEpisodes" class="list-group-item" ui-sref-active="active" ui-sref="base.podcast.episodes({ slug: podcast.slug })">
+        <span class="badge" ng-show="podcast.newEpisodes">{{ podcast.newEpisodes }}</span><img ng-src="{{ podcast.artwork.30 }}" class="img-rounded"> {{ podcast.name }}
+        <p class="list-group-item-text text-muted" style="font-size: 13px;">{{ podcast.latest|amCalendar }}</p>
+    </a>
+</div>

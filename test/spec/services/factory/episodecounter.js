@@ -1,6 +1,6 @@
 'use strict';
 
-describe.only('Service: EpisodeCounter', function () {
+describe('Service: EpisodeCounter', function () {
 
     // load the service's module
     beforeEach(module('cloudcatcherSharedServices'));
