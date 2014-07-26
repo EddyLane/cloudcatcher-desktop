@@ -65,6 +65,7 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
             return addHeard;
         });
 
+
         BasepodcastepisodesCtrl = $controller('BasepodcastepisodesCtrl', {
             $scope: scope,
             episodes: episodes,
@@ -73,6 +74,9 @@ describe('Controller: BasepodcastepisodesCtrl', function () {
             user: user,
             audioPlayer: audioPlayer
         });
+
+        expect(scope.limit).to.equal(15);
+        scope.limit = 10;
 
 
     }));

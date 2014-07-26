@@ -19,7 +19,7 @@ angular.module('cloudcatcherDesktopApp')
                 addHeard(episode);
             },
             page: $location.search().page || 1,
-            limit: 10,
+            limit: 15,
             total: episodes.length,
             heard: podcast.heard,
             current: user.getCurrentPlaying(),
