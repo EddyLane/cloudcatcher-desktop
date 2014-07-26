@@ -1,6 +1,6 @@
 'use strict';
 
-describe.only('Controller: PodcastlistCtrl', function () {
+describe('Controller: PodcastlistCtrl', function () {
 
     // load the controller's module
     beforeEach(module('cloudcatcherDesktopApp'));

@@ -221,6 +221,26 @@ describe('Factory: Cloudcatcheruser', function () {
 
     });
 
+    it('should allow you to save all podcasts to the $firebase', function () {
+
+        var payload = { title: 'Test2', itunesId: 2 };
+
+        setUpMockFirebase();
+
+        sinon.spy(mockFirebase, '$update');
+
+        expect(user.savePodcast).to.be.a('function');
+
+        user.setPodcasts(mockFirebase);
+
+        user.saveAllPodcasts();
+
+        expect(mockFirebase.$update).to.have.been.calledThrice;
+
+
+
+    });
+
     it('should allow you to mark all episodes of a podcast as played which should persist to firebase, but not add episodes that are already heard, using currying', function () {
 
         var mockFirebase = {

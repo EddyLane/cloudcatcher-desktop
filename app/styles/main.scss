@@ -281,3 +281,24 @@ p.now-playing-title {
   position: relative;
   top:10px;
 }
+
+.unplayed-list {
+
+  img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .episode-content {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .play-button {
+    width: 64px;
+    height: 64px;
+  }
+
+}

@@ -54,14 +54,24 @@ angular
         });
 
         $stateProvider.state('base.podcasts', {
-            url: '/list',
             templateUrl: 'views/base/podcasts.html',
+            abstract: true,
             resolve: {
                 podcasts: ['user', function (user) {
                     return user.getPodcasts();
                 }]
             },
             controller: 'BasepodcastsCtrl'
+        });
+
+        $stateProvider.state('base.podcasts.thumbnails', {
+            url: '/list',
+            templateUrl: 'views/base/podcasts/list.html'
+        });
+
+        $stateProvider.state('base.podcasts.unplayed', {
+            url: '/unplayed',
+            templateUrl: 'views/base/podcasts/unplayed.html'
         });
 
         $stateProvider.state('base.search', {

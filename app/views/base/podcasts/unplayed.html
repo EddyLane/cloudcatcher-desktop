@@ -1,0 +1,11 @@
+<div class="media unplayed-list" ng-repeat="podcast in listPodcasts">
+    <button class="btn pull-right play-button"><span class="glyphicon glyphicon-play"></span></button>
+    <a class="pull-left" ui-sref="base.podcast.episodes({ slug: podcast.slug })">
+        <img class="media-object" ng-src="{{ podcast.artwork.100 }}">
+    </a>
+    <div class="media-body">
+        <h4 class="media-heading">{{ podcast.name }}</h4>
+        <strong>{{ podcast.latest | amCalendar }}</strong>
+        <p class="episode-content">{{ podcast.latestEpisode.content }}</p>
+    </div>
+</div>

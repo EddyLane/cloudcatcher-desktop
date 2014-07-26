@@ -13,16 +13,10 @@ angular.module('cloudcatcherSharedServices')
             current;
 
         soundManager.defaultOptions = {
-//            autoLoad: true,
-            stream: true,
+            autoLoad: true,
 
             onplay: function () {
                 $rootScope.$emit('onPlay', this);
-            },
-
-            whileloading: function () {
-                this.data.loaded = (this.bytesLoaded / this.bytesTotal) * 100;
-                $rootScope.$emit('whileLoading', this);
             },
 
             whileplaying: function () {
@@ -46,13 +40,13 @@ angular.module('cloudcatcherSharedServices')
                         url: episode.media.url,
                         onload: function () {
 
-
+                            this.play({
+                                position: episode.position || 0
+                            });
 
                         }
                     });
-                    sound.play({
-                        from: episode.position || 0
-                    });
+
                     sound.data = episode;
                     current = sound;
                     return sound;
@@ -62,12 +56,8 @@ angular.module('cloudcatcherSharedServices')
 
         $rootScope.$on('scrub', function (e, position) {
             if (current) {
-                position = (current.durationEstimate / 100) * position;
-                current.stop();
-                current.play({
-                    from: position
-                });
-                //current.setPosition(position);
+                position = (current.duration / 100) * position;
+                current.setPosition(position);
             }
         });
 

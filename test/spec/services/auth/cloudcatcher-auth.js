@@ -14,12 +14,21 @@ describe('Service: CloudcatcherAuth', function () {
         EpisodeCounter,
         $q,
         serverResponse,
+        CloudcatcherUser,
         dummyPodcasts,
-        dummyCurrentPlaying;
+        dummyCurrentPlaying,
+        epCounterCb;
+
+
 
     beforeEach(module(function ($provide) {
 
-        EpisodeCounter = sinon.spy();
+        EpisodeCounter = sinon.stub();
+        EpisodeCounter.returns({
+            then: function (fn) {
+                epCounterCb = fn;
+            }
+        });
 
         serverResponse = {
             username: 'Eddy',
@@ -58,16 +67,17 @@ describe('Service: CloudcatcherAuth', function () {
 
         });
 
+
         $provide.constant('EpisodeCounter', EpisodeCounter);
 
     }));
 
     beforeEach(inject(function (_$q_, _CloudcatcherAuth_, _$httpBackend_, _CloudcatcherApi_, _$rootScope_) {
+        $q = _$q_;
         CloudcatcherAuth = _CloudcatcherAuth_;
         $httpBackend = _$httpBackend_;
         CloudcatcherApi = _CloudcatcherApi_;
         $rootScope = _$rootScope_;
-        $q = _$q_;
     }));
 
     it('should have an authenticate method', function () {
@@ -98,7 +108,8 @@ describe('Service: CloudcatcherAuth', function () {
             CloudcatcherAuth.check()
                 .then(function (_res_) {
                     res = _res_;
-                }).catch(function (_res_) {
+                })
+                .catch(function (_res_) {
                     res = _res_;
                 });
 
@@ -127,11 +138,16 @@ describe('Service: CloudcatcherAuth', function () {
             CloudcatcherApi.one.restore();
         });
 
-        it('should call the EpisodeCounter service to count new episodes but only for the actual podcasts in the firebase (plain objects)', function () {
+        it('should call the EpisodeCounter service to count new episodes but only for the actual podcasts in the firebase (plain objects) and then save them', function () {
+            sinon.spy(CloudcatcherUser)
             var res = setUp('resolve', serverResponse),
                 expected = _.cloneDeep(dummyPodcasts);
             delete expected.$on;
+
             expect(EpisodeCounter).to.have.been.calledOnce.and.calledWithExactly(expected);
+            sinon.stub(res, 'saveAllPodcasts', function () {});
+            epCounterCb();
+            expect(res.saveAllPodcasts).to.have.been.calledOnce;
             CloudcatcherApi.one.restore();
         });
 

@@ -74,9 +74,20 @@ angular.module('cloudcatcherSharedServices')
                 },
 
                 savePodcast: function (podcast) {
+                    if (!_.isPlainObject(podcast)) {
+                        return false;
+                    }
                     var update = {};
                     update[_.findKey($podcasts, { itunesId: podcast.itunesId })] = _.omit(podcast, 'episodes');
                     $podcasts.$update(update);
+                    return true;
+                },
+
+                saveAllPodcasts: function () {
+                    var self = this;
+                    _.each($podcasts, function (podcast) {
+                        self.savePodcast(podcast);
+                    });
                 },
 
                 addHeard: function (podcast) {

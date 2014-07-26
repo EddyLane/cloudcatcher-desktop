@@ -19,7 +19,7 @@ angular.module('cloudcatcherSharedServices')
                         obj["@attributes"] = {};
                         for (var j = 0; j < xml.attributes.length; j++) {
                             var attribute = xml.attributes.item(j);
-                            obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+                            obj["@attributes"][attribute.nodeName] = attribute.value;
                         }
                     }
                 } else if (xml.nodeType == 3) {

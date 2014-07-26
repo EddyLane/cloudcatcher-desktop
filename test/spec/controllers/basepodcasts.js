@@ -1,6 +1,6 @@
 'use strict';
 
-describe.skip('Controller: BasepodcastsCtrl', function () {
+describe('Controller: BasepodcastsCtrl', function () {
 
     // load the controller's module
     beforeEach(module('cloudcatcherDesktopApp'));
@@ -11,7 +11,11 @@ describe.skip('Controller: BasepodcastsCtrl', function () {
         $timeout;
 
     // Initialize the controller and a mock scope
-    beforeEach(inject(function ($controller, $rootScope, _$timeout_) {
+    beforeEach(inject(function ($controller, $rootScope, _$timeout_, CloudcatcherAuth) {
+
+        sinon.stub(CloudcatcherAuth, 'check', function () {
+            return true;
+        });
 
         $timeout = _$timeout_;
 
@@ -28,8 +32,7 @@ describe.skip('Controller: BasepodcastsCtrl', function () {
 
     it('should put the users podcasts on the scope', function () {
         $timeout.flush();
-        expect(scope.podcasts).to.equal(podcasts);
-        expect(scope.podcasts).to.deep.equal(podcasts);
-    })
+        expect(scope.listPodcasts).to.equal(podcasts);
+    });
 
 });

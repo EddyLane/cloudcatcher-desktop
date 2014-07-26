@@ -10,14 +10,13 @@ describe('Service: EpisodeCounter', function () {
         GoogleFeedApi,
         $rootScope,
         $q,
-        podcasts,
-        defaultEpisodes;
+        podcasts;
 
     function resolveFeed (feed) {
         return [
-            { media: { url: feed.q + '-episode1', date: "Wed, 17 Jul 2014 16:45:00 +0100" } },
-            { media: { url: feed.q + '-episode2', date: "Wed, 17 Jul 2014 13:45:00 +0100" } },
-            { media: { url: feed.q + '-episode3', date: "Wed, 16 Jul 2014 16:45:00 +0100" } }
+            { media: { url: feed.q + '-episode1' }, date: "2014-04-22T01:30:21.196Z" },
+            { media: { url: feed.q + '-episode2' }, date: "2014-04-22T01:32:21.196Z" },
+            { media: { url: feed.q + '-episode3' }, date: "2014-04-25T01:32:21.196Z" }
         ];
     }
 
@@ -246,16 +245,46 @@ describe('Service: EpisodeCounter', function () {
             return feedSpy;
         });
 
+        var date = new Date();
+        moment = sinon.stub();
+        moment.returns(date);
+
         EpisodeCounter(podcasts);
 
         $rootScope.$apply();
+        expect(moment).to.have.been.calledThrice.and.calledWith("2014-04-22T01:30:21.196Z");
 
         expect(podcasts[0].newEpisodes).to.equal(3);
 
-        expect(podcasts[0].latest).to.equal('Wed, 17 Jul 2014 16:45:00 +0100');
+        expect(podcasts[0].latest).to.equal(date);
 
         GoogleFeedApi.one.restore();
 
     });
 
+
+    it('should add the latest episode to the podcast', function () {
+
+        var feedSpy = {
+            getList: function (thing, feed) {
+                var defer = $q.defer();
+                defer.resolve(resolveFeed(feed));
+                return defer.promise;
+            }
+        };
+
+        sinon.stub(GoogleFeedApi, 'one', function () {
+            return feedSpy;
+        });
+
+        EpisodeCounter(podcasts);
+
+        $rootScope.$apply();
+        expect(podcasts[0].latestEpisode).to.deep.equal({ media: { url: 'feed1-episode1' }, date: "2014-04-22T01:30:21.196Z" });
+        expect(podcasts[1].latestEpisode).to.deep.equal({ media: { url: 'feed2-episode1' }, date: "2014-04-22T01:30:21.196Z" });
+        expect(podcasts[2].latestEpisode).to.deep.equal({ media: { url: 'feed3-episode1' }, date: "2014-04-22T01:30:21.196Z" });
+
+        GoogleFeedApi.one.restore();
+
+    });
 });

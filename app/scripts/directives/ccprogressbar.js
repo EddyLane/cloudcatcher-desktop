@@ -11,9 +11,11 @@ angular.module('cloudcatcherDesktopApp')
         return {
             restrict: 'A',
             link: function postLink(scope, element) {
-                element.on('click', function (e) {
+
+                scope.emit = function (e) {
                     $rootScope.$emit('scrub', (e.offsetX / element.width()) * 100);
-                });
+                };
+
             }
         };
     });
