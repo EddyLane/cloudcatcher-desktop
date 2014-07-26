@@ -120,6 +120,7 @@ describe('Service: AudioPlayer', function () {
             sound.duration = 2000;
             sound.setPosition = sinon.stub();
             $rootScope.$emit('scrub', 45.5124);
+            $rootScope.$apply();
             expect(sound.setPosition).to.have.been.calledOnce.and.calledWith(910.248);
         }));
 

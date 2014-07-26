@@ -71,7 +71,8 @@ angular
 
         $stateProvider.state('base.podcasts.unplayed', {
             url: '/unplayed',
-            templateUrl: 'views/base/podcasts/unplayed.html'
+            templateUrl: 'views/base/podcasts/unplayed.html',
+            controller: 'PodcastsunplayedCtrl'
         });
 
         $stateProvider.state('base.search', {

@@ -15,7 +15,7 @@ function EpisodeCounter($q, GoogleFeedApi) {
      * @returns {Promise}
      * @constructor
      */
-    function EpisodeCounter (podcasts) {
+    function EpisodeCounter(podcasts) {
 
         /**
          * Get the function to map episodes for this podcast
@@ -23,7 +23,7 @@ function EpisodeCounter($q, GoogleFeedApi) {
          * @param podcast
          * @returns {mapEpisodes}
          */
-        function mapEpisodes (podcast) {
+        function mapEpisodes(podcast) {
 
             /**
              * Calculate episode counts for a podcast
@@ -54,7 +54,7 @@ function EpisodeCounter($q, GoogleFeedApi) {
          * @param podcast
          * @returns {Promise}
          */
-        function mapPodcast (podcast) {
+        function mapPodcast(podcast) {
             var promise = GoogleFeedApi.one('load').getList(null, { q: podcast.feed });
             if (!podcast.heard) {
                 podcast.heard = [];
