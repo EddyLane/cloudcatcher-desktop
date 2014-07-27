@@ -55,13 +55,44 @@ function EpisodeCounter($q, GoogleFeedApi) {
          * @returns {Promise}
          */
         function mapPodcast(podcast) {
+
             var promise = GoogleFeedApi.one('load').getList(null, { q: podcast.feed });
+
             if (!podcast.heard) {
                 podcast.heard = [];
             }
+
             promise.then(mapEpisodes(podcast));
+
             return promise;
         }
+
+
+
+        //Experiment: recursively call the refreshses
+
+        /*
+        var defer = $q.defer();
+        var arrayPodcasts = _.toArray(podcasts);
+
+        function loop(i) {
+            mapPodcast(arrayPodcasts[i]).then(function () {
+                if (i < arrayPodcasts.length - 1) {
+                    i++;
+                    loop(i);
+                } else {
+                    defer.resolve();
+                }
+            });
+        }
+
+        loop(0);
+        return defer.promise;
+        */
+
+
+
+        //Normal way
 
         return $q.all(_.map(podcasts, mapPodcast));
 

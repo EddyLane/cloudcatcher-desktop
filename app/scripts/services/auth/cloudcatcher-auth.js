@@ -10,7 +10,7 @@
  * @param EpisodeCounter
  * @constructor
  */
-function CloudcatcherAuth($q, CloudcatcherApi, CloudcatcherUser, FirebaseAuth, EpisodeCounter) {
+function CloudcatcherAuth($q, $timeout, $log, CloudcatcherApi, CloudcatcherUser, FirebaseAuth, EpisodeCounter) {
 
     /**
      * Handle setting all firebase data on the CloudcatcherUser instance
@@ -34,9 +34,14 @@ function CloudcatcherAuth($q, CloudcatcherApi, CloudcatcherUser, FirebaseAuth, E
                 }
             });
 
-            EpisodeCounter(count).then(function () {
-                user.saveAllPodcasts();
-            });
+//            $timeout(function () {
+                $log.info('podcast refresh started');
+                EpisodeCounter(count).then(function () {
+                    user.saveAllPodcasts();
+                    $log.info('podcast refresh completed');
+                });
+//            }, 7000);
+
 
             return $q.when(user.setPodcasts(podcasts));
         }
