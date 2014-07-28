@@ -40,7 +40,7 @@ function CloudcatcherAuth($q, $timeout, $log, CloudcatcherApi, CloudcatcherUser,
                     user.saveAllPodcasts();
                     $log.info('podcast refresh completed');
                 });
-//            }, 7000);
+//            }, 100);
 
 
             return $q.when(user.setPodcasts(podcasts));

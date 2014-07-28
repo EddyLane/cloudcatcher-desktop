@@ -71,30 +71,49 @@ function EpisodeCounter($q, GoogleFeedApi) {
 
         //Experiment: recursively call the refreshses
 
-        /*
+
         var defer = $q.defer();
         var arrayPodcasts = _.toArray(podcasts);
 
         function loop(i) {
-            mapPodcast(arrayPodcasts[i]).then(function () {
-                if (i < arrayPodcasts.length - 1) {
-                    i++;
-                    loop(i);
-                } else {
-                    defer.resolve();
-                }
+
+            var worker = new Worker('scripts/workers/episode-counter-worker.js');
+
+            worker.addEventListener('message', function (e) {
+                console.log('Worker said: ', e.data);
+            }, false);
+
+
+            GoogleFeedApi.one('load').getList(null, { q: arrayPodcasts[i].feed }).then(function (e) {
+                console.log(JSON.stringify(GoogleFeedApi.stripRestangular(e)));
+                worker.postMessage(JSON.stringify(GoogleFeedApi.stripRestangular(e)));
             });
+
+
+//            mapPodcast(arrayPodcasts[i]).then(function () {
+//                if (i < arrayPodcasts.length - 1) {
+//                    i++;
+//                    loop(i);
+//                } else {
+//                    defer.resolve();
+//                }
+//            });
         }
 
         loop(0);
         return defer.promise;
-        */
+
 
 
 
         //Normal way
+        //return $q.all(_.map(podcasts, mapPodcast));
 
-        return $q.all(_.map(podcasts, mapPodcast));
+        //Worker way
+        var defer = $q.defer();
+
+
+        return defer.promise;
 
     }
 
