@@ -1,6 +1,7 @@
 'use strict';
 
 /**
+ * @ngInject
  * @param $q
  * @param GoogleFeedApi
  * @returns {EpisodeCounter}

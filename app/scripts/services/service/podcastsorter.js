@@ -1,13 +1,10 @@
 'use strict';
 
 /**
- * @ngdoc service
- * @name cloudcatcherDesktopApp.PodcastSorter
- * @description
- * # PodcastSorter
- * Service in the cloudcatcherDesktopApp.
+ * @ngInject
+ * @returns {{}}
+ * @constructor
  */
-
 function PodcastSorter() {
 
     var PodcastSorter = {};
@@ -42,5 +39,12 @@ function PodcastSorter() {
 
 }
 
+/**
+ * @ngdoc service
+ * @name cloudcatcherDesktopApp.PodcastSorter
+ * @description
+ * # PodcastSorter
+ * Service in the cloudcatcherDesktopApp.
+ */
 angular.module('cloudcatcherSharedServices')
     .service('PodcastSorter', PodcastSorter);

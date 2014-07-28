@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- *
+ * @ngInject
  * @param $log
  * @param $q
  * @param $firebase

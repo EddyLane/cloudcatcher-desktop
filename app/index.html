@@ -2,11 +2,11 @@
 <html class="no-js">
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>cloudcatcher.io</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css styles/vendor.css -->
+    <!-- build:css(./) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/angular-loading-bar/src/loading-bar.css" />
     <!-- endbower -->
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
 </head>
-<body ng-app="cloudcatcherDesktopApp">
+<body ng-app="cloudcatcherDesktopApp" ng-strict-di>
 
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
@@ -48,11 +48,10 @@
 <script src="bower_components/json3/lib/json3.min.js"></script>
 <![endif]-->
 
-<!-- build:js scripts/vendor.js -->
+<!-- build:js(./) scripts/vendor.js -->
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/json3/lib/json3.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>

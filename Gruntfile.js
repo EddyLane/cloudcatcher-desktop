@@ -21,6 +21,8 @@ module.exports = function (grunt) {
         dist: 'dist'
     };
 
+    grunt.loadNpmTasks('grunt-ng-annotate');
+
     // Define the configuration for all the tasks
     grunt.initConfig({
 
@@ -362,6 +364,22 @@ module.exports = function (grunt) {
             }
         },
 
+        ngAnnotate: {
+            options: {
+                add: true
+            },
+            dist: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: '.tmp/concat/scripts',
+                        src: '*.js',
+                        dest: '.tmp/concat/scripts'
+                    }
+                ]
+            }
+        },
+
         // Replace Google CDN references
         cdnify: {
             dist: {
@@ -383,6 +401,7 @@ module.exports = function (grunt) {
                             '.htaccess',
                             '*.html',
                             'views/{,*/}*.html',
+                            'views/{,*/}{,*/}*.html',
                             'images/{,*/}*.{webp}',
                             'fonts/*'
                         ]
@@ -470,7 +489,7 @@ module.exports = function (grunt) {
         'concurrent:dist',
         'autoprefixer',
         'concat',
-        'ngmin',
+        'ngAnnotate',
         'copy:dist',
         'cdnify',
         'cssmin',

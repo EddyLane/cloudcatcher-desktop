@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- *
+ * @ngInject
  * @param EpisodeCounter
  * @param $rootScope
  * @returns {User}
