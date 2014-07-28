@@ -107,7 +107,7 @@ function CloudcatcherAuth($q, $timeout, $log, CloudcatcherApi, CloudcatcherUser,
      * @returns {*}
      */
     this.check = function () {
-        return getUserData(CloudcatcherApi.one('users', 'me').get());
+        return this.user || getUserData(CloudcatcherApi.one('users', 'me').get());
     };
 
     /**
@@ -118,7 +118,14 @@ function CloudcatcherAuth($q, $timeout, $log, CloudcatcherApi, CloudcatcherUser,
      * @returns {*}
      */
     this.authenticate = function (username, password) {
-        return getUserData(CloudcatcherApi.one('security').post('login', { username: username, password: password }));
+        var self = this;
+        var user = getUserData(CloudcatcherApi.one('security').post('login', { username: username, password: password }));
+
+        user.then(function (user) {
+            self.user = user;
+        });
+
+        return user;
     };
 }
 
