@@ -11,6 +11,7 @@ angular.module('cloudcatcherSharedServices')
     .factory('CloudcatcherApi', function CloudcatcherApi(Restangular, CLOUDCATCHER_URL) {
         return Restangular.withConfig(function (RestangularConfigurer) {
             RestangularConfigurer.setBaseUrl(CLOUDCATCHER_URL);
+            RestangularConfigurer.setDefaultHttpFields({ withCredentials: true });
             RestangularConfigurer.addFullRequestInterceptor(function (element, operation, route, url, headers, params, httpConfig) {
 
                 headers = headers || {};
