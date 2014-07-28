@@ -93,6 +93,29 @@ module.exports = function (grunt) {
             }
         },
 
+        ngconstant: {
+            options: {
+                name: 'cloudcatcherConstants',
+                dest: 'app/scripts/services/constants.js'
+            },
+            serve: {
+                constants: {
+                    ITUNES_URL: 'https://itunes.apple.com/',
+                    CLOUDCATCHER_URL: 'http://app.angular-symfony-stripe.local:8080/app_dev.php/api/v1/',
+                    GOOGLE_FEED_URL: '//ajax.googleapis.com/ajax/services/feed/',
+                    FIREBASE_URL: 'https://podcatcher.firebaseio.com'
+                }
+            },
+            build: {
+                constants: {
+                    ITUNES_URL: 'https://itunes.apple.com/',
+                    CLOUDCATCHER_URL: 'https://arcane-river-7182.herokuapp.com/api/v1/',
+                    GOOGLE_FEED_URL: '//ajax.googleapis.com/ajax/services/feed/',
+                    FIREBASE_URL: 'https://podcatcher.firebaseio.com'
+                }
+            }
+        },
+
         // The actual grunt server settings
         connect: {
             options: {
@@ -459,6 +482,7 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
+            'ngconstant:serve',
             'wiredep',
             'concurrent:server',
             'autoprefixer',
@@ -484,6 +508,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean:dist',
         'ngtemplates',
+        'ngconstant:build',
         'wiredep',
         'useminPrepare',
         'concurrent:dist',
