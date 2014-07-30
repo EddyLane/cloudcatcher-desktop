@@ -21,7 +21,7 @@ angular.module('cloudcatcherDesktopApp')
             page: $location.search().page || 1,
             limit: 15,
             total: episodes.length,
-            heard: podcast.heard,
+            podcast: podcast,
             current: user.getCurrentPlaying(),
 
             markAllAsPlayed: function () {

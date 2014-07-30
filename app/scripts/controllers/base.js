@@ -15,7 +15,7 @@ angular.module('cloudcatcherDesktopApp')
             isCollapsed: true
         });
 
-        if ($scope.currentPlaying) {
+        if ($scope.currentPlaying && $scope.currentPlaying.media) {
             audioPlayer.play($scope.currentPlaying);
         }
 

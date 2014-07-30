@@ -15,7 +15,7 @@
         <tbody>
             <tr ng-repeat="episode in episodes" ng-click="listen(episode)">
                 <td class="action"><span class="glyphicon glyphicon-play-circle" ng-show="current.media.url === episode.media.url"></span></td>
-                <td class="action"><span class="label label-primary" ng-if="heard.indexOf(episode.media.url) === -1">New</span></td>
+                <td class="action"><span class="label label-primary" ng-if="!podcast.heard || podcast.heard.indexOf(episode.media.url) === -1">New</span></td>
                 <td>{{ episode.title }}</td>
                 <td class="hidden-xs">{{ episode.date | amDateFormat:'dddd, MMMM Do YYYY' }}</td>
             </tr>
