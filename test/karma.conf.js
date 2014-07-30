@@ -34,7 +34,7 @@ module.exports = function (config) {
             'bower_components/angular-bootstrap/ui-bootstrap.js',
             'bower_components/restangular/dist/restangular.js',
             'bower_components/firebase/firebase.js',
-            'bower_components/angularfire/angularFire.js',
+            'bower_components/angularfire/angularfire.js',
             'bower_components/angular-xml/angular-xml.js',
             'bower_components/soundmanager2/script/soundmanager2-nodebug.js',
             'bower_components/moment/moment.js',
@@ -43,11 +43,6 @@ module.exports = function (config) {
 
             'app/scripts/**/*.js',
 
-            'app/scripts/services/app.js',
-            'app/scripts/services/**/!(app).js',
-
-            'test/mock/**/*.js',
-            'test/spec/**/*.js',
             'test/spec/**/**/*.js',
 
             '.tmp/scripts/templates.js'
