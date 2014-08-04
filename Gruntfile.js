@@ -119,10 +119,10 @@ module.exports = function (grunt) {
         // The actual grunt server settings
         connect: {
             options: {
-                port: 9000,
+                port: 9001,
                 // Change this to '0.0.0.0' to access the server from outside.
                 hostname: 'localhost',
-                livereload: 35730
+                livereload: 35731
             },
             livereload: {
                 options: {
@@ -222,7 +222,10 @@ module.exports = function (grunt) {
             app: {
                 src: ['<%= yeoman.app %>/index.html'],
                 ignorePath: new RegExp('^<%= yeoman.app %>/|../'),
-                exclude: ['bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/']
+                exclude: [
+                    'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/',
+                    'bower_components/lodash/dist/'
+                ]
             },
             sass: {
                 src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
@@ -281,7 +284,7 @@ module.exports = function (grunt) {
                 flow: {
                     html: {
                         steps: {
-                            js: ['concat', 'uglifyjs'],
+                            js: ['concat'],
                             css: ['cssmin']
                         },
                         post: {}
@@ -423,6 +426,9 @@ module.exports = function (grunt) {
                             '*.{ico,png,txt}',
                             '.htaccess',
                             '*.html',
+                            'manifest.json',
+                            '*.png',
+                            'background.js',
                             'views/{,*/}*.html',
                             'views/{,*/}{,*/}*.html',
                             'images/{,*/}*.{webp}',
@@ -517,7 +523,8 @@ module.exports = function (grunt) {
         'copy:dist',
         'cdnify',
         'cssmin',
-        'uglify',
+//        'ngAnnotate',
+//        'uglify',
         'filerev',
         'usemin',
         'htmlmin'

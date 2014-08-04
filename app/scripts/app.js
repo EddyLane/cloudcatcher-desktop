@@ -1,5 +1,7 @@
 'use strict';
 
+Firebase.INTERNAL.forceWebSockets();
+
 /**
  * @ngdoc overview
  * @name cloudcatcherDesktopApp
@@ -19,4 +21,5 @@ angular
         'angularMoment',
         'ngFx'
     ])
+    .constant('PLACEHOLDER_IMAGE', 'loading.gif')
 ;

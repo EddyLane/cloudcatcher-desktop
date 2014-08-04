@@ -57,7 +57,7 @@ angular
             templateUrl: 'views/base/podcasts.html',
             abstract: true,
             resolve: {
-                podcasts: ['user', function (user) {
+                original: ['user', function (user) {
                     return user.getPodcasts();
                 }]
             },
