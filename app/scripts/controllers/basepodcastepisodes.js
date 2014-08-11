@@ -10,7 +10,7 @@
  * @param audioPlayer
  * @constructor
  */
-function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, audioPlayer) {
+function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, audioPlayer, EpisodeStorage) {
 
     var addHeard = user.addHeard(podcast),
         hearAll = user.hearAll(podcast);
@@ -28,7 +28,9 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, au
 
         markAllAsPlayed: function () {
             hearAll(episodes);
-        }
+        },
+
+        store: EpisodeStorage.storeEpisode
 
     });
 
