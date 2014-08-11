@@ -222,7 +222,10 @@ module.exports = function (grunt) {
             app: {
                 src: ['<%= yeoman.app %>/index.html'],
                 ignorePath: new RegExp('^<%= yeoman.app %>/|../'),
-                exclude: ['bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/']
+                exclude: [
+                    'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/',
+                    'bower_components/cloudcatcher-shared-services/dist/'
+                ]
             },
             sass: {
                 src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
