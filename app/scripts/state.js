@@ -103,7 +103,9 @@ angular
             templateUrl: 'views/base/podcast.html',
             resolve: {
                 podcast: ['user', '$stateParams', function (user, $stateParams) {
-                    return _.find(user.getPodcasts(), { slug: $stateParams.slug });
+                    return user.getPodcasts().$loaded().then(function (podcasts) {
+                        return _.find(podcasts, { slug: $stateParams.slug });
+                    });
                 }],
                 episodes: ['podcast', 'GoogleFeedApi', function (podcast, GoogleFeedApi) {
                     return GoogleFeedApi.one('load').getList(null, { q: podcast.feed });
