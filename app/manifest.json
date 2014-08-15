@@ -19,8 +19,11 @@
         "https://ssl.gstatic.com/",
         "https://www.googleapis.com/",
         "https://podcatcher.firebaseio.com/",
+        "http://ajax.googleapis.com/",
         "storage",
         "webview",
-        "<all_urls>"
+        "<all_urls>",
+        "unlimitedStorage",
+        "downloads"
     ]
 }

@@ -21,9 +21,9 @@ angular
         'angularMoment',
         'ngFx'
     ])
+    .constant('PLACEHOLDER_IMAGE', 'loading.gif')
     .config(function ($compileProvider) {
         //$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|blob:chrome-extension|unsafe:blob:chrome-extension):/);
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob):|data:image\//);
     })
-    .constant('PLACEHOLDER_IMAGE', 'loading.gif')
 ;
