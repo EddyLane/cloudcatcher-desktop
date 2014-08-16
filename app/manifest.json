@@ -23,7 +23,6 @@
         "storage",
         "webview",
         "<all_urls>",
-        "unlimitedStorage",
-        "downloads"
+        "unlimitedStorage"
     ]
 }

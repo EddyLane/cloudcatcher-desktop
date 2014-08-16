@@ -11,18 +11,18 @@
             <th>Title</th>
             <th class="hidden-xs">Date</th>
             <th></th>
-            <th></th>
 
         </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="episode in episodes" ng-click="listen(episode)">
+            <tr ng-repeat="episode in episodes">
                 <td class="action"><span class="glyphicon glyphicon-play-circle" ng-show="current.media.url === episode.media.url"></span></td>
                 <td class="action"><span class="label label-primary" ng-if="!podcast.heard || podcast.heard.indexOf(episode.media.url) === -1">New</span></td>
                 <td>{{ episode.title }}</td>
                 <td class="hidden-xs">{{ episode.date | amDateFormat:'dddd, MMMM Do YYYY' }}</td>
-                <td><button type="button" class="btn btn-sm" ng-click="store(episode)"><span class="glyphicon glyphicon-download"></span> Download</button></td>
-                <td><a ng-href="{{ episode.media.url }}" class="btn btn-sm" download="NewEpisode">Download</a></td>
+                <td>
+                    <button ng-click="store(episode)" ng-if="episode.downloaded === false" class="btn btn-sm btn-link" ng-class="{ 'active': episode.downloaded }"><span class="glyphicon glyphicon-download"></span></button>
+                </td>
             </tr>
         </tbody>
     </table>

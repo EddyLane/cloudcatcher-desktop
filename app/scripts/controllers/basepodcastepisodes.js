@@ -8,6 +8,7 @@
  * @param podcast
  * @param user
  * @param audioPlayer
+ * @param EpisodeStorage
  * @constructor
  */
 function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, audioPlayer, EpisodeStorage) {
@@ -30,14 +31,30 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, au
             hearAll(episodes);
         },
 
-        store: EpisodeStorage.storeEpisode
+        store: function (episode) {
+            return EpisodeStorage.hasEpisode(episode).then(function (downloaded) {
+                if (!downloaded) {
+                    EpisodeStorage.storeEpisode(episode);
+                }
+                return downloaded;
+            });
+        }
 
     });
+
+    function hasDownloaded(episodes) {
+        _.forEach(episodes, function (episode) {
+            EpisodeStorage.hasEpisode(episode).then(function (downloaded) {
+                episode.downloaded = downloaded;
+            });
+        })
+    }
 
     $scope.$watch('page', function (page) {
         var start = (page - 1) * $scope.limit,
             end = start + $scope.limit;
         $scope.episodes = episodes.slice(start, end);
+        hasDownloaded($scope.episodes);
         $location.search('page', page);
     });
 
