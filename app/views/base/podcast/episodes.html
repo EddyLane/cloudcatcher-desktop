@@ -11,7 +11,6 @@
             <th>Title</th>
             <th class="hidden-xs">Date</th>
             <th></th>
-
         </tr>
         </thead>
         <tbody>
@@ -21,6 +20,7 @@
                 <td>{{ episode.title }}</td>
                 <td class="hidden-xs">{{ episode.date | amDateFormat:'dddd, MMMM Do YYYY' }}</td>
                 <td>
+                    <button ng-click="listen(episode)" ng-if="episode.downloaded === true" class="btn btn-sm btn-link"><span class="glyphicon glyphicon-play"></span></button>
                     <button ng-click="store(episode)" ng-if="episode.downloaded === false" class="btn btn-sm btn-link" ng-class="{ 'active': episode.downloaded }"><span class="glyphicon glyphicon-download"></span></button>
                 </td>
             </tr>

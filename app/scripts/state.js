@@ -45,10 +45,12 @@ angular
             url: '',
             abstract: true,
             resolve: {
-                user: ['CloudcatcherAuth', function (CloudcatcherAuth) {
-                    console.log('BASE REOSLVE');
-
-                    return CloudcatcherAuth.check();
+                user: ['CloudcatcherAuth', '$q', function (CloudcatcherAuth, $q) {
+                    var defer = $q.defer();
+                    chrome.storage.local.get('token', function (data) {
+                        defer.resolve(CloudcatcherAuth.check({ access_token: data.token }));
+                    });
+                    return defer.promise;
                 }],
                 audioPlayer: ['AudioPlayer', function (AudioPlayer) {
                     return AudioPlayer;

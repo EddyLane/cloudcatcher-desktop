@@ -11,14 +11,21 @@
  * @param EpisodeStorage
  * @constructor
  */
-function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, audioPlayer, EpisodeStorage) {
+function BasePodcastEpisodesCtrl ($scope, $location, $q, episodes, podcast, user, audioPlayer, EpisodeStorage) {
 
     var addHeard = user.addHeard(podcast),
         hearAll = user.hearAll(podcast);
 
     _.assign($scope, {
         listen: function (episode) {
-            audioPlayer.play(episode);
+            if (episode.downloaded) {
+                EpisodeStorage.getEpisode(episode).then(function (data) {
+                    episode.media.dataUri = data[episode.media.url];
+                    audioPlayer.play(episode);
+                });
+            } else {
+                audioPlayer.play(episode);
+            }
             addHeard(episode);
         },
         page: $location.search().page || 1,
@@ -34,7 +41,9 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, au
         store: function (episode) {
             return EpisodeStorage.hasEpisode(episode).then(function (downloaded) {
                 if (!downloaded) {
-                    EpisodeStorage.storeEpisode(episode);
+                    EpisodeStorage.storeEpisode(episode).then(function () {
+                        episode.downloaded = true;
+                    });
                 }
                 return downloaded;
             });
