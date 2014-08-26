@@ -13,7 +13,6 @@ Firebase.INTERNAL.forceWebSockets();
 angular
     .module('cloudcatcherDesktopApp', [
         'angular-loading-bar',
-        'ngCookies',
         'ngSanitize',
         'cloudcatcherSharedServices',
         'ui.router',

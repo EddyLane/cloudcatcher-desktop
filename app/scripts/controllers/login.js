@@ -9,6 +9,7 @@
  */
 angular.module('cloudcatcherDesktopApp')
     .controller('LoginCtrl', function ($scope, $state) {
+        console.log('LoginCtrl');
         $scope.$on('loginForm_success', function () {
             $state.go('base.podcasts.thumbnails');
         });

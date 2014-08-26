@@ -32,6 +32,9 @@ angular
 
     .config(function ($stateProvider, $urlRouterProvider) {
 
+        console.log('config');
+
+
         $stateProvider.state('login', {
             url: '/login',
             templateUrl: 'views/login.html',
@@ -43,6 +46,8 @@ angular
             abstract: true,
             resolve: {
                 user: ['CloudcatcherAuth', function (CloudcatcherAuth) {
+                    console.log('BASE REOSLVE');
+
                     return CloudcatcherAuth.check();
                 }],
                 audioPlayer: ['AudioPlayer', function (AudioPlayer) {

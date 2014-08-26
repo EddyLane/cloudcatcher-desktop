@@ -1,27 +1,33 @@
 'use strict';
 
 /**
+ * @ngInject
  * @ngdoc function
  * @name cloudcatcherDesktopApp.services:ImageLoader
  * @description
  * # ImageLoader
  * Image loader
  */
+function ImageLoader ($q) {
 
-function ImageLoader () {
-
-    var ImageLoader = function (uri, callback) {
-
-        console.log('wat');
+    /**
+     * Load an image
+     *
+     * @param uri
+     * @returns {Promise}
+     * @constructor
+     */
+    function ImageLoader (uri) {
+        var defer = $q.defer();
         var xhr = new XMLHttpRequest();
         xhr.responseType = 'blob';
         xhr.onload = function() {
-            callback(window.URL.createObjectURL(xhr.response), uri);
+            defer.resolve(window.URL.createObjectURL(xhr.response));
         };
         xhr.open('GET', uri, true);
         xhr.send();
-    };
-
+        return defer.promise;
+    }
 
     return ImageLoader;
 
