@@ -16,7 +16,7 @@ angular.module('cloudcatcherDesktopApp')
         });
 
         if ($scope.currentPlaying && $scope.currentPlaying.media) {
-            audioPlayer.play($scope.currentPlaying);
+            //audioPlayer.play($scope.currentPlaying);
         }
 
     });

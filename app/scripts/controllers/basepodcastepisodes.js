@@ -18,14 +18,28 @@ function BasePodcastEpisodesCtrl ($scope, $location, $q, episodes, podcast, user
 
     _.assign($scope, {
         listen: function (episode) {
+
             if (episode.downloaded) {
+
                 EpisodeStorage.getEpisode(episode).then(function (data) {
-                    episode.media.dataUri = data[episode.media.url];
-                    audioPlayer.play(episode);
+
+                    
+                    var audio = new Audio();
+                    audio.src = data[episode.media.url];
+                    audio.play();
+                    //episode.media.dataUri = data[episode.media.url];
+                    //audioPlayer.play(episode);
+
                 });
+
+
             } else {
+
                 audioPlayer.play(episode);
+
             }
+
+
             addHeard(episode);
         },
         page: $location.search().page || 1,
