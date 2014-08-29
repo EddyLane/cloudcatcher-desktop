@@ -2,7 +2,7 @@ angular.module("cloudcatcherConstants", [])
 
 .constant("ITUNES_URL", "https://itunes.apple.com/")
 
-.constant("CLOUDCATCHER_URL", "http://app.angular-symfony-stripe.local:8080/app_dev.php/api/v1/")
+.constant("CLOUDCATCHER_URL", "https://arcane-river-7182.herokuapp.com/api/v1/")
 
 .constant("GOOGLE_FEED_URL", "//ajax.googleapis.com/ajax/services/feed/")
 
