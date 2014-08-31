@@ -223,6 +223,7 @@ module.exports = function (grunt) {
                 src: ['<%= yeoman.app %>/index.html'],
                 exclude: [
                     '<%= yeoman.app %>/bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/',
+                    '<%= yeoman.app %>/bower_components/firebase-simple-login/',
                     '<%= yeoman.app %>/bower_components/cloudcatcher-shared-services/dist/',
                     '<%= yeoman.app %>/bower_components/lodash/dist/'
                 ]

@@ -1,7 +1,7 @@
 <div class="media unplayed-list fx-fade-left-big fx-easing-back fx-speed-800" ng-repeat="podcast in podcasts">
     <button class="btn btn-link pull-right play-button"><span class="glyphicon glyphicon-play"></span></button>
     <a class="pull-left" ui-sref="base.podcast.episodes({ slug: podcast.slug })">
-        <img class="media-object img-rounded" ng-src="{{ podcast.artwork.100 }}">
+        <img class="media-object img-rounded" ng-src="{{ podcast.imageUrl }}">
     </a>
     <div class="media-body">
         <h4 class="media-heading">{{ podcast.name }}</h4>

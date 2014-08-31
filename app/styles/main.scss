@@ -1,10 +1,10 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
 
-@import '../bower_components/bootswatch-scss/flatly/_variables';
+@import '_bootstrap_variables';
 // bower:scss
 @import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.scss";
 // endbower
-@import '../bower_components/bootswatch-scss/flatly/_bootswatch';
+@import '_bootswatch';
 
 .browsehappy {
   margin: 0.2em 0;
