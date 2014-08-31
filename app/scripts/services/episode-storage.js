@@ -31,6 +31,11 @@ function EpisodeStorage($q, $log) {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', episode.media.url, true);
         xhr.responseType = 'blob';
+
+        xhr.onprogress = function (e) {
+            episode.downloading = (e.loaded / e.total) * 100;
+        };
+
         xhr.onload = function (e) {
             var storage = {};
             var fileReader = new FileReader();

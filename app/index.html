@@ -8,16 +8,24 @@
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-    <link rel="stylesheet" href="styles/vendor.1085599d.css">
-    <link rel="stylesheet" href="styles/main.a33a4cbd.css">
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-loading-bar/src/loading-bar.css" />
+    <link rel="stylesheet" href="bower_components/ladda/dist/ladda.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
 
 </head>
 <body>
 
 <div ui-view></div>
 
-<!-- build:js(./) scripts/vendor.js -->
+<!-- build:js(./app/) scripts/vendor.js -->
 <script src="bower_components/lodash/dist/lodash.js"></script>
+<script src="bower_components/soundmanager2/script/soundmanager2.js"></script>
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -35,14 +43,15 @@
 <script src="bower_components/restangular/dist/restangular.js"></script>
 <script src="bower_components/firebase/firebase.js"></script>
 <script src="bower_components/firebase-simple-login/firebase-simple-login.js"></script>
-<script src="bower_components/angularfire/dist/angularfire.js"></script>
+<script src="bower_components/angularfire/dist/angularfire.min.js"></script>
 <script src="bower_components/angular-xml/angular-xml.js"></script>
+<script src="bower_components/spin.js/spin.js"></script>
+<script src="bower_components/ladda/dist/ladda.min.js"></script>
+<script src="bower_components/angular-ladda/dist/angular-ladda.min.js"></script>
 <!-- endbower -->
-<script src="bower_components/soundmanager2/script/soundmanager2.js"></script>
 <!-- endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
-
 <script src="scripts/services/cloudcatcher-shared-services/app/scripts/app.js"></script>
 <script src="scripts/services/cloudcatcher-shared-services/app/scripts/config.js"></script>
 <script src="scripts/services/cloudcatcher-shared-services/app/scripts/constants.js"></script>
@@ -63,6 +72,10 @@
 
 <script src="scripts/directives/login-form.js"></script>
 <script src="scripts/directives/ccsearchform.js"></script>
+<script src="scripts/directives/ccfooter.js"></script>
+<script src="scripts/directives/ccaudiocontrols.js"></script>
+<script src="scripts/directives/ccprogressbar.js"></script>
+<script src="scripts/directives/ccpodcastlist.js"></script>
 
 <script src="scripts/controllers/base.js"></script>
 <script src="scripts/controllers/login.js"></script>
@@ -71,17 +84,13 @@
 <script src="scripts/controllers/basepodcasts.js"></script>
 <script src="scripts/controllers/search.js"></script>
 <script src="scripts/controllers/searchpreview.js"></script>
-<script src="scripts/directives/ccfooter.js"></script>
-<script src="scripts/directives/ccaudiocontrols.js"></script>
-<script src="scripts/directives/ccprogressbar.js"></script>
 <script src="scripts/controllers/podcastinfo.js"></script>
-<script src="scripts/directives/ccpodcastlist.js"></script>
 <script src="scripts/controllers/podcastlist.js"></script>
 <script src="scripts/controllers/podcastsunplayed.js"></script>
 
 <script src="scripts/services/image-loader.js"></script>
 <script src="scripts/services/episode-storage.js"></script>
-
 <!-- endbuild -->
+
 </body>
 </html>

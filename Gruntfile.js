@@ -131,8 +131,8 @@ module.exports = function (grunt) {
                         return [
                             connect.static('.tmp'),
                             connect().use(
-                                '/bower_components',
-                                connect.static('./bower_components')
+                                '/app/bower_components',
+                                connect.static('./app/bower_components')
                             ),
                             connect.static(appConfig.app)
                         ];
@@ -147,8 +147,8 @@ module.exports = function (grunt) {
                             connect.static('.tmp'),
                             connect.static('test'),
                             connect().use(
-                                '/bower_components',
-                                connect.static('./bower_components')
+                                '/app/bower_components',
+                                connect.static('./app/bower_components')
                             ),
                             connect.static(appConfig.app)
                         ];
@@ -221,11 +221,10 @@ module.exports = function (grunt) {
         wiredep: {
             app: {
                 src: ['<%= yeoman.app %>/index.html'],
-                ignorePath: new RegExp('^<%= yeoman.app %>/|../'),
                 exclude: [
-                    'bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/',
-                    'bower_components/cloudcatcher-shared-services/dist/',
-                    'bower_components/lodash/dist/'
+                    '<%= yeoman.app %>/bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/',
+                    '<%= yeoman.app %>/bower_components/cloudcatcher-shared-services/dist/',
+                    '<%= yeoman.app %>/bower_components/lodash/dist/'
                 ]
             },
             sass: {
@@ -243,7 +242,7 @@ module.exports = function (grunt) {
                 imagesDir: '<%= yeoman.app %>/images',
                 javascriptsDir: '<%= yeoman.app %>/scripts',
                 fontsDir: '<%= yeoman.app %>/styles/fonts',
-                importPath: './bower_components',
+                importPath: './app/bower_components',
                 httpImagesPath: '/images',
                 httpGeneratedImagesPath: '/images/generated',
                 httpFontsPath: '/styles/fonts',
@@ -307,27 +306,29 @@ module.exports = function (grunt) {
         // By default, your `index.html`'s <!-- Usemin block --> will take care of
         // minification. These next options are pre-configured if you do not wish
         // to use the Usemin blocks.
-        // cssmin: {
-        //   dist: {
-        //     files: {
-        //       '<%= yeoman.dist %>/styles/main.css': [
-        //         '.tmp/styles/{,*/}*.css'
-        //       ]
-        //     }
-        //   }
-        // },
-        // uglify: {
-        //   dist: {
-        //     files: {
-        //       '<%= yeoman.dist %>/scripts/scripts.js': [
-        //         '<%= yeoman.dist %>/scripts/scripts.js'
-        //       ]
-        //     }
-        //   }
-        // },
-        // concat: {
-        //   dist: {}
-        // },
+        cssmin: {
+           chromeApp: {
+             files: {
+               '<%= yeoman.app %>/styles/main.css': [
+                 '.tmp/styles/{,*/}*.css'
+               ]
+             }
+           }
+        },
+
+        uglify: {
+           dist: {
+             files: {
+               '<%= yeoman.dist %>/scripts/scripts.js': [
+                 '<%= yeoman.dist %>/scripts/scripts.js'
+               ]
+             }
+           }
+        },
+
+        concat: {
+           dist: {}
+        },
 
         imagemin: {
             dist: {
@@ -445,7 +446,7 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: '.',
-                        src: 'bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/*',
+                        src: 'app/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/*',
                         dest: '<%= yeoman.dist %>'
                     }
                 ]
@@ -512,6 +513,24 @@ module.exports = function (grunt) {
         'karma'
     ]);
 
+    grunt.registerTask('chromeAppDev', [
+        'clean:dist',
+        'ngtemplates',
+        'wiredep',
+        'useminPrepare',
+        'concurrent:dist',
+        'autoprefixer',
+        'concat',
+        'copy:dist',
+        'cdnify',
+        'cssmin:chromeApp',
+        'ngAnnotate',
+        'uglify',
+        'filerev',
+        'usemin',
+        'htmlmin'
+    ]);
+
     grunt.registerTask('build', [
         'clean:dist',
         'ngtemplates',
@@ -524,8 +543,8 @@ module.exports = function (grunt) {
         'copy:dist',
         'cdnify',
         'cssmin',
-//        'ngAnnotate',
-//        'uglify',
+        'ngAnnotate',
+        'uglify',
         'filerev',
         'usemin',
         'htmlmin'

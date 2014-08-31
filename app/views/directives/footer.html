@@ -11,14 +11,17 @@
                             <img ng-src="{{ playing.image }}" class="img-circle img-responsive" style="max-height: 40px">
                     </div>
                     <div class="col-md-11 col-sm-10 col-xs-9 col-lg-11" class="now-playing-title">
-                        <div class="progress progress-striped active" cc-progress-bar>
-                            <div class="progress-bar" role="progressbar" aria-valuenow="{{ playing.progress }}" aria-valuemin="0" aria-valuemax="100" ng-click="emit($event)" ng-style="{ 'width': playing.progress + '%' }">
-                            {{ playing.progress|number:0 }}%
-                            </div>
-                        </div>
-                        <p class="text-muted float-left now-playing-title" now-playing-title>
-                            {{ playing.title }} | <span class="float-right">{{ playing.loaded|number:0 }}% loaded</span>
-                        </p>
+
+                        <audio id="audio-player" controls="controls"></audio>
+
+                        <!--<div class="progress progress-striped active" cc-progress-bar>-->
+                            <!--<div class="progress-bar" role="progressbar" aria-valuenow="{{ playing.progress }}" aria-valuemin="0" aria-valuemax="100" ng-click="emit($event)" ng-style="{ 'width': playing.progress + '%' }">-->
+                            <!--{{ playing.progress|number:0 }}%-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<p class="text-muted float-left now-playing-title" now-playing-title>-->
+                            <!--{{ playing.title }} | <span class="float-right">{{ playing.loaded|number:0 }}% loaded</span>-->
+                        <!--</p>-->
                     </div>
                 </div>
             </div>

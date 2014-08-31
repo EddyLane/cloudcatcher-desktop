@@ -23,10 +23,15 @@ function BasePodcastEpisodesCtrl ($scope, $location, $q, episodes, podcast, user
 
                 EpisodeStorage.getEpisode(episode).then(function (data) {
 
-                    
-                    var audio = new Audio();
+                    var audio = document.getElementById('audio-player');
+                    //var audio = new Audio();
                     audio.src = data[episode.media.url];
                     audio.play();
+
+                    console.log('duration', audio.duration);
+                    console.log('buffered', audio.buffered);
+                    console.log('audio', audio);
+
                     //episode.media.dataUri = data[episode.media.url];
                     //audioPlayer.play(episode);
 
@@ -35,7 +40,7 @@ function BasePodcastEpisodesCtrl ($scope, $location, $q, episodes, podcast, user
 
             } else {
 
-                audioPlayer.play(episode);
+                //audioPlayer.play(episode);
 
             }
 
@@ -55,9 +60,17 @@ function BasePodcastEpisodesCtrl ($scope, $location, $q, episodes, podcast, user
         store: function (episode) {
             return EpisodeStorage.hasEpisode(episode).then(function (downloaded) {
                 if (!downloaded) {
+
+
+
                     EpisodeStorage.storeEpisode(episode).then(function () {
                         episode.downloaded = true;
                     });
+
+                    $scope.$watch('episode.downloading', function (progress) {
+                        episode.downloading = progress;
+                    });
+
                 }
                 return downloaded;
             });

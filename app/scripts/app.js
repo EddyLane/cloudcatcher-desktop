@@ -18,7 +18,8 @@ angular
         'ui.router',
         'ui.bootstrap',
         'angularMoment',
-        'ngFx'
+        'ngFx',
+        'angular-ladda'
     ])
     .constant('PLACEHOLDER_IMAGE', 'loading.gif')
     .config(function ($compileProvider) {

@@ -1,10 +1,10 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
 
-@import '../../bower_components/bootswatch-scss/flatly/_variables';
+@import '../bower_components/bootswatch-scss/flatly/_variables';
 // bower:scss
 @import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.scss";
 // endbower
-@import '../../bower_components/bootswatch-scss/flatly/_bootswatch';
+@import '../bower_components/bootswatch-scss/flatly/_bootswatch';
 
 .browsehappy {
   margin: 0.2em 0;
@@ -191,8 +191,6 @@ body {
   border-radius: 50%;
 }
 
-
-
 .podcast-list-group a {
 
   -webkit-transition: color 0.6s, background-color 0.3s;
@@ -235,7 +233,7 @@ body {
 
   p {
     float: left;
-//    padding-top: 21px;
+    //    padding-top: 21px;
     padding-left: 10px;
   }
 
@@ -279,7 +277,7 @@ p.now-playing-title {
   overflow: hidden;
   text-overflow: ellipsis;
   position: relative;
-  top:10px;
+  top: 10px;
 }
 
 .unplayed-list {
@@ -301,4 +299,12 @@ p.now-playing-title {
     height: 64px;
   }
 
+}
+
+audio {
+  width: 100%;
+}
+
+html {
+  overflow-y: scroll;
 }
