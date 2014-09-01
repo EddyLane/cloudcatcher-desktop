@@ -12,7 +12,7 @@
 
 <div class="list-group podcast-list-group">
     <a ng-repeat="podcast in podcasts track by podcast.itunesId" class="list-group-item" ui-sref-active="active" ui-sref="base.podcast.episodes({ slug: podcast.slug })">
-        <span class="badge" ng-show="parseInt(podcast.newEpisodes,10) > 0">{{ podcast.newEpisodes }}</span>
+        <span class="badge" ng-if="podcast.newEpisodes > 0">{{ podcast.newEpisodes }}</span>
         <img ng-src="{{ podcast.imageUrl }}" class="img-rounded">
         {{ podcast.name }}
         <p class="list-group-item-text text-muted" style="font-size: 13px;">{{ podcast.latest|amCalendar }}</p>

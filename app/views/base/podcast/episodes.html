@@ -26,8 +26,10 @@
         </tbody>
     </table>
     <div class="text-center">
+
         <pagination ng-model="page" total-items="total" items-per-page="limit" ng-show="total > limit"
-                    boundary-links="true" max-size="5" rotate="false" class="hidden-xs"></pagination>
+                    boundary-links="false" max-size="5" rotate="false" class="hidden-xs"></pagination>
+
         <pager total-items="total" ng-model="page" ng-show="total > limit"
                class="hidden-md hidden-lg hidden-sm"></pager>
     </div>

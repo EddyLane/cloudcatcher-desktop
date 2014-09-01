@@ -7,15 +7,13 @@
 
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-1 col-sm-2 col-xs-3 col-lg-1">
-                            <img ng-src="{{ playing.image }}" class="img-circle img-responsive" style="max-height: 40px">
-                    </div>
-                    <div class="col-md-11 col-sm-10 col-xs-9 col-lg-11" class="now-playing-title">
+                    <!--<div class="col-md-1 col-sm-2 col-xs-3 col-lg-1">-->
+                            <!--<img ng-src="{{ playing.imageUrl }}" class="img-circle img-responsive" style="max-height: 40px">-->
+                    <!--</div>-->
+                    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
 
-                        <audio media-player="audioPlayer" data-playlist="playlist" controls="controls">
+                        <audio media-player="audioPlayer" data-playlist="playlist" controls="controls" style="position: relative; top: -5px;">
                         </audio>
-                        <span ng-show="audioPlayer.playing">Player status: Playing</span>
-                        <span ng-show="!audioPlayer.playing">Player status: Paused</span>
 
                         <!--<audio id="audio-player" controls="controls"></audio>-->
 

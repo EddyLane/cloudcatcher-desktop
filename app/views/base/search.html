@@ -1,4 +1,4 @@
-<h2 class="sub-header">Search Results</h2>
+<h2 class="sub-header">Search Results for "{{ term }}"</h2>
 
 <div class="table-responsive">
     <table class="table table-striped table-hover">
@@ -11,7 +11,7 @@
         </thead>
         <tbody>
         <tr ng-repeat-start="result in results" ng-click="select(result)" style="cursor: pointer">
-            <td><img ng-src="{{ result.artwork.100 }}"></td>
+            <td><img ng-src="{{ result.imageUrl }}"></td>
             <td>{{ result.name }}</td>
             <td>
                 <button type="button" ng-click="toggleSubscription(result)" class="btn btn-sm btn-primary"

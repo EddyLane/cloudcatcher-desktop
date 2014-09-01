@@ -80,11 +80,7 @@ angular
         $stateProvider.state('base.search', {
             url: '/search?term',
             templateUrl: 'views/base/search.html',
-            resolve: {
-                results: ['ItunesPodcastApi', '$stateParams', function (ItunesPodcastApi, $stateParams) {
-                    return ItunesPodcastApi.all('search').getList({ term: $stateParams.term });
-                }]
-            },
+            resolve: SearchCtrl.resolve,
             controller: 'SearchCtrl'
         });
 

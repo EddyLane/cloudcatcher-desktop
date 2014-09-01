@@ -34,7 +34,7 @@ function EpisodeStorage($q, $log) {
      * @returns {Promise}
      */
     this.hasEpisode = function hasEpisode(episode) {
-        return EpisodeStorage.getEpisode(episode).then(function (episode) {
+        return this.getEpisode(episode).then(function (episode) {
             return _.size(episode) > 0;
         })
     };
@@ -77,7 +77,8 @@ function EpisodeStorage($q, $log) {
                     });
                 }
                 catch (e) {
-                    console.log("Storage failed: " + e);
+                    defer.reject(e);
+                    $log.error('Storage failed', e);
                 }
             };
             // Load blob as Data URL

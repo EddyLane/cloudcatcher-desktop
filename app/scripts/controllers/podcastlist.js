@@ -14,20 +14,40 @@
  */
 function PodcastListCtrl ($scope, PodcastSorter) {
 
-    function sort (original) {
+    var init = false;
+
+    function sort (original, sortBy) {
 
         var sorter = PodcastSorter.getSorter(original);
 
         $scope.sortBy = function (type) {
+
+            chrome.storage.sync.set({ sortBy: type });
+
             $scope.type = type;
             $scope.podcasts = sorter(type);
         };
 
-        $scope.sortBy($scope.type || 'name');
+
+        $scope.sortBy(sortBy || $scope.type || 'name');
 
     }
 
-    $scope.$watchCollection('original', sort);
+    $scope.$watchCollection('original', function (podcasts) {
+
+        if (!init) {
+
+            chrome.storage.sync.get('sortBy', function (sortBy) {
+                sort(podcasts, sortBy.sortBy);
+            });
+
+            init = true;
+
+        } else {
+            sort(podcasts);
+        }
+
+    });
 
 }
 
