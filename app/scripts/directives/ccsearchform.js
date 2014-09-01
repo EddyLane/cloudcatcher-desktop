@@ -27,6 +27,8 @@ angular.module('cloudcatcherDesktopApp')
                         }
 
                         $state.go('base.search', this.values);
+
+                        this.values.term = '';
                     }
                 });
             }

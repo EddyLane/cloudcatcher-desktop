@@ -19,18 +19,19 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
     _.assign($scope, {
 
         listen: function (episode) {
-            if (episode.downloaded) {
-                EpisodeStorage.getEpisode(episode).then(function (data) {
-                    AudioPlayer.play(data[episode.media.url]);
-                });
-            } else {
-                AudioPlayer.play(episode.media.url);
-            }
+            AudioPlayer.play(episode);
+//            if (episode.downloaded) {
+//                EpisodeStorage.getEpisode(episode).then(function (data) {
+//                    AudioPlayer.play(data[episode.media.url]);
+//                });
+//            } else {
+//                AudioPlayer.play(episode.media.url);
+//            }
             addHeard(episode);
         },
 
         page: $location.search().page || 1,
-        limit: 15,
+        limit: 9,
         total: episodes.length,
         podcast: podcast,
         current: user.getCurrentPlaying(),

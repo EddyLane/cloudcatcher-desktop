@@ -8,7 +8,7 @@
  * Controller of the cloudcatcherDesktopApp
  */
 angular.module('cloudcatcherDesktopApp')
-    .controller('BaseCtrl', function ($scope, $rootScope, user) {
+    .controller('BaseCtrl', function ($scope, $rootScope, user, EpisodeStorage, $q) {
 
         _.assign($scope, {
             podcasts: user.getPodcasts(),
@@ -16,15 +16,27 @@ angular.module('cloudcatcherDesktopApp')
             isCollapsed: true
         });
 
-        $rootScope.$on('play', function (sound, data) {
+        $rootScope.$on('play', function (sound, episode) {
 
-            $scope.audioPlayer.load([{
-                src: data,
-                type: 'audio/mpeg',
-                media: '.css.media.query'
-            }, true]);
 
-            $scope.audioPlayer.play();
+            var episodeData;
+            if (episode.downloaded) {
+                episodeData = EpisodeStorage.getEpisode(episode).then(function (data) {
+                    return data[episode.media.url];
+                });
+            } else {
+                episodeData = $q.when(episode.media.url);
+            }
+
+            episodeData.then(function (url) {
+                $scope.audioPlayer.load([{
+                    src: url,
+                    type: 'audio/mpeg',
+                    media: '.css.media.query'
+                }, true]);
+                $scope.audioPlayer.play();
+
+            });
 
         });
 

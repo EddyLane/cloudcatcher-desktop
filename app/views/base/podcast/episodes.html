@@ -16,7 +16,10 @@
                 <span class="label label-primary" ng-if="!podcast.heard || podcast.heard.indexOf(episode.media.url) === -1">New</span>
             </td>
             <td class="hidden-xs" ng-click="listen(episode)">{{ episode.date | amDateFormat:'dddd, MMMM Do YYYY' }}</td>
-            <td ng-click="listen(episode)">{{ episode.title }}</td>
+            <td ng-click="listen(episode)">
+                {{ episode.title }}
+                <small class="summary">{{ episode.content }}</small>
+            </td>
             <td>
                 <button ng-click="store(episode)" ladda="episode.downloading" ng-if="episode.downloaded === false"
                         class="btn btn-default" data-size="xs"><span class="glyphicon glyphicon-download-alt"></span>
@@ -28,7 +31,7 @@
     <div class="text-center">
 
         <pagination ng-model="page" total-items="total" items-per-page="limit" ng-show="total > limit"
-                    boundary-links="false" max-size="5" rotate="false" class="hidden-xs"></pagination>
+                    boundary-links="false" max-size="5" rotate="false" class="hidden-xs" class="pagination-sm"></pagination>
 
         <pager total-items="total" ng-model="page" ng-show="total > limit"
                class="hidden-md hidden-lg hidden-sm"></pager>

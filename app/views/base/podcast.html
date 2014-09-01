@@ -1,5 +1,7 @@
 <div class="page-header clearfix pull-left">
+
     <img class="pull-left img-rounded" ng-src="{{ podcast.imageUrl }}">
+
     <h2 class="pull-left" style="margin-left: 20px;">
         {{ podcast.name }}
         <small style="font-weight: 200">{{ podcast.artist }}
@@ -9,10 +11,31 @@
 
 </div>
 
-<div class="btn-toolbar pull-right" style="padding: 15px 0px;">
+<div class="btn-group pull-right" role="toolbar">
+
+
+
+    <div class="btn-group" dropdown is-open="options.isOpen">
+        <button class="btn btn-lg btn-link dropdown-toggle pull-right" type="button">
+            <span class="glyphicon glyphicon-cog"></span> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Mark all as heard</a></li>
+            <li><a href="#">Mark all as un-heard</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Download all</a></li>
+            <li><a href="#">Delete all</a></li>
+        </ul>
+    </div>
+
     <button class="btn btn-lg btn-link pull-right"><span class="glyphicon glyphicon-play"></span></button>
-    <button class="btn btn-lg btn-link pull-right"><span class="glyphicon glyphicon-cog"></span></button>
+
+    <button class="btn btn-lg btn-link pull-right">
+        <span class="glyphicon glyphicon-info-sign"></span>
+    </button>
+
 </div>
+
 
 
 <!--<div class="row">-->

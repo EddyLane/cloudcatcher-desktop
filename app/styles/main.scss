@@ -257,9 +257,27 @@ body {
   tbody {
     tr {
       cursor: pointer;
-      height: 47px;
+      min-height: 47px;
       td {
+
+        &:nth-child(2) {
+          min-width: 228px;
+        }
+
         vertical-align: middle;
+
+        small.summary {
+          line-height: 16px;
+          max-height: 32px;
+          display: block;
+          color: #b4bcc2;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+        }
+
       }
     }
 

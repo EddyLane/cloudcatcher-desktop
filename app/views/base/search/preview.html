@@ -1,8 +1,8 @@
 <div class="panel panel-primary">
     <div class="panel-body">
-        <table class="table table-condensed">
+        <table class="table table-condensed table-hover">
             <tbody>
-            <tr ng-repeat="episode in episodes | limitTo: 5">
+            <tr ng-repeat="episode in episodes | limitTo: 5" ng-click="listen(episode)" style="cursor: pointer">
                 <td>{{ episode.title }}</td>
             </tr>
             </tbody>
