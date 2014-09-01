@@ -32,9 +32,6 @@ angular
 
     .config(function ($stateProvider, $urlRouterProvider) {
 
-        console.log('config');
-
-
         $stateProvider.state('login', {
             url: '/login',
             templateUrl: 'views/login.html',
@@ -51,13 +48,11 @@ angular
                         defer.resolve(CloudcatcherAuth.check({ access_token: data.token }));
                     });
                     return defer.promise;
-                }],
-                audioPlayer: ['AudioPlayer', function (AudioPlayer) {
-                    return AudioPlayer;
                 }]
             },
             templateUrl: 'views/base.html',
-            controller: 'BaseCtrl'
+            controller: 'BaseCtrl',
+            controlleAs: 'base'
         });
 
         $stateProvider.state('base.podcasts', {

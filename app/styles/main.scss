@@ -216,6 +216,13 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 
+  p {
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   img {
     max-width: 18px;
     max-height: 18px;
@@ -250,7 +257,12 @@ body {
   tbody {
     tr {
       cursor: pointer;
+      height: 47px;
+      td {
+        vertical-align: middle;
+      }
     }
+
   }
 }
 

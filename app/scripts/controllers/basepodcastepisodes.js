@@ -7,46 +7,28 @@
  * @param episodes
  * @param podcast
  * @param user
- * @param audioPlayer
+ * @param AudioPlayer
  * @param EpisodeStorage
  * @constructor
  */
-function BasePodcastEpisodesCtrl ($scope, $location, $q, episodes, podcast, user, audioPlayer, EpisodeStorage) {
+function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, AudioPlayer, EpisodeStorage) {
 
     var addHeard = user.addHeard(podcast),
         hearAll = user.hearAll(podcast);
 
     _.assign($scope, {
+
         listen: function (episode) {
-
             if (episode.downloaded) {
-
                 EpisodeStorage.getEpisode(episode).then(function (data) {
-
-                    var audio = document.getElementById('audio-player');
-                    //var audio = new Audio();
-                    audio.src = data[episode.media.url];
-                    audio.play();
-
-                    console.log('duration', audio.duration);
-                    console.log('buffered', audio.buffered);
-                    console.log('audio', audio);
-
-                    //episode.media.dataUri = data[episode.media.url];
-                    //audioPlayer.play(episode);
-
+                    AudioPlayer.play(data[episode.media.url]);
                 });
-
-
             } else {
-
-                //audioPlayer.play(episode);
-
+                AudioPlayer.play(episode.media.url);
             }
-
-
             addHeard(episode);
         },
+
         page: $location.search().page || 1,
         limit: 15,
         total: episodes.length,
@@ -60,17 +42,11 @@ function BasePodcastEpisodesCtrl ($scope, $location, $q, episodes, podcast, user
         store: function (episode) {
             return EpisodeStorage.hasEpisode(episode).then(function (downloaded) {
                 if (!downloaded) {
-
-
-
+                    episode.downloading = true;
                     EpisodeStorage.storeEpisode(episode).then(function () {
+                        episode.downloading = false;
                         episode.downloaded = true;
                     });
-
-                    $scope.$watch('episode.downloading', function (progress) {
-                        episode.downloading = progress;
-                    });
-
                 }
                 return downloaded;
             });

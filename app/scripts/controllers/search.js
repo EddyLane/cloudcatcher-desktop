@@ -8,7 +8,7 @@
  * Controller of the cloudcatcherDesktopApp
  */
 angular.module('cloudcatcherDesktopApp')
-    .controller('SearchCtrl', function ($scope, $state, results, user, $location) {
+    .controller('SearchCtrl', function ($scope, $state, results, user, $location, ImageLoader) {
         _.assign($scope, {
 
             toggleSubscription: function (podcast) {

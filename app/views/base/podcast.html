@@ -1,7 +1,19 @@
-<div class="page-header clearfix">
-    <h2 class="pull-left">{{ podcast.name }} <small>{{ podcast.artist }}</small></h2>
-    <img class="pull-right img-rounded" ng-src="{{ podcast.imageUrl }}">
+<div class="page-header clearfix pull-left">
+    <img class="pull-left img-rounded" ng-src="{{ podcast.imageUrl }}">
+    <h2 class="pull-left" style="margin-left: 20px;">
+        {{ podcast.name }}
+        <small style="font-weight: 200">{{ podcast.artist }}
+        <br>
+        {{ podcast.newEpisodes }} unplayed episodes | Updated <span class="text-lowercase" style="text-transform: lowercase">{{ podcast.latest | amCalendar }}</span></small>
+    </h2>
+
 </div>
+
+<div class="btn-toolbar pull-right" style="padding: 15px 0px;">
+    <button class="btn btn-lg btn-link pull-right"><span class="glyphicon glyphicon-play"></span></button>
+    <button class="btn btn-lg btn-link pull-right"><span class="glyphicon glyphicon-cog"></span></button>
+</div>
+
 
 <!--<div class="row">-->
     <!--<div class="col-md-6 col-lg-6 col-sm-6">-->

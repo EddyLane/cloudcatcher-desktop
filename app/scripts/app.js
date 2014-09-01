@@ -19,7 +19,8 @@ angular
         'ui.bootstrap',
         'angularMoment',
         'ngFx',
-        'angular-ladda'
+        'angular-ladda',
+        'mediaPlayer'
     ])
     .constant('PLACEHOLDER_IMAGE', 'loading.gif')
     .config(function ($compileProvider) {

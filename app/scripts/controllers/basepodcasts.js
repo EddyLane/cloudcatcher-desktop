@@ -8,17 +8,8 @@
  * Controller of the cloudcatcherDesktopApp
  */
 angular.module('cloudcatcherDesktopApp')
-    .controller('BasepodcastsCtrl', function ($scope, original, PodcastSorter, PLACEHOLDER_IMAGE, ImageLoader, $q) {
+    .controller('BasepodcastsCtrl', function ($scope, original, PodcastSorter, PLACEHOLDER_IMAGE, ImageLoader) {
 
-        function loadImages(podcasts) {
-            return $q.all(_.map(podcasts, function (podcast) {
-                var promise = ImageLoader(podcast.artwork[100]);
-                promise.then(function (blobUri) {
-                    podcast.imageUrl = blobUri;
-                });
-                return promise;
-            }));
-        }
 
         function sort(original) {
 
@@ -27,7 +18,10 @@ angular.module('cloudcatcherDesktopApp')
             $scope.sortBy = function (type) {
                 $scope.type = type;
                 var podcasts = sorter(type);
-                loadImages(podcasts).then(function () {
+
+                console.log(ImageLoader);
+
+                ImageLoader.loadImages(podcasts).then(function () {
                     $scope.listPodcasts = podcasts;
                 });
             };
