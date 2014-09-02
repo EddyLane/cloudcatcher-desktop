@@ -254,6 +254,15 @@ body {
     white-space: nowrap;
   }
 
+  .panel {
+    margin-bottom: 0px;
+
+    table {
+      margin-bottom: 0px;
+    }
+
+  }
+
   tbody {
     tr {
       cursor: pointer;
