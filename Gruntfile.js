@@ -211,7 +211,7 @@ module.exports = function (grunt) {
                         expand: true,
                         cwd: '.tmp/styles/',
                         src: '{,*/}*.css',
-                        dest: '.tmp/styles/'
+                        dest: '<%= yeoman.app %>/styles/'
                     }
                 ]
             }
@@ -529,7 +529,8 @@ module.exports = function (grunt) {
         'uglify',
         'filerev',
         'usemin',
-        'htmlmin'
+        'htmlmin',
+        'watch:compass'
     ]);
 
     grunt.registerTask('build', [

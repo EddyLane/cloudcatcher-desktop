@@ -8,7 +8,7 @@
  * # ImageLoader
  * Image loader
  */
-function ImageLoader ($q) {
+function ImageLoader ($q, $log) {
 
     /**
      * Load images for a bunch of podcasts
@@ -20,11 +20,51 @@ function ImageLoader ($q) {
         var self = this;
         var imagePromises = _(podcasts)
             .map(function (podcast) {
-                var promise = self.loadImage(podcast.artwork[100]);
-                promise.then(function (blobUri) {
-                    podcast.imageUrl = blobUri;
+
+                var defer = $q.defer();
+
+                chrome.storage.local.get(podcast.slug + ':image', function (data) {
+
+                    if (data[podcast.slug + ':image']) {
+
+                        $log.info('retrieved image for ' + podcast.name);
+                        defer.resolve(data[podcast.slug + ':image']);
+
+                    } else {
+                        self.loadImage(podcast.artwork[100]).then(function (blobData) {
+                            var blob = new Blob([blobData], {type: 'image/jpg'});
+                            var fileReader = new FileReader();
+
+                            fileReader.onload = function (evt) {
+                                // Read out file contents as a Data URL
+                                var result = evt.target.result,
+                                    storage = {};
+
+                                // Store Data URL in localStorage
+                                try {
+                                    storage[podcast.slug + ':image'] = result;
+
+                                    chrome.storage.local.set(storage, function () {
+                                        defer.resolve(result);
+                                        $log.info('stored image for ' + podcast.name);
+                                    });
+                                }
+                                catch (e) {
+                                    defer.reject(e);
+                                    $log.error('Storage failed', e);
+                                }
+                            };
+
+                            fileReader.readAsDataURL(blob);
+                        });
+                    }
                 });
-                return promise;
+
+                defer.promise.then(function (blob) {
+                    podcast.imageUrl = blob;
+                });
+
+                return defer.promise;
             })
             .value();
 
@@ -42,7 +82,8 @@ function ImageLoader ($q) {
         var xhr = new XMLHttpRequest();
         xhr.responseType = 'blob';
         xhr.onload = function() {
-            defer.resolve(window.URL.createObjectURL(xhr.response));
+            defer.resolve(xhr.response);
+            //defer.resolve(window.URL.createObjectURL(xhr.response));
         };
         xhr.open('GET', uri, true);
         xhr.send();

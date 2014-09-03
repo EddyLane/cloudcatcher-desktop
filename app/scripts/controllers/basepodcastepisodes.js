@@ -19,6 +19,7 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
     _.assign($scope, {
 
         listen: function (episode) {
+            episode.imageUrl = podcast.imageUrl;
             AudioPlayer.play(episode);
 //            if (episode.downloaded) {
 //                EpisodeStorage.getEpisode(episode).then(function (data) {
@@ -63,13 +64,15 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
         })
     }
 
-    $scope.$watch('page', function (page) {
+    function paginate(page) {
         var start = (page - 1) * $scope.limit,
             end = start + $scope.limit;
         $scope.episodes = episodes.slice(start, end);
         hasDownloaded($scope.episodes);
         $location.search('page', page);
-    });
+    }
+
+    $scope.$watch('page', paginate);
 
 }
 
