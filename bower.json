@@ -16,7 +16,7 @@
     "angular-moment": "~0.7.1",
     "ngFx": "~1.0.1",
     "bootswatch-scss": "~3.1.1",
-    "cloudcatcher-shared-services": "git@github.com:EddyLane/cloudcatcher-shared-services.git#feature/oauth",
+    "cloudcatcher-shared-services": "git@github.com:EddyLane/cloudcatcher-shared-services.git#feature/cloudcatcher-desktop",
     "angular-ladda": "~0.1.6",
     "angular-media-player": "~0.5.8"
   },

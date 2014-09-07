@@ -10,6 +10,7 @@
 angular.module('cloudcatcherDesktopApp')
     .controller('BasepodcastsCtrl', function ($scope, original, PodcastSorter, PLACEHOLDER_IMAGE, ImageLoader) {
 
+        console.log('dat original', original);
 
         function sort(original) {
 

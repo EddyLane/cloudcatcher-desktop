@@ -59,7 +59,7 @@ angular
             templateUrl: 'views/base/podcasts.html',
             abstract: true,
             resolve: {
-                original: ['user', function (user) {
+                original: ['user', '$q', function (user, $q) {
                     return user.getPodcasts();
                 }]
             },
@@ -101,11 +101,12 @@ angular
             templateUrl: 'views/base/podcast.html',
             resolve: {
                 podcast: ['user', '$stateParams', function (user, $stateParams) {
-                    return user.getPodcasts().$loaded().then(function (podcasts) {
-                        return _.find(podcasts, { slug: $stateParams.slug });
-                    });
+                    return user.getPodcast($stateParams.slug);
                 }],
-                episodes: ['podcast', 'GoogleFeedApi', function (podcast, GoogleFeedApi) {
+                episodes: ['user', 'podcast', 'GoogleFeedApi', '$rootScope', function (user, podcast, GoogleFeedApi, $rootScope) {
+                    if (!$rootScope.online) {
+                        return [];
+                    }
                     return GoogleFeedApi.one('load').getList(null, { q: podcast.feed });
                 }]
             },
