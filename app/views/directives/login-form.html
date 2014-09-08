@@ -1,31 +1,24 @@
-<form class="form form-signin" role="form" name="loginForm" id="login-nav" ng-submit="submit()" novalidate>
+<div id="output"></div>
+<div class="avatar"></div>
+<div class="form-box">
 
-    <h2 class="form-signin-heading">Please sign in</h2>
+    <form role="form" name="loginForm" id="login-nav" ng-submit="submit()" novalidate>
 
-    <div class="alert alert-danger" role="alert" ng-if="error">
-        <strong>Incorrect credentials</strong>
-    </div>
+        <h2 class="form-signin-heading">Please sign in</h2>
 
-    <div class="form-group" ng-class="{ 'has-error' : form.username.$invalid && submitted }">
-        <label class="sr-only" for="username">Username</label>
+        <div class="alert alert-danger" role="alert" ng-if="error">
+            <strong>Incorrect credentials</strong>
+        </div>
+
+
         <input type="text" class="form-control" id="username" placeholder="Username" name="username"
                ng-model="values.username" required>
-    </div>
 
-    <div class="form-group" ng-class="{ 'has-error' : form.password.$invalid && submitted }">
-        <label class="sr-only" for="password">Password</label>
         <input type="password" class="form-control" id="password" placeholder="Password" name="password"
                ng-model="values.password" required>
-    </div>
 
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" ng-model="values.remember_me"> Remember me
-        </label>
-    </div>
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-success btn-block" ng-disabled="submitting">Sign in</button>
-    </div>
+        <button type="submit" class="btn login btn-block" ng-disabled="submitting">Sign in</button>
 
-</form>
+    </form>
+</div>
