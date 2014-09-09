@@ -46,6 +46,7 @@ function EpisodeStorage($q, $log) {
      * @returns {Promise}
      */
     this.storeEpisode = function storeEpisode(episode) {
+        console.log(episode);
         var defer = $q.defer();
         $log.info('downloading', episode.media.url);
         var xhr = new XMLHttpRequest();
@@ -64,17 +65,23 @@ function EpisodeStorage($q, $log) {
             // onload needed since Google Chrome doesn't support addEventListener for FileReader
             fileReader.onload = function (evt) {
                 // Read out file contents as a Data URL
-                var result = evt.target.result,
-                    storage = {};
+                var storage = {};
+
+                episode.dataUri = evt.target.result;
 
                 // Store Data URL in localStorage
                 try {
-                    storage[episode.media.url] = result;
+                    storage[episode.media.url] = [];
 
-                    chrome.storage.local.set(storage, function () {
-                        defer.resolve();
-                        $log.info('stored', storage);
+                    chrome.storage.local.get(storage, function (result) {
+                        $log.info('got', result);
+                        result[episode.media.url].push(episode);
+                        chrome.storage.local.set(result, function () {
+                            defer.resolve();
+                            $log.info('stored', result);
+                        });
                     });
+
                 }
                 catch (e) {
                     defer.reject(e);
