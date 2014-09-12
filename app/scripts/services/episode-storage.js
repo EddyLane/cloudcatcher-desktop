@@ -71,11 +71,11 @@ function EpisodeStorage($q, $log) {
 
                 // Store Data URL in localStorage
                 try {
-                    storage[episode.media.url] = [];
+                    storage[episode.feed] = [];
 
                     chrome.storage.local.get(storage, function (result) {
                         $log.info('got', result);
-                        result[episode.media.url].push(episode);
+                        result[episode.feed].push(_.omit(episode.plain(), ['episodes', '$$hashKey', '$id', '$priority', 'imageUrl']));
                         chrome.storage.local.set(result, function () {
                             defer.resolve();
                             $log.info('stored', result);

@@ -107,6 +107,11 @@ angular
                     if (!$rootScope.online) {
                         return [];
                     }
+
+                    chrome.storage.local.get(podcast.feed, function (eps) {
+                        console.log('locally stored episodes', eps);
+                    });
+
                     return GoogleFeedApi.one('load').getList(null, { q: podcast.feed });
                 }]
             },
