@@ -14,7 +14,8 @@
 function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, AudioPlayer, EpisodeStorage) {
 
     var addHeard = user.addHeard(podcast),
-        hearAll = user.hearAll(podcast);
+        hearAll = user.hearAll(podcast),
+        locallyStored = EpisodeStorage.getEpisodes(podcast);
 
     _.assign($scope, {
 
@@ -56,19 +57,35 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
 
     });
 
-    function hasDownloaded(episodes) {
-        _.forEach(episodes, function (episode) {
-            EpisodeStorage.hasEpisode(episode).then(function (downloaded) {
-                episode.downloaded = downloaded;
-            });
-        })
-    }
+//    function hasDownloaded(episodes) {
+//        _.forEach(episodes, function (episode) {
+//            EpisodeStorage.hasEpisode(episode).then(function (downloaded) {
+//                episode.downloaded = downloaded;
+//            });
+//        })
+//    }
+
+
 
     function paginate(page) {
         var start = (page - 1) * $scope.limit,
             end = start + $scope.limit;
         $scope.episodes = episodes.slice(start, end);
-        hasDownloaded($scope.episodes);
+
+        locallyStored.then(function (stored) {
+            _.each($scope.episodes, function (ep) {
+
+                var found = _.find(stored, { media: { url: ep.media.url } });
+                if (found) {
+                    ep.dataUri = found.dataUri;
+                    ep.downloaded = true;
+                } else {
+                    ep.downloaded = false;
+                }
+            });
+        });
+
+
         $location.search('page', page);
     }
 

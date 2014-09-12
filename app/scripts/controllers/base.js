@@ -23,29 +23,18 @@ angular.module('cloudcatcherDesktopApp')
         });
 
         function play (episode) {
-            var episodeData;
+
+            console.log(episode);
 
             $scope.playing = AudioPlayer.playing;
 
-            if (episode.downloaded) {
-                episodeData = EpisodeStorage.getEpisode(episode).then(function (data) {
-                    return data[episode.media.url];
-                });
-            } else {
-                episodeData = $q.when(episode.media.url);
-            }
+            $scope.audioPlayer.load([{
+                src: episode.dataUri || episode.media.url,
+                type: 'audio/mpeg',
+                media: '.css.media.query'
+            }, true]);
 
-            episodeData.then(function (url) {
-
-                $scope.audioPlayer.load([{
-                    src: url,
-                    type: 'audio/mpeg',
-                    media: '.css.media.query'
-                }, true]);
-
-                $scope.audioPlayer.play();
-
-            });
+            $scope.audioPlayer.play();
         }
 
 

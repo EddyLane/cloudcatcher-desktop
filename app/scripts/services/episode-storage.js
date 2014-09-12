@@ -12,17 +12,37 @@
 function EpisodeStorage($q, $log) {
 
     /**
+     * Get locally stored episodes for a podcast
+     *
+     * @param podcast
+     * @returns {promise|e.promise|FirebaseObject.$$conf.promise|Promise.promise|Q.promise}
+     */
+    this.getEpisodes = function getEpisodes(podcast) {
+        var defer = $q.defer();
+        var storage = {};
+        storage[podcast.feed] = [];
+        chrome.storage.local.get(storage, function (data) {
+            defer.resolve(data[podcast.feed]);
+        });
+        return defer.promise;
+    };
+
+    /**
      * Get an episode from chrome local storage
      *
      * @param episode
      * @returns {Promise}
      */
     this.getEpisode = function getEpisode(episode) {
-        var defer = $q.defer();
-        if (!episode || !episode.media || !episode.media.url) {
+        var defer = $q.defer(),
+            storage = {};
+        if (!episode || !episode.media || !episode.media.url || !episode.feed) {
             defer.reject(new Error('Episode not correct'));
         } else {
-            chrome.storage.local.get(episode.media.url, defer.resolve);
+            storage[episode.feed] = [];
+            chrome.storage.local.get(storage, function (episodes) {
+                defer.resolve(_.find(episodes[episode.feed], { media: { url: episode.media.url } }));
+            });
         }
         return defer.promise;
     };

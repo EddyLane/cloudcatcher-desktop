@@ -103,16 +103,12 @@ angular
                 podcast: ['user', '$stateParams', function (user, $stateParams) {
                     return user.getPodcast($stateParams.slug);
                 }],
-                episodes: ['user', 'podcast', 'GoogleFeedApi', '$rootScope', function (user, podcast, GoogleFeedApi, $rootScope) {
+                episodes: ['user', 'podcast', 'GoogleFeedApi', '$rootScope' ,'EpisodeStorage', function (user, podcast, GoogleFeedApi, $rootScope, EpisodeStorage) {
                     if (!$rootScope.online) {
-                        return [];
+                        return EpisodeStorage.getEpisodes(podcast);
+                    } else {
+                        return GoogleFeedApi.one('load').getList(null, { q: podcast.feed });
                     }
-
-                    chrome.storage.local.get(podcast.feed, function (eps) {
-                        console.log('locally stored episodes', eps);
-                    });
-
-                    return GoogleFeedApi.one('load').getList(null, { q: podcast.feed });
                 }]
             },
             controller: 'BasepodcastCtrl'
