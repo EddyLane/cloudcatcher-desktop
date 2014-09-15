@@ -66,7 +66,6 @@ function EpisodeStorage($q, $log) {
      * @returns {Promise}
      */
     this.storeEpisode = function storeEpisode(episode) {
-        console.log(episode);
         var defer = $q.defer();
         $log.info('downloading', episode.media.url);
         var xhr = new XMLHttpRequest();

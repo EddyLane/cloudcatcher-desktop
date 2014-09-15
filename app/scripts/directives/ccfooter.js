@@ -12,10 +12,6 @@ angular.module('cloudcatcherDesktopApp')
             templateUrl: 'views/directives/footer.html',
             restrict: 'EA',
             link: function postLink (scope) {
-
-
-                console.log(scope);
-                console.log(scope.audioPlayer);
             }
         };
     });

@@ -12,7 +12,8 @@ angular.module('cloudcatcherDesktopApp')
             templateUrl: 'views/directives/podcast-list.html',
             restrict: 'E',
             scope: {
-                original: '=podcasts'
+                original: '=podcasts',
+                online: '='
             },
             controller: PodcastListCtrl,
             controllerAs: 'PodcastlistCtrl'

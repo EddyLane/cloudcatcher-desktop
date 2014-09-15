@@ -11,7 +11,7 @@
         </div>
         <div class="navbar-collapse collapse" collapse="isCollapsed">
             <ul class="nav navbar-nav navbar-right">
-                <li ng-if="devMode === true" ng-click="online = !online">TOGGLE ONLINE</li>
+                <li ng-if="devMode"><a ng-click="$parent.online = !$parent.online" ng-if="online">Online</a><a ng-click="$parent.online = !$parent.online" ng-if="!online">Offline</a></li>
                 <li ui-sref-active="active"><a ui-sref="base.podcasts.thumbnails">Podcasts</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -19,6 +19,7 @@
                         {{ username }} <span class="caret">
                         </span></a>
                     <ul class="dropdown-menu" role="menu">
+                        <li ng-if="devMode"><a ng-click="online = !online"><span ng-if="online">Go online</span><span ng-if="!online">Go offline</span></a></li>
                         <li><a href="#">Acount</a></li>
                         <li class="divider"></li>
                         <li><a href="#" ng-click="logout()">Log Out</a></li>
@@ -41,7 +42,7 @@
 <div class="container-fluid main-content">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-            <cc-podcast-list podcasts="podcasts"></cc-podcast-list>
+            <cc-podcast-list podcasts="podcasts" online="online"></cc-podcast-list>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ui-view></div>
     </div>

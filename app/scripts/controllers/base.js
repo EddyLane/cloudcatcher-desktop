@@ -24,8 +24,6 @@ angular.module('cloudcatcherDesktopApp')
 
         function play (episode) {
 
-            console.log(episode);
-
             $scope.playing = AudioPlayer.playing;
 
             $scope.audioPlayer.load([{

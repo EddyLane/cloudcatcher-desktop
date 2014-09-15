@@ -24,6 +24,8 @@
         "storage",
         "webview",
         "<all_urls>",
-        "unlimitedStorage"
+        "unlimitedStorage",
+        "gcm",
+        "notifications"
     ]
 }
