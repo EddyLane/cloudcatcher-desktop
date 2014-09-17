@@ -15,4 +15,9 @@ angular.module('cloudcatcherDesktopApp')
                 user.removePodcast(podcast);
             }
         });
+
+        $scope.$watch('podcast.autoDownload', function (value) {
+            user.savePodcast(podcast);
+        });
+
     });

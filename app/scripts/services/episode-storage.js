@@ -9,7 +9,7 @@
  * Episode storage
  */
 
-function EpisodeStorage($q, $log) {
+function EpisodeStorage($q, $log, $state) {
 
     /**
      * Get locally stored episodes for a podcast
@@ -65,7 +65,7 @@ function EpisodeStorage($q, $log) {
      * @param episode
      * @returns {Promise}
      */
-    this.storeEpisode = function storeEpisode(episode, podcast) {
+    this.storeEpisode = function storeEpisode(episode, podcast, scope) {
 
         var mp3 = episode.media.url.split('/');
         var xhr = new XMLHttpRequest();
@@ -89,12 +89,25 @@ function EpisodeStorage($q, $log) {
             console.log('done notification', notificationId);
         });
 
+        chrome.notifications.onClicked.addListener(function (clickedId) {
+            if (clickedId === notificationId) {
+                $state.go('base.podcast.episodes', { slug: podcast.slug });
+            }
+        });
+
         xhr.onprogress = function (e) {
             var progress = parseInt((e.loaded / e.total) * 100, 10);
-            episode.downloadProgress = progress;
+
+            if (scope) {
+                scope.$apply(function () {
+                    episode.downloadProgress = progress / 100;
+                });
+            }
+
             chrome.notifications.update(notificationId,{
                 progress: progress
             }, function () {});
+
         };
 
         xhr.onload = function (e) {
@@ -129,11 +142,28 @@ function EpisodeStorage($q, $log) {
                                         episode.file = mp3;
                                         result[episode.feed].push(_.omit(episode.plain(), ['episodes', '$$hashKey', '$id', '$priority', 'imageUrl']));
                                         chrome.storage.local.set(result, function () {
+
+                                            var completedId = 'cloudcatcher' + Math.random();
+
                                             defer.resolve();
                                             $log.info('stored', result);
 
                                             chrome.notifications.clear(notificationId, function () {
                                                 $log.info('notification removed');
+                                            });
+
+                                            chrome.notifications.create(completedId, {
+                                                type: 'basic',
+                                                message: 'Downloaded: ' + episode.title,
+                                                title: podcast.name,
+                                                iconUrl: podcast.imageUrl,
+                                                priority: 0
+                                            } , function () {});
+
+                                            chrome.notifications.onClicked.addListener(function (clickedId) {
+                                                if (clickedId === completedId) {
+                                                    $state.go('base.podcast.episodes', { slug: podcast.slug });
+                                                }
                                             });
 
                                         });

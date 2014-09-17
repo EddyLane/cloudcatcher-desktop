@@ -14,6 +14,10 @@
 <div class="btn-group pull-right" role="toolbar">
 
 
+    <div class="btn-group">
+        <label class="btn btn-primary" ng-model="podcast.autoDownload" btn-radio="1">On</label>
+        <label class="btn btn-primary" ng-model="podcast.autoDownload" btn-radio="0">Off</label>
+    </div>
 
     <div class="btn-group" dropdown is-open="options.isOpen">
         <button class="btn btn-lg btn-link dropdown-toggle pull-right" type="button">
@@ -33,6 +37,7 @@
     <button class="btn btn-lg btn-link pull-right">
         <span class="glyphicon glyphicon-info-sign"></span>
     </button>
+
 
 </div>
 
