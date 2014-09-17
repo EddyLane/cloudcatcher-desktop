@@ -56,7 +56,7 @@ function EpisodeStorage($q, $log) {
     this.hasEpisode = function hasEpisode(episode) {
         return this.getEpisode(episode).then(function (episode) {
             return _.size(episode) > 0;
-        })
+        });
     };
 
     /**
@@ -65,15 +65,38 @@ function EpisodeStorage($q, $log) {
      * @param episode
      * @returns {Promise}
      */
-    this.storeEpisode = function storeEpisode(episode) {
+    this.storeEpisode = function storeEpisode(episode, podcast) {
         var defer = $q.defer();
         $log.info('downloading', episode.media.url);
         var xhr = new XMLHttpRequest();
         xhr.open('GET', episode.media.url, true);
         xhr.responseType = 'blob';
 
+        console.log('storeepisode', episode, podcast);
+
+        var notificationId = 'cloudcatcher' + Math.random();
+
+        var notificationData = {
+            type: 'progress',
+            message: episode.title,
+            title: podcast.name,
+            iconUrl: podcast.imageUrl,
+            progress: 0,
+            priority: 2
+        };
+
+        chrome.notifications.create(notificationId, notificationData , function (notificationId) {
+            console.log('done notification', notificationId);
+        });
+
         xhr.onprogress = function (e) {
-            episode.downloadProgress = (e.loaded / e.total) * 100;
+            var progress = parseInt((e.loaded / e.total) * 100, 10);
+            episode.downloadProgress = progress;
+            chrome.notifications.update(notificationId,{
+                progress: progress
+            }, function () {
+                console.log('updated notification');
+            });
         };
 
         xhr.onload = function (e) {
@@ -98,6 +121,11 @@ function EpisodeStorage($q, $log) {
                         chrome.storage.local.set(result, function () {
                             defer.resolve();
                             $log.info('stored', result);
+
+                            chrome.notifications.clear(notificationId, function () {
+                                $log.info('notification removed');
+                            });
+
                         });
                     });
 

@@ -46,7 +46,7 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
             return EpisodeStorage.hasEpisode(episode).then(function (downloaded) {
                 if (!downloaded) {
                     episode.downloading = true;
-                    EpisodeStorage.storeEpisode(episode).then(function () {
+                    EpisodeStorage.storeEpisode(episode, podcast).then(function () {
                         episode.downloading = false;
                         episode.downloaded = true;
                     });
