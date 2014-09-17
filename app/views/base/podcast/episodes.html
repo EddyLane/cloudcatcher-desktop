@@ -21,7 +21,7 @@
                 <small class="summary">{{ episode.content }}</small>
             </td>
             <td>
-                <button ng-click="store(episode)" ladda="episode.downloading" ng-if="episode.downloaded === false"
+                <button ng-click="store(episode)" ladda="episode.downloading" ng-if="!episode.downloaded"
                         class="btn btn-default" data-size="xs"><span class="glyphicon glyphicon-download-alt"></span>
                 </button>
             </td>

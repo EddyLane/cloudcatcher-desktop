@@ -74,14 +74,7 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
 
         locallyStored.then(function (stored) {
             _.each($scope.episodes, function (ep) {
-
-                var found = _.find(stored, { media: { url: ep.media.url } });
-                if (found) {
-                    ep.dataUri = found.dataUri;
-                    ep.downloaded = true;
-                } else {
-                    ep.downloaded = false;
-                }
+                _.merge(ep, _.find(stored, { media: { url: ep.media.url } }));
             });
         });
 
