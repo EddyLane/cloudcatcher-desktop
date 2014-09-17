@@ -11,32 +11,34 @@ chrome.gcm.onMessage.addListener(function(message) {
 
     console.log('incoming notification', message);
 
-    chrome.storage.local.get(message.data.slug + ':image', function (data) {
+    chrome.storage.local.get('podcasts', function (storedPodcasts) {
+        var podcast = _.find(storedPodcasts.podcasts, { feed: message.data.feed });
+        console.log('found podcast', podcast);
+        chrome.storage.local.get(message.data.slug + ':image', function (data) {
+            if (podcast && podcast.autoDownload) {
+                podcast.imageUrl = data[message.data.slug + ':image'];
+                downloadEpisode(message.data, podcast);
+            } else {
 
-        var notificationData = {
-            message: message.data.title,
-            eventTime: parseInt(message.data.date, 10),
-            title: message.data.podcast,
-            iconUrl: 'calculator-128.png',
-            imageUrl: data[message.data.slug + ':image']
-        };
+                var notificationId = podcast.name + Math.random();
+                var notificationData = {
+                    type: 'basic',
+                    message: message.data.title,
+                    title: 'NEW EPISODE: ' + message.data.podcast,
+                    iconUrl: data[message.data.slug + ':image'],
+                    priority: 0
+                };
 
-        if (notificationData.imageUrl) {
-            notificationData.type = 'image';
-            notificationData.iconUrl = notificationData.imageUrl;
+                chrome.notifications.create(notificationId, notificationData , function (notificationId) {
+                    console.log('done notification', notificationId);
+                });
 
-//            notificationData.type = 'basic';
-        } else {
-            notificationData.type = 'basic';
-        }
-
-
-        chrome.notifications.create('cloudcatcher' + Math.random(), notificationData , function (notificationId) {
-            console.log('done notification', notificationId);
+            }
         });
 
-
     });
+
+
 
 });
 

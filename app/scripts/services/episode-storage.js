@@ -9,7 +9,7 @@
  * Episode storage
  */
 
-function EpisodeStorage($q, $log, $state) {
+function EpisodeStorage($q, $log, $state, $rootScope) {
 
     /**
      * Get locally stored episodes for a podcast
@@ -67,10 +67,17 @@ function EpisodeStorage($q, $log, $state) {
      */
     this.storeEpisode = function storeEpisode(episode, podcast, scope) {
 
-        var mp3 = episode.media.url.split('/');
+
+        var defer = $q.defer();
+        var mp3 = Math.random();
         var xhr = new XMLHttpRequest();
         var notificationId = 'cloudcatcher' + Math.random();
-        var defer = $q.defer();
+
+        if (!podcast.downloading) {
+            podcast.downloading = [episode];
+        } else {
+            podcast.downloading.push(episode);
+        }
 
         mp3 = mp3[mp3.length - 1];
 
@@ -85,7 +92,7 @@ function EpisodeStorage($q, $log, $state) {
             iconUrl: podcast.imageUrl,
             progress: 0,
             priority: 2
-        } , function (notificationId) {
+        }, function (notificationId) {
             console.log('done notification', notificationId);
         });
 
@@ -98,15 +105,16 @@ function EpisodeStorage($q, $log, $state) {
         xhr.onprogress = function (e) {
             var progress = parseInt((e.loaded / e.total) * 100, 10);
 
-            if (scope) {
-                scope.$apply(function () {
+//            if (scope) {
+                $rootScope.$apply(function () {
                     episode.downloadProgress = progress / 100;
                 });
-            }
+//            }
 
-            chrome.notifications.update(notificationId,{
+            chrome.notifications.update(notificationId, {
                 progress: progress
-            }, function () {});
+            }, function () {
+            });
 
         };
 
@@ -117,21 +125,21 @@ function EpisodeStorage($q, $log, $state) {
             window.webkitRequestFileSystem(
                 PERSISTENT,
                 e.total,
-                function(fs) {
+                function (fs) {
                     console.log('Filesystem: ' + fs);
 
                     fs.root.getFile(
                         mp3,
                         {create: true, exclusive: true},
-                        function(fileEntry) {
+                        function (fileEntry) {
                             console.log('fileEntry: ' + fileEntry);
 
 
-                            fileEntry.createWriter(function(fileWriter) {
+                            fileEntry.createWriter(function (fileWriter) {
 
                                 console.log('fileWriter: ' + fileWriter);
 
-                                fileWriter.onwriteend = function(e) {
+                                fileWriter.onwriteend = function (e) {
                                     console.log('Write completed.');
                                     var storage = {};
                                     storage[episode.feed] = [];
@@ -139,6 +147,9 @@ function EpisodeStorage($q, $log, $state) {
                                     chrome.storage.local.get(storage, function (result) {
                                         $log.info('got', result);
                                         episode.downloaded = e.total;
+//                                        if (scope) {
+                                        $rootScope.$digest();
+//                                        }
                                         episode.file = mp3;
                                         result[episode.feed].push(_.omit(episode.plain(), ['episodes', '$$hashKey', '$id', '$priority', 'imageUrl']));
                                         chrome.storage.local.set(result, function () {
@@ -158,7 +169,8 @@ function EpisodeStorage($q, $log, $state) {
                                                 title: podcast.name,
                                                 iconUrl: podcast.imageUrl,
                                                 priority: 0
-                                            } , function () {});
+                                            }, function () {
+                                            });
 
                                             chrome.notifications.onClicked.addListener(function (clickedId) {
                                                 if (clickedId === completedId) {
@@ -170,58 +182,20 @@ function EpisodeStorage($q, $log, $state) {
                                     });
                                 };
 
-                                fileWriter.onerror = function(e) {
+                                fileWriter.onerror = function (e) {
                                     console.log('Write failed: ' + e.toString());
                                 };
 
                                 fileWriter.write(blob);
-                            }, function(e) {
+
+                            }, function (e) {
                                 console.log('Error: ' + e);
                             });
                         });
-
                 }
             );
-//
-//            // onload needed since Google Chrome doesn't support addEventListener for FileReader
-//            fileReader.onload = function (evt) {
-//                // Read out file contents as a Data URL
-//                var storage = {};
-//
-//                episode.dataUri = evt.target.result;
-//
-//                // Store Data URL in localStorage
-//                try {
-//                    storage[episode.feed] = [];
-//
-//
-//
-////                    chrome.storage.local.get(storage, function (result) {
-////                        $log.info('got', result);
-////                        result[episode.feed].push(_.omit(episode.plain(), ['episodes', '$$hashKey', '$id', '$priority', 'imageUrl']));
-////                        result[episode.feed].push(_.omit(episode.plain(), ['episodes', '$$hashKey', '$id', '$priority', 'imageUrl']));
-////                        chrome.storage.local.set(result, function () {
-////                            defer.resolve();
-////                            $log.info('stored', result);
-////
-////                            chrome.notifications.clear(notificationId, function () {
-////                                $log.info('notification removed');
-////                            });
-////
-////                        });
-////                    });
-//
-//                }
-//                catch (e) {
-//                    defer.reject(e);
-//                    $log.error('Storage failed', e);
-//                }
-//            };
-//            // Load blob as Data URL
-//            fileReader.readAsDataURL(blob);
-
-
         };
+
         xhr.send();
         return defer.promise;
     };

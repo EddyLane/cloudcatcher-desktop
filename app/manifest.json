@@ -5,7 +5,7 @@
     "manifest_version": 2,
     "app": {
         "background": {
-            "scripts": ["background.js"]
+            "scripts": ["bower_components/lodash/dist/lodash.js", "episode-downloader.js", "background.js"]
         }
     },
     "icons": {
