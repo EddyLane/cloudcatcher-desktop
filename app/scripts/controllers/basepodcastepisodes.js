@@ -29,10 +29,14 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
     }
 
     locallyStored.then(function (stored) {
+
+        console.log('locallyStored', stored);
+
         _.each(episodes, function (ep) {
             var found = _.find(stored, { media: { url: ep.media.url } });
             if (found) {
-                _.merge(ep, found);
+                console.log('merging', ep, found);
+                ep = _.merge(ep, _.omit(found, 'date'));
             } else {
                 ep.downloaded = false;
             }

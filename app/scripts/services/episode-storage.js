@@ -69,7 +69,7 @@ function EpisodeStorage($q, $log, $state, $rootScope) {
 
 
         var defer = $q.defer();
-        var mp3 = Math.random();
+        var mp3 = Math.floor(Math.random() * (1000000000 - 1)) + 1;
         var xhr = new XMLHttpRequest();
         var notificationId = 'cloudcatcher' + Math.random();
 
@@ -78,8 +78,6 @@ function EpisodeStorage($q, $log, $state, $rootScope) {
         } else {
             podcast.downloading.push(episode);
         }
-
-        mp3 = mp3[mp3.length - 1];
 
         $log.info('downloading', episode.media.url);
         xhr.open('GET', episode.media.url, true);
@@ -99,6 +97,8 @@ function EpisodeStorage($q, $log, $state, $rootScope) {
         chrome.notifications.onClicked.addListener(function (clickedId) {
             if (clickedId === notificationId) {
                 $state.go('base.podcast.episodes', { slug: podcast.slug });
+                chrome.app.window.current().show();
+                chrome.app.window.current().focus();
             }
         });
 
@@ -124,9 +124,11 @@ function EpisodeStorage($q, $log, $state, $rootScope) {
 
             window.webkitRequestFileSystem(
                 PERSISTENT,
-                e.total,
+                blob.size,
                 function (fs) {
                     console.log('Filesystem: ' + fs);
+
+                    console.log('trying to save file of size', blob.size);
 
                     fs.root.getFile(
                         mp3,
@@ -147,8 +149,9 @@ function EpisodeStorage($q, $log, $state, $rootScope) {
                                     chrome.storage.local.get(storage, function (result) {
                                         $log.info('got', result);
                                         episode.downloaded = e.total;
+                                        episode.downloaded = true;
 //                                        if (scope) {
-                                        $rootScope.$digest();
+                                        $rootScope.$apply();
 //                                        }
                                         episode.file = mp3;
                                         result[episode.feed].push(_.omit(episode.plain(), ['episodes', '$$hashKey', '$id', '$priority', 'imageUrl']));
@@ -176,6 +179,9 @@ function EpisodeStorage($q, $log, $state, $rootScope) {
                                                 if (clickedId === completedId) {
                                                     $state.go('base.podcast.episodes', { slug: podcast.slug });
                                                 }
+                                                chrome.app.window.current().show();
+                                                chrome.app.window.current().focus();
+
                                             });
 
                                         });

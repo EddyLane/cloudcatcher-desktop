@@ -27,7 +27,7 @@ angular
         //$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|blob:chrome-extension|unsafe:blob:chrome-extension):/);
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob):|data:image\//);
     })
-    .run(function ($rootScope, $window, CloudcatcherAuth) {
+    .run(function ($rootScope, $window, CloudcatcherAuth, $state) {
         
         $rootScope.online = navigator.onLine;
         $rootScope.devMode = true;
@@ -49,6 +49,9 @@ angular
             $rootScope.online = false;
         });
 
+        window.forwardToSlug = function (slug) {
+            $state.go('base.podcast.episodes', { slug: slug });
+        };
 
     })
 ;

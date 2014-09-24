@@ -126,6 +126,10 @@ angular
             controller: 'PodcastinfoCtrl'
         });
 
-        $urlRouterProvider.otherwise('/list');
+        if (window.forwardToPodcast) {
+            $urlRouterProvider.otherwise('/podcasts/' + window.forwardToPodcast() + '/episodes');
+        } else {
+            $urlRouterProvider.otherwise('/list');
+        }
 
     });

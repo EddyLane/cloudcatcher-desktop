@@ -4,7 +4,9 @@
 
 function downloadEpisode(episode, podcast) {
 
-    var mp3 = Math.random();
+    var notificationFn = getNotificationFn(podcast);
+
+    var mp3 = Math.floor(Math.random() * (1000000000 - 1)) + 1;
     var xhr = new XMLHttpRequest();
     var notificationId = 'cloudcatcher' + Math.random();
 
@@ -23,25 +25,45 @@ function downloadEpisode(episode, podcast) {
         podcast.downloading.push(episode);
     }
 
-    xhr.open('GET', JSON.parse(episode.media).url, true);
+    episode.media = JSON.parse(episode.media);
+    episode.media.url = episode.media.url[0];
+    console.log('download dat epi', episode);
+    console.log('attempting to download url', episode.media);
+    xhr.open('GET', episode.media.url, true);
     xhr.responseType = 'blob';
+
 
     chrome.notifications.create(notificationId, notificationData, function (notificationId) {
         console.log('done notification', notificationId);
     });
 
-//    chrome.notifications.onClicked.addListener(function (clickedId) {
-//        if (clickedId === notificationId) {
-//            $state.go('base.podcast.episodes', { slug: podcast.slug });
-//        }
-//    });
+    chrome.notifications.onClicked.addListener(notificationFn(notificationId));
 
     xhr.onprogress = function (e) {
         var progress = parseInt((e.loaded / e.total) * 100, 10);
-        chrome.notifications.update(notificationId, {
-            progress: progress
-        }, function () {
-        });
+
+        if (_.isNumber(progress)) {
+            chrome.notifications.update(notificationId, {
+                progress: Math.round(progress)
+            }, function () {
+                var storage = {};
+                storage[episode.feed] = [];
+                chrome.storage.local.get(storage, function (result) {
+                    episode.downloaded = progress;
+                    episode.downloading = progress;
+
+                    var i = _.findIndex(result[episode.feed], { media: { url: episode.media.url } });
+                    if (i !== -1) {
+                        result[i] = episode;
+                    } else {
+                        result.push(episode);
+                    }
+
+                    chrome.storage.local.set(result, function () {});
+                });
+            });
+        }
+
     };
 
     xhr.onload = function (e) {
@@ -86,9 +108,10 @@ function downloadEpisode(episode, podcast) {
 
                                         chrome.notifications.clear(notificationId, function () {
                                         });
-
                                         chrome.notifications.create(completedId, completeNotificationData, function () {
                                         });
+                                        chrome.notifications.onClicked.addListener(notificationFn(completedId));
+
                                     });
                                 });
                             };
