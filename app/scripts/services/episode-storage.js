@@ -13,7 +13,7 @@ function EpisodeStorage($q, $log, $state, $rootScope) {
 
     /**
      * Get locally stored episodes for a podcast
-     *
+     *m
      * @param podcast
      * @returns {promise|e.promise|FirebaseObject.$$conf.promise|Promise.promise|Q.promise}
      */
@@ -83,24 +83,24 @@ function EpisodeStorage($q, $log, $state, $rootScope) {
         xhr.open('GET', episode.media.url, true);
         xhr.responseType = 'blob';
 
-        chrome.notifications.create(notificationId, {
-            type: 'progress',
-            message: episode.title,
-            title: podcast.name,
-            iconUrl: podcast.imageUrl,
-            progress: 0,
-            priority: 2
-        }, function (notificationId) {
-            console.log('done notification', notificationId);
-        });
-
-        chrome.notifications.onClicked.addListener(function (clickedId) {
-            if (clickedId === notificationId) {
-                $state.go('base.podcast.episodes', { slug: podcast.slug });
-                chrome.app.window.current().show();
-                chrome.app.window.current().focus();
-            }
-        });
+//        chrome.notifications.create(notificationId, {
+//            type: 'progress',
+//            message: episode.title,
+//            title: podcast.name,
+//            iconUrl: podcast.imageUrl,
+//            progress: 0,
+//            priority: 2
+//        }, function (notificationId) {
+//            console.log('done notification', notificationId);
+//        });
+//
+//        chrome.notifications.onClicked.addListener(function (clickedId) {
+//            if (clickedId === notificationId) {
+//                $state.go('base.podcast.episodes', { slug: podcast.slug });
+//                chrome.app.window.current().show();
+//                chrome.app.window.current().focus();
+//            }
+//        });
 
         xhr.onprogress = function (e) {
             var progress = parseInt((e.loaded / e.total) * 100, 10);
@@ -111,10 +111,10 @@ function EpisodeStorage($q, $log, $state, $rootScope) {
                 });
 //            }
 
-            chrome.notifications.update(notificationId, {
-                progress: progress
-            }, function () {
-            });
+//            chrome.notifications.update(notificationId, {
+//                progress: progress
+//            }, function () {
+//            });
 
         };
 
@@ -154,6 +154,7 @@ function EpisodeStorage($q, $log, $state, $rootScope) {
                                         $rootScope.$apply();
 //                                        }
                                         episode.file = mp3;
+
                                         result[episode.feed].push(_.omit(episode.plain(), ['episodes', '$$hashKey', '$id', '$priority', 'imageUrl']));
                                         chrome.storage.local.set(result, function () {
 
@@ -162,9 +163,9 @@ function EpisodeStorage($q, $log, $state, $rootScope) {
                                             defer.resolve();
                                             $log.info('stored', result);
 
-                                            chrome.notifications.clear(notificationId, function () {
-                                                $log.info('notification removed');
-                                            });
+//                                            chrome.notifications.clear(notificationId, function () {
+//                                                $log.info('notification removed');
+//                                            });
 
                                             chrome.notifications.create(completedId, {
                                                 type: 'basic',

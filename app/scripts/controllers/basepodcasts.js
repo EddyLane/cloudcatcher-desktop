@@ -29,6 +29,6 @@ angular.module('cloudcatcherDesktopApp')
         }
 
         $scope.original = original;
-        $scope.$watchCollection('original', sort);
+        $scope.$watch('original', sort, true);
 
     });

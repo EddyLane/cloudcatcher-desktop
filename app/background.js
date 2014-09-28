@@ -2,8 +2,8 @@ function createCloudcatcher() {
 
     return chrome.app.window.create('index.html', {
         'bounds': {
-            'width': 1440,
-            'height': 884
+            'width': 1200,
+            'height': 906
         },
         minWidth: 700
     });

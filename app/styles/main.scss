@@ -402,6 +402,10 @@ html {
     border: 1px solid #ccc;
 }
 
+.register-container {
+    width: 600px;
+}
+
 #output{
     position: absolute;
     width: 300px;
@@ -448,6 +452,7 @@ html {
     border-radius: 100%;
     border: 2px solid #aaa;
     background-size: cover;
+  background-image: url("../images/logo128.png");
 }
 
 .form-box input{
@@ -524,7 +529,9 @@ html {
 }
 
 .navbar-brand {
-    width: 400px;
-    background-image: url('../images/logov1.png');
+    width: 105px;
+    background-image: url('../images/logov2.png');
+    background-repeat: no-repeat;
+    background-position: center;
 }
 

@@ -1,5 +1,8 @@
 <div class="login-page">
-    <div class="login-container">
+    <div class="login-container" ng-if="!registerMode">
         <login-form></login-form>
+    </div>
+    <div class="login-container register-container" ng-if="registerMode">
+        <register-form></register-form>
     </div>
 </div>

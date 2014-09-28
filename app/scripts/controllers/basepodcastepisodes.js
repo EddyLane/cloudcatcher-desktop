@@ -11,13 +11,12 @@
  * @param EpisodeStorage
  * @constructor
  */
-function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, AudioPlayer, EpisodeStorage) {
+function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, AudioPlayer, EpisodeStorage, GoogleFeedApi) {
 
     var addHeard = user.addHeard(podcast),
-        hearAll = user.hearAll(podcast),
-        locallyStored = EpisodeStorage.getEpisodes(podcast);
+        hearAll = user.hearAll(podcast);
 
-    console.log('downloading', podcast.downloading);
+    console.log(episodes);
 
     if (podcast.downloading) {
         _.each(podcast.downloading, function (download) {
@@ -27,21 +26,6 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
             }
         });
     }
-
-    locallyStored.then(function (stored) {
-
-        console.log('locallyStored', stored);
-
-        _.each(episodes, function (ep) {
-            var found = _.find(stored, { media: { url: ep.media.url } });
-            if (found) {
-                console.log('merging', ep, found);
-                ep = _.merge(ep, _.omit(found, 'date'));
-            } else {
-                ep.downloaded = false;
-            }
-        });
-    });
 
     _.assign($scope, {
 
@@ -53,7 +37,6 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
 
         page: $location.search().page || 1,
         limit: 9,
-        total: episodes.length,
         podcast: podcast,
         current: user.getCurrentPlaying(),
 
@@ -62,8 +45,6 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
         },
 
         store: function (episode) {
-
-
             return EpisodeStorage.hasEpisode(episode).then(function (downloaded) {
                 if (!downloaded) {
                     EpisodeStorage.storeEpisode(episode, podcast, $scope);
@@ -79,13 +60,29 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
         var start = (page - 1) * $scope.limit,
             end = start + $scope.limit;
 
+        $scope.total = episodes.length;
         $scope.episodes = episodes.slice(start, end);
         $location.search('page', page);
     }
 
+    GoogleFeedApi.one('load').getList(null, { q: podcast.feed }).then(function (remoteEpisodes) {
 
+        episodes = _(episodes.concat(remoteEpisodes))
+            .uniq(function (e) {
+                return e.media.url;
+            })
+            .sortBy(function (e) {
+                return new Date(e.date);
+            })
+            .reverse()
+            .value()
+        ;
+
+        paginate($scope.page);
+    });
 
     $scope.$watch('page', paginate);
+
 
 }
 

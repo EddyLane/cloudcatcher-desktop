@@ -54,9 +54,9 @@ function downloadEpisode(episode, podcast) {
 
                     var i = _.findIndex(result[episode.feed], { media: { url: episode.media.url } });
                     if (i !== -1) {
-                        result[i] = episode;
+                        result[episode.feed][i] = episode;
                     } else {
-                        result.push(episode);
+                        result[episode.feed].push(episode);
                     }
 
                     chrome.storage.local.set(result, function () {});

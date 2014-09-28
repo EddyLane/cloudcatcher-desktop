@@ -8466,6 +8466,11 @@ html {
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003405}}
+.register-container {
+  width: 600px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003409}}
 #output {
   position: absolute;
   width: 300px;
@@ -8474,17 +8479,17 @@ html {
   color: #fff;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003413}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003417}}
 #output.alert-success {
   background: #19cc19;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003417}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003421}}
 #output.alert-danger {
   background: #e46969;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003422}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003426}}
 .login-container::before, .login-container::after {
   content: "";
   position: absolute;
@@ -8500,7 +8505,7 @@ html {
   border: 1px solid #ccc;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003436}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003440}}
 .login-container::after {
   top: 5px;
   z-index: -2;
@@ -8509,7 +8514,7 @@ html {
   -ms-transform: rotateZ(-2deg);
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003445}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003449}}
 .avatar {
   width: 100px;
   height: 100px;
@@ -8517,9 +8522,10 @@ html {
   border-radius: 100%;
   border: 2px solid #aaa;
   background-size: cover;
+  background-image: url("../images/logo128.png");
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003453}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003458}}
 .form-box input {
   width: 100%;
   padding: 10px;
@@ -8530,31 +8536,31 @@ html {
   transition: 0.2s ease-in-out;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003464}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003469}}
 .form-box input:focus {
   outline: 0;
   background: #eee;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003469}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003474}}
 .form-box input[type="text"] {
   border-radius: 5px 5px 0 0;
   text-transform: lowercase;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003474}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003479}}
 .form-box input[type="password"] {
   border-radius: 0 0 5px 5px;
   border-top: 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003479}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003484}}
 .form-box button.login {
   margin-top: 15px;
   padding: 10px 20px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003484}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003489}}
 .animated {
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
@@ -8563,14 +8569,14 @@ html {
 }
 
 @-webkit-keyframes fadeInUp {
-  /* line 492, ../../app/styles/main.scss */
+  /* line 497, ../../app/styles/main.scss */
   0% {
     opacity: 0;
     -webkit-transform: translateY(20px);
     transform: translateY(20px);
   }
 
-  /* line 498, ../../app/styles/main.scss */
+  /* line 503, ../../app/styles/main.scss */
   100% {
     opacity: 1;
     -webkit-transform: translateY(0);
@@ -8579,14 +8585,14 @@ html {
 }
 
 @keyframes fadeInUp {
-  /* line 506, ../../app/styles/main.scss */
+  /* line 511, ../../app/styles/main.scss */
   0% {
     opacity: 0;
     -webkit-transform: translateY(20px);
     transform: translateY(20px);
   }
 
-  /* line 513, ../../app/styles/main.scss */
+  /* line 518, ../../app/styles/main.scss */
   100% {
     opacity: 1;
     -webkit-transform: translateY(0);
@@ -8594,14 +8600,16 @@ html {
   }
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003521}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003526}}
 .fadeInUp {
   -webkit-animation-name: fadeInUp;
   animation-name: fadeInUp;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003526}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/edwardlane\/Projects\/cloudcatcher-desktop\/app\/styles\/main\.scss}line{font-family:\00003531}}
 .navbar-brand {
-  width: 400px;
-  background-image: url("../images/logov1.png");
+  width: 105px;
+  background-image: url("../images/logov2.png");
+  background-repeat: no-repeat;
+  background-position: center;
 }
