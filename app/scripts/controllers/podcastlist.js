@@ -33,7 +33,8 @@ function PodcastListCtrl ($scope, PodcastSorter) {
 
     }
 
-    $scope.$watchCollection('original', function (podcasts) {
+    function setOriginal() {
+        var podcasts = $scope.original;
 
         if (!init) {
 
@@ -46,9 +47,10 @@ function PodcastListCtrl ($scope, PodcastSorter) {
         } else {
             sort(podcasts);
         }
+    }
 
-    });
-
+    $scope.original.$watch(setOriginal);
+    setOriginal();
 }
 
 angular.module('cloudcatcherDesktopApp')

@@ -59,8 +59,10 @@ angular
             templateUrl: 'views/base/podcasts.html',
             abstract: true,
             resolve: {
-                original: ['user', '$q', function (user, $q) {
-                    return user.getPodcasts();
+                original: ['user', 'ImageLoader', function (user, ImageLoader) {
+                    return ImageLoader.loadImages(user.getPodcasts()).then(function () {
+                        return user.getPodcasts();
+                    });
                 }]
             },
             controller: 'BasepodcastsCtrl'

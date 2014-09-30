@@ -7,28 +7,26 @@
  * # BasepodcastsCtrl
  * Controller of the cloudcatcherDesktopApp
  */
+
+function BasepodcastsCtrl($scope, original, PodcastSorter) {
+
+    function sort() {
+
+        var sorter = PodcastSorter.getSorter(original);
+
+        $scope.sortBy = function (type) {
+            $scope.type = type;
+            $scope.listPodcasts = sorter(type);
+        };
+
+        $scope.sortBy('name');
+    }
+
+    $scope.original = original;
+    original.$watch(sort);
+    sort();
+
+}
+
 angular.module('cloudcatcherDesktopApp')
-    .controller('BasepodcastsCtrl', function ($scope, original, PodcastSorter, PLACEHOLDER_IMAGE, ImageLoader) {
-
-        function sort(original) {
-
-            var sorter = PodcastSorter.getSorter(original);
-
-            $scope.sortBy = function (type) {
-                $scope.type = type;
-                var podcasts = sorter(type);
-
-                console.log(ImageLoader);
-
-                ImageLoader.loadImages(podcasts).then(function () {
-                    $scope.listPodcasts = podcasts;
-                });
-            };
-
-            $scope.sortBy('name');
-        }
-
-        $scope.original = original;
-        $scope.$watch('original', sort, true);
-
-    });
+    .controller('BasepodcastsCtrl', BasepodcastsCtrl);
