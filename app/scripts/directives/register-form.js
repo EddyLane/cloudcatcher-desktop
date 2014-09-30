@@ -13,15 +13,32 @@ angular.module('cloudcatcherDesktopApp')
             restrict: 'AE',
             link: function postLink(scope) {
 
-                scope.submit = function () {
+                scope.values = {};
+
+                scope.submit = function (values) {
+
                     scope.submitted = true;
 
                     if (scope.registerForm.$invalid) {
                         return false;
                     }
 
-                };
+                    CloudcatcherAuth.register({
+                        email: values.email,
+                        username: values.username,
+                        plainPassword: {
+                            first: values.plainPassword,
+                            second: values.plainPassword
+                        }
+                    }).then(function () {
 
+                        CloudcatcherAuth.authenticate(values.username, values.plainPassword).then(function () {
+                            scope.$emit('loginForm_success');
+                        });
+
+                    });
+
+                };
             }
         };
     });

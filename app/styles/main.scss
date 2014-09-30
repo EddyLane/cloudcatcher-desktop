@@ -535,3 +535,17 @@ html {
     background-position: center;
 }
 
+.form--show-validation {
+
+  select.ng-invalid,
+  input.ng-invalid {
+    border: 1px solid $brand-danger;
+
+    & + i {
+      border-color: $brand-danger;
+    }
+
+  }
+
+}
+
