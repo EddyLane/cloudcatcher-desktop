@@ -26,7 +26,9 @@
                     </ul>
                 </li>
             </ul>
-            <cc-search-form ng-if="online === true"></cc-search-form>
+            <div class="navbar-form navbar-right">
+                <cc-search-form ng-if="online === true"></cc-search-form>
+            </div>
             <form class="navbar-form navbar-right" role="form" cc-audio-controls>
                 <button type="submit" class="btn btn-primary">
                     <span class="glyphicon" ng-class="{
@@ -44,7 +46,14 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <cc-podcast-list podcasts="podcasts" online="online"></cc-podcast-list>
         </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ng-if="!podcasts.length">
+            <h2>Welcome! You currently are not subscribed to any podcasts. Search for some using the search form.</h2>
+            <cc-search-form></cc-search-form>
+        </div>
+
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ui-view></div>
+
     </div>
 </div>
 
