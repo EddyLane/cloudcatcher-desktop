@@ -13,6 +13,7 @@
 function BaseCtrl ($scope, $rootScope, user, AudioPlayer, CloudcatcherAuth, $state, $log) {
 
     _.assign($scope, {
+        user: user,
         username: user.getUsername(),
         podcasts: user.getPodcasts(),
         logout: function () {
@@ -21,10 +22,16 @@ function BaseCtrl ($scope, $rootScope, user, AudioPlayer, CloudcatcherAuth, $sta
             });
         },
         currentPlaying: user.getCurrentPlaying(),
-        isCollapsed: true
+        isCollapsed: true,
+        speed: 1,
+        toggleSpeed: function () {
+            this.speed += 0.5;
+            $scope.audioPlayer.setPlaybackRate(this.speed);
+        }
+
     });
 
-    function play (episode) {
+    function play (episode, autoPlay) {
 
         $scope.playing = AudioPlayer.playing;
 
@@ -32,27 +39,50 @@ function BaseCtrl ($scope, $rootScope, user, AudioPlayer, CloudcatcherAuth, $sta
             src: episode.dataUri || episode.media.url,
             type: 'audio/mpeg',
             media: '.css.media.query'
-        }, true]);
+        }, false]);
 
-        $scope.audioPlayer.play();
+        if (autoPlay) {
+            $scope.audioPlayer.play();
+        }
+
     }
 
-    $scope.$watch('audioPlayer', function (audioPlayer) {
-        if (audioPlayer) {
-            //Events
-            $scope.audioPlayer.on('load', function (evt) {
-                $log.debug('song loaded', evt);
-            });
+    $scope.$watch('audioPlayer.currentTime', function (time) {
+        if (AudioPlayer.playing && time) {
+            AudioPlayer.playing.currentTime = time;
+            $log.debug('playing', AudioPlayer.playing);
+            $rootScope.$emit('whilePlaying', AudioPlayer.playing);
+        }
+    });
 
-            $scope.audioPlayer.on('playing', function (evt) {
+    $scope.$watch('audioPlayer', function (player) {
+        if (player) {
+
+            player.on('playing', function (evt) {
                 $log.debug('song playing', evt);
             });
+
+            $scope.currentPlaying.$loaded().then(function () {
+
+                if ($scope.currentPlaying.media) {
+                    AudioPlayer.play($scope.currentPlaying);
+
+                    player.one('loadedmetadata', function (evt) {
+                        player.pause();
+                        player.seek($scope.currentPlaying.currentTime);
+                        $log.debug('song loaded', evt);
+                    });
+                }
+
+            });
+
         }
     });
 
 
+
     $rootScope.$on('play', function (e, episode) {
-        play(episode);
+        play(episode, true);
     });
 
 }

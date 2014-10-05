@@ -1,6 +1,6 @@
 {
-    "name": "Hello World!",
-    "description": "My first Chrome App.",
+    "name": "Cloudcatcher.io",
+    "description": "Podcast subscriber.",
     "version": "0.1",
     "manifest_version": 2,
     "app": {
@@ -26,6 +26,7 @@
         "<all_urls>",
         "unlimitedStorage",
         "gcm",
-        "notifications"
+        "notifications",
+        "contextMenus"
     ]
 }

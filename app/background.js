@@ -36,6 +36,7 @@ function getNotificationFn(podcast) {
     };
 }
 
+
 var recievedIds = [];
 
 chrome.app.runtime.onLaunched.addListener(createCloudcatcher);

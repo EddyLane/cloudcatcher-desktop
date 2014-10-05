@@ -1,14 +1,14 @@
-<div class="row" style="margin-bottom:20px;" ng-if="podcasts.length" >
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <ul class="nav nav-pills nav-justified" role="tablist">
-            <li ui-sref-active="active">
-                <a href="#" ui-sref="base.podcasts.thumbnails">My Podcasts</a>
-            </li>
-            <li ui-sref-active="active">
-                <a href="#" ui-sref="base.podcasts.unplayed">All Unplayed</a>
-            </li>
-        </ul>
+<div class="btn-toolbar well well-sm">
+    <span class="label label-primary">{{ podcasts.length }} podcasts</span>
+    <div class="btn-group pull-right">
+        <a class="btn btn-sm btn-primary" ui-sref-active="active" ui-sref="base.podcasts.unplayed">
+            <span class="glyphicon glyphicon-list"></span>
+        </a>
+        <a class="btn btn-sm btn-primary"  ui-sref-active="active" ui-sref="base.podcasts.thumbnails">
+            <span class="glyphicon glyphicon glyphicon-picture"></span>
+        </a>
     </div>
+
 </div>
 
 <div class="row" ui-view></div>

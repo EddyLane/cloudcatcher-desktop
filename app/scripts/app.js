@@ -53,5 +53,6 @@ angular
             $state.go('base.podcast.episodes', { slug: slug });
         };
 
+
     })
 ;

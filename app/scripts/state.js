@@ -55,6 +55,15 @@ angular
             controlleAs: 'base'
         });
 
+        $stateProvider.state('base.user', {
+            templateUrl: 'views/base/user.html',
+            abstract: true
+        });
+
+        $stateProvider.state('base.user.edit', {
+            templateUrl: 'views/base/user/edit.html'
+        })
+
         $stateProvider.state('base.podcasts', {
             templateUrl: 'views/base/podcasts.html',
             abstract: true,

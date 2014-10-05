@@ -8,7 +8,7 @@
  * @param user
  * @constructor
  */
-function BasepodcastCtrl ($scope, $modal, podcast, user) {
+function BasepodcastCtrl ($scope, $modal, podcast, episodes, user) {
 
     /**
      * Remove subscription
@@ -26,10 +26,14 @@ function BasepodcastCtrl ($scope, $modal, podcast, user) {
             resolve: {
                 podcast: function () {
                     return podcast;
+                },
+                meta: function () {
+                    return episodes.meta;
                 }
             },
-            controller: function ($scope, podcast) {
+            controller: function ($scope, podcast, meta) {
                 $scope.podcast = podcast;
+                $scope.meta = meta;
             }
         });
     }

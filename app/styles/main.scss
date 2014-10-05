@@ -60,6 +60,8 @@ body {
     width: -moz-calc(100% - 60px);
     width: -webkit-calc(100% - 60px);
     width: calc(100% - 60px);
+    animation: marquee 5s linear infinite;
+
     small {
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -493,6 +495,11 @@ html {
     animation-fill-mode: both;
 }
 
+@keyframes marquee {
+  0% { text-indent: 0; }
+  100% { text-indent: -100%; }
+}
+
 @-webkit-keyframes fadeInUp {
     0% {
         opacity: 0;
@@ -546,6 +553,12 @@ html {
     }
 
   }
+}
 
+.footer-buttons {
+  button {
+    position: relative;
+    top:10px;
+  }
 }
 

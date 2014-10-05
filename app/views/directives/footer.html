@@ -1,22 +1,30 @@
 <div class="container-fluid main-content">
     <div class="row">
-        <div class="col-sm-3 col-md-2 col-lg-2 col-xs-3">
-            <img ng-if="playing" ng-src="{{ playing.imageUrl }}">
-            <h6 ng-if="playing" class="pull-left">{{ playing.title }}<br>
-                <small>{{ playing.author }}</small>
-            </h6>
+        <div class="col-sm-2 col-md-2 col-lg-2 col-xs-2">
+            <a ui-sref="base.podcast.episodes({ slug: currentPlaying.podcast.slug })">
+                <img ng-if="currentPlaying" ng-src="{{ currentPlaying.imageUrl }}">
+                <h6 ng-if="currentPlaying" class="pull-left">{{ currentPlaying.title }}<br>
+                    <small>{{ currentPlaying.author }}</small>
+                </h6>
+            </a>
         </div>
-        <div class="col-sm-9 col-md-10 col-xs-9 col-lg-10">
+        <div class="col-sm-9 col-md-9 col-xs-9 col-lg-9">
 
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
-                        <audio media-player="audioPlayer" data-playlist="playlist" controls="controls" style="position: relative;">
+                        <audio media-player="audioPlayer" data-playlist="playlist" controls="controls"
+                               style="position: relative;">
                         </audio>
                     </div>
                 </div>
             </div>
 
+        </div>
+        <div class="col-sm-1 col-md-1 col-xs-1 col-lg-1 footer-buttons">
+            <button type="submit" class="btn btn-default" ng-click="toggleSpeed()">
+                {{ speed }}x
+            </button>
         </div>
     </div>
 </div>

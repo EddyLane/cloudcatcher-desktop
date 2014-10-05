@@ -6,7 +6,7 @@
  * @param $location
  * @param episodes
  * @param podcast
- * @param user
+ * @param useri
  * @param AudioPlayer
  * @param EpisodeStorage
  * @constructor
@@ -15,8 +15,6 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
 
     var addHeard = user.addHeard(podcast),
         hearAll = user.hearAll(podcast);
-
-    console.log(episodes);
 
     if (podcast.downloading) {
         _.each(podcast.downloading, function (download) {
@@ -31,7 +29,10 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
 
         listen: function (episode) {
             episode.imageUrl = podcast.imageUrl;
-            AudioPlayer.play(episode);
+            episode.podcast = {
+                slug: podcast.slug
+            };
+            AudioPlayer.play(episode, true);
             addHeard(episode);
         },
 
@@ -66,6 +67,8 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
     }
 
     GoogleFeedApi.one('load').getList(null, { q: podcast.feed }).then(function (remoteEpisodes) {
+
+        _.merge(podcast, remoteEpisodes.meta);
 
         episodes = _(episodes.concat(remoteEpisodes))
             .uniq(function (e) {
