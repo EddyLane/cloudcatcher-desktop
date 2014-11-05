@@ -11,7 +11,7 @@
  * @param EpisodeStorage
  * @constructor
  */
-function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, AudioPlayer, EpisodeStorage, GoogleFeedApi) {
+function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, AudioPlayer, EpisodeStorage, GoogleFeedApi, $rootScope) {
 
     var addHeard = user.addHeard(podcast),
         hearAll = user.hearAll(podcast);
@@ -45,6 +45,15 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
             hearAll(episodes);
         },
 
+        contextMenu: [
+            {
+                title: 'Download',
+                id: 'downloadItem',
+                contexts: ['all'],
+                action: $scope.listen
+            }
+        ],
+
         store: function (episode) {
             return EpisodeStorage.hasEpisode(episode).then(function (downloaded) {
                 if (!downloaded) {
@@ -66,23 +75,26 @@ function BasePodcastEpisodesCtrl ($scope, $location, episodes, podcast, user, Au
         $location.search('page', page);
     }
 
-    GoogleFeedApi.one('load').getList(null, { q: podcast.feed }).then(function (remoteEpisodes) {
+    if ($rootScope.online) {
+        GoogleFeedApi.one('load').getList(null, { q: podcast.feed }).then(function (remoteEpisodes) {
 
-        _.merge(podcast, remoteEpisodes.meta);
+            _.merge(podcast, remoteEpisodes.meta);
 
-        episodes = _(episodes.concat(remoteEpisodes))
-            .uniq(function (e) {
-                return e.media.url;
-            })
-            .sortBy(function (e) {
-                return new Date(e.date);
-            })
-            .reverse()
-            .value()
-        ;
+            episodes = _(episodes.concat(remoteEpisodes))
+                .uniq(function (e) {
+                    return e.media.url;
+                })
+                .sortBy(function (e) {
+                    return new Date(e.date);
+                })
+                .reverse()
+                .value()
+            ;
 
-        paginate($scope.page);
-    });
+            paginate($scope.page);
+        });
+    }
+
 
     $scope.$watch('page', paginate);
 

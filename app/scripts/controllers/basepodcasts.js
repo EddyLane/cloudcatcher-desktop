@@ -23,7 +23,11 @@ function BasepodcastsCtrl($scope, original, PodcastSorter) {
     }
 
     $scope.original = original;
-    original.$watch(sort);
+
+    //Online (firebase data)
+    if (_.isFunction(original.$watch)) {
+        original.$watch(sort);
+    }
     sort();
 
 }

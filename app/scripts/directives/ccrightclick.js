@@ -10,27 +10,24 @@ angular.module('cloudcatcherDesktopApp')
     .directive('ccRightClick', function () {
         return {
             restrict: 'A',
-            scope: {
-                episode: '=',
-                playAction: '='
-            },
-            link: function (scope, element) {
-                element.bind('contextmenu', function () {
+            scope: function (scope, element) {
+                element.bind('contextmenu', function (event) {
+                    // When the app gets installed, set up the context menus
 
-                    chrome.contextMenus.create({
-                        title: 'Play',
-                        id: 'downloadEpisode',
-                        contexts: [ 'all', 'audio' ],
-                        onclick: function () {
-                            scope.playAction(scope.episode);
-                        }
-                    }, function () {
-
-                        //chrome.contextMenus.remove('downloadEpisode');
-
+                    chrome.contextMenus.removeAll(function () {
+                        chrome.contextMenus.create({
+                            title: 'HOLY SHIT',
+                            id: 'contextMenuId2',
+                            contexts: [ 'all' ]
+                        });
                     });
 
 
+                    scope.$apply(function () {
+
+//                    event.preventDefault();
+                        //fn(scope, {$event: event});
+                    });
                 });
             }
         };

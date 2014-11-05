@@ -50,8 +50,10 @@ function BasepodcastCtrl ($scope, $modal, podcast, episodes, user) {
     /**
      * Save podcast when updating autoDownload settings
      */
-    $scope.$watch('podcast.autoDownload', function () {
-        user.savePodcast(podcast);
+    $scope.$watch('podcast.autoDownload', function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+            user.savePodcast(podcast);
+        }
     });
 
 }

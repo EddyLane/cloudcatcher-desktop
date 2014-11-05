@@ -10,11 +10,27 @@
             <a class="navbar-brand" href="#"></a>
         </div>
         <div class="navbar-collapse collapse" collapse="isCollapsed">
+
+            <ul class="nav navbar-nav navbar-left">
+                <li ui-sref-active="active">
+                    <a ui-sref="base.podcasts.thumbnails">
+                        <span class="glyphicon glyphicon-time"></span> Recent Updates
+                    </a>
+                </li>
+                <li>
+                    <a ui-sref="base.podcasts.thumbnails">
+                        <span class="glyphicon glyphicon-floppy-disk"></span> Saved Episodes
+                    </a>
+                </li>
+            </ul>
+
             <ul class="nav navbar-nav navbar-right">
-                <li ui-sref-active="active"><a ui-sref="base.podcasts.thumbnails">Podcasts</a></li>
+                <!--<li ui-sref-active="active">-->
+                    <!--<a ui-sref="base.podcasts.thumbnails">Podcasts</a>-->
+                <!--</li>-->
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <span class="glyphicon glyphicon-user" ng-if="!online"></span>
+                        <span class="glyphicon glyphicon-user"></span>
                         {{ username }} <span class="caret">
                         </span></a>
                     <ul class="dropdown-menu" role="menu">
@@ -33,16 +49,17 @@
 x
 <div class="container-fluid main-content">
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+
+        <div class="col-sm-4 col-md-4 sidebar">
             <cc-podcast-list podcasts="podcasts" online="online"></cc-podcast-list>
         </div>
 
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ng-if="!podcasts.length">
+        <div class="col-sm-8 col-sm-offset-4 col-md-8 col-md-offset-4 main" ng-if="!podcasts.length">
             <h2>Welcome! You currently are not subscribed to any podcasts. Search for some using the search form.</h2>
             <cc-search-form></cc-search-form>
         </div>
 
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" ui-view></div>
+        <div class="col-sm-8 col-sm-offset-4 col-md-8 col-md-offset-4 main" ui-view></div>
 
     </div>
 </div>

@@ -1,20 +1,30 @@
 <div class="btn-group btn-group-justified" style="margin-bottom: 12px;">
     <div class="btn-group btn-group-xs" ng-click="sortBy('name')">
-        <button class="btn btn-primary" tooltip="Sort by name" tooltip-placement="bottom" ng-click="sortBy('name')" ng-class="{ 'active': type === 'name' }"><span class="glyphicon glyphicon-sort-by-alphabet"></span></button>
+        <button class="btn btn-lg btn-primary" tooltip="Sort by name" tooltip-placement="bottom" ng-click="sortBy('name')" ng-class="{ 'active': type === 'name' }"><span class="glyphicon glyphicon-sort-by-alphabet"></span></button>
     </div>
     <div class="btn-group btn-group-xs">
-        <button class="btn btn-primary" tooltip="Sort by newest" tooltip-placement="bottom" ng-click="sortBy('latest')" ng-class="{ 'active': type === 'latest' }"><span class="glyphicon glyphicon-sort-by-order"></span></button>
+        <button class="btn btn-lg btn-primary" tooltip="Sort by newest" tooltip-placement="bottom" ng-click="sortBy('latest')" ng-class="{ 'active': type === 'latest' }"><span class="glyphicon glyphicon-sort-by-order"></span></button>
     </div>
     <div class="btn-group btn-group-xs">
-        <button class="btn btn-primary" tooltip="Sort by unheard" tooltip-placement="bottom" ng-click="sortBy('newEpisodes')" ng-class="{ 'active': type === 'newEpisodes' }"><span class="glyphicon glyphicon-sort-by-attributes"></span></button>
+        <button class="btn btn-lg btn-primary" tooltip="Sort by unheard" tooltip-placement="bottom" ng-click="sortBy('newEpisodes')" ng-class="{ 'active': type === 'newEpisodes' }"><span class="glyphicon glyphicon-sort-by-attributes"></span></button>
     </div>
 </div>
 
+<div class="btn-group btn-group-justified" style="margin-bottom: 12px;">
+    <div class="btn-group btn-group-xs">
+        <button class="btn btn-lg btn-default" ng-disabled="refreshing" ng-click="refresh()">Refresh</button>
+    </div>
+    <div class="btn-group btn-group-xs">
+        <button class="btn btn-lg btn-default" ng-click="openDefaults()">Defaults</button>
+    </div>
+</div>
+
+
 <div class="list-group podcast-list-group">
-    <a ng-repeat="podcast in podcasts track by podcast.itunesId" class="list-group-item" ui-sref-active="active" ui-sref="base.podcast.episodes({ slug: podcast.slug })">
+    <a ng-repeat="podcast in podcasts" class="list-group-item" ui-sref-active="active" ui-sref="base.podcast.episodes({ slug: podcast.slug })">
         <span class="badge" ng-if="podcast.newEpisodes > 0">{{ podcast.newEpisodes }}</span>
-        <img ng-src="{{ podcast.imageUrl }}" class="img-rounded">
-        {{ podcast.name }}
-        <p class="list-group-item-text text-muted" style="font-size: 13px;" ng-if="online">{{ podcast.latest|amCalendar }}</p>
+        <img ng-src="{{ podcast.imageUrl }}" class="img-rounded podcast-list-image pull-left">
+        <h5>{{ podcast.name }}</h5>
+        <p class="list-group-item-text text-muted" style="font-size: 13px;">{{ podcast.latest|amCalendar }}</p>
     </a>
 </div>

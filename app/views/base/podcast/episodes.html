@@ -9,9 +9,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="episode in episodes" ng-class="{ 'success': currentPlaying.media.url === episode.media.url }" cc-right-click episode="episode" play-action="listen">
+        <tr ng-repeat="episode in episodes" ng-class="{ 'success': currentPlaying.media.url === episode.media.url }" cc-right-click="contextMenu" cc-item="episode">
             <td class="action" ng-click="listen(episode)">
-                <span class="label label-primary" ng-if="!podcast.heard || podcast.heard.indexOf(episode.media.url) === -1">New</span>
+                <span class="label label-primary" ng-if="!podcast.heard || podcast.heard.indexOf(episode.media.url) === -1"> </span>
             </td>
             <td class="hidden-xs" ng-click="listen(episode)">{{ episode.date | amDateFormat:'dddd, MMMM Do YYYY' }}</td>
             <td ng-click="listen(episode)">
@@ -19,9 +19,15 @@
                 <small class="summary">{{ episode.content }}</small>
             </td>
             <td>
-                <button ng-click="store(episode)" ladda="episode.downloadProgress" data-spinner-color="#2c3e50" ng-if="!episode.downloaded"
-                        class="btn" data-size="xs"><span class="glyphicon glyphicon-download-alt"></span>
+                <button ng-click="store(episode)" class="btn btn-link" ladda="episode.downloadProgress" ng-if="!episode.downloaded"
+                        class="btn" data-size="l"><span class="glyphicon glyphicon-cloud-download"></span>
                 </button>
+
+                <button ng-if="episode.downloaded" class="btn btn-link">
+                    <span class="glyphicon glyphicon-floppy-remove"></span>
+                </button>
+
+
             </td>
         </tr>
         </tbody>

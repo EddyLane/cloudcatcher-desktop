@@ -231,10 +231,14 @@ body {
 
 .podcast-list-group a {
 
+  height: 76px;
+
   -webkit-transition: color 0.6s, background-color 0.3s;
   -moz-transition: color 0.6s, background-color 0.3s;
   -ms-transition: color 0.6s, background-color 0.3s;
   transition: color 0.6s, background-color 0.3s;
+
+//  padding-bottom: 27px;
 
   &.ng-enter {
     -webkit-animation: fadeInLeft 1s;
@@ -250,10 +254,14 @@ body {
     animation: bounceOut 1s;
   }
 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 
+  h5 {
+    padding-right:31px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 0px;
+  }
   p {
 
     white-space: nowrap;
@@ -262,8 +270,12 @@ body {
   }
 
   img {
-    max-width: 18px;
-    max-height: 18px;
+    max-width: 60px;
+    max-height: 60px;
+    position: relative;
+    top: -3px;
+    left: -8px;
+    clear:left;
   }
 
 }
@@ -331,6 +343,13 @@ body {
     }
 
   }
+}
+
+.list-group-item>.badge {
+  float: right;
+  position: absolute;
+  right: 10px;
+  bottom: 26px;
 }
 
 .card {
@@ -536,11 +555,17 @@ html {
 }
 
 .navbar-brand {
-    width: 105px;
-    background-image: url('../images/logov2.png');
+    margin-top:10px;
+    width: 40px;
+    height: 40px;
+    margin-left: -5px !important;
+    background-image: url('../images/cloudcatcher/brand.png');
     background-repeat: no-repeat;
     background-position: center;
+    margin-right: 11px;
 }
+
+
 
 .form--show-validation {
 
@@ -562,3 +587,6 @@ html {
   }
 }
 
+.podcast-actions {
+  position: absolute;
+}

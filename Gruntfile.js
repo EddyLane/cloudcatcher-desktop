@@ -22,6 +22,7 @@ module.exports = function (grunt) {
     };
 
     grunt.loadNpmTasks('grunt-ng-annotate');
+    grunt.loadNpmTasks('grunt-traceur');
 
     // Define the configuration for all the tasks
     grunt.initConfig({
@@ -34,6 +35,10 @@ module.exports = function (grunt) {
             bower: {
                 files: ['bower.json'],
                 tasks: ['wiredep']
+            },
+            traceur: {
+                files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+                tasks: ['traceur:custom']
             },
             js: {
                 files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
@@ -160,6 +165,20 @@ module.exports = function (grunt) {
                     open: true,
                     base: '<%= yeoman.dist %>'
                 }
+            }
+        },
+
+        traceur: {
+            options: {
+                // traceur options here
+            },
+            custom: {
+                files: [{
+                    expand: true,
+                    cwd: 'app/scripts/es6',
+                    src: ['*.js'],
+                    dest: 'app/scripts/es5'
+                }]
             }
         },
 
@@ -521,6 +540,7 @@ module.exports = function (grunt) {
         'useminPrepare',
         'concurrent:dist',
         'autoprefixer',
+        'traceur:custom',
         'concat',
         'copy:dist',
         'cdnify',
@@ -530,7 +550,7 @@ module.exports = function (grunt) {
         'filerev',
         'usemin',
         'htmlmin',
-        'watch:compass'
+        'watch'
     ]);
 
     grunt.registerTask('build', [

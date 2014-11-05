@@ -27,8 +27,6 @@ function downloadEpisode(episode, podcast) {
 
     episode.media = JSON.parse(episode.media);
     episode.media.url = episode.media.url[0];
-    console.log('download dat epi', episode);
-    console.log('attempting to download url', episode.media);
     xhr.open('GET', episode.media.url, true);
     xhr.responseType = 'blob';
 

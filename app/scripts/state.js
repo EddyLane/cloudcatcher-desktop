@@ -62,7 +62,7 @@ angular
 
         $stateProvider.state('base.user.edit', {
             templateUrl: 'views/base/user/edit.html'
-        })
+        });
 
         $stateProvider.state('base.podcasts', {
             templateUrl: 'views/base/podcasts.html',
@@ -77,12 +77,12 @@ angular
             controller: 'BasepodcastsCtrl'
         });
 
-        $stateProvider.state('base.podcasts.thumbnails', {
+        $stateProvider.state('base.podcasts.unplayed', {
             url: '/list',
             templateUrl: 'views/base/podcasts/list.html'
         });
 
-        $stateProvider.state('base.podcasts.unplayed', {
+        $stateProvider.state('base.podcasts.thumbnails', {
             url: '/unplayed',
             templateUrl: 'views/base/podcasts/unplayed.html',
             controller: 'PodcastsunplayedCtrl'
@@ -136,7 +136,7 @@ angular
         if (window.forwardToPodcast) {
             $urlRouterProvider.otherwise('/podcasts/' + window.forwardToPodcast() + '/episodes');
         } else {
-            $urlRouterProvider.otherwise('/list');
+            $urlRouterProvider.otherwise('/unplayed');
         }
 
     });

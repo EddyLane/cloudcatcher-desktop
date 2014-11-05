@@ -56,25 +56,28 @@ function BaseCtrl ($scope, $rootScope, user, AudioPlayer, CloudcatcherAuth, $sta
     });
 
     $scope.$watch('audioPlayer', function (player) {
+
         if (player) {
 
             player.on('playing', function (evt) {
                 $log.debug('song playing', evt);
             });
 
-            $scope.currentPlaying.$loaded().then(function () {
+            if ($scope.currentPlaying && _.isFunction($scope.currentPlaying.$loaded)) {
+                $scope.currentPlaying.$loaded().then(function () {
 
-                if ($scope.currentPlaying.media) {
-                    AudioPlayer.play($scope.currentPlaying);
+                    if ($scope.currentPlaying.media) {
+                        AudioPlayer.play($scope.currentPlaying);
 
-                    player.one('loadedmetadata', function (evt) {
-                        player.pause();
-                        player.seek($scope.currentPlaying.currentTime);
-                        $log.debug('song loaded', evt);
-                    });
-                }
+                        player.one('loadedmetadata', function (evt) {
+                            player.pause();
+                            player.seek($scope.currentPlaying.currentTime);
+                            $log.debug('song loaded', evt);
+                        });
+                    }
 
-            });
+                });
+            }
 
         }
     });
